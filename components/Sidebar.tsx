@@ -19,7 +19,7 @@ import {
 } from "../components/Icons";
 
 const menuItems = [
-  { id: 1, label: "Đơn hàng mới", icon: AddIcon, link: "/" },
+  { id: 1, label: "Đơn hàng mới", icon: AddIcon, link: "/order" },
   { id: 2, label: "Định vị đơn hàng", icon: CompassIcon, link: "/posts" },
   { id: 3, label: "Danh sách đơn hàng", icon: ArticleIcon, link: "/posts" },
   { id: 4, label: "Lịch sử đơn hàng", icon: HistoryIcon, link: "/users" },
@@ -78,16 +78,18 @@ const Sidebar = () => {
     >
       <div className="flex flex-col">
         <div className="flex items-center justify-between relative">
-          <div className="flex items-center pl-1 gap-4">
-            <LogoIcon />
-            <span
-              className={classNames("mt-2 text-2xl font-bold text-text", {
-                hidden: toggleCollapse,
-              })}
-            >
-              {siteMetadata.title}
-            </span>
-          </div>
+          <Link href="/">
+            <div className="flex items-center pl-1 gap-4">
+              <LogoIcon />
+              <span
+                className={classNames("mt-2 text-2xl font-bold text-text", {
+                  hidden: toggleCollapse,
+                })}
+              >
+                {siteMetadata.title}
+              </span>
+            </div>
+          </Link>
           {isCollapsible && (
             <button
               className={collapseIconClasses}
