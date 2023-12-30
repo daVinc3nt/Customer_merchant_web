@@ -6,6 +6,10 @@ module.exports = {
   ],
   theme: {
     extend: {
+      fontSize: {
+        'xxs': '0.5rem',
+        '3xs': '0.25rem'
+      },
       colors: {
         light: {
           DEFAULT: "#FAFBFC",
@@ -15,6 +19,8 @@ module.exports = {
       backgroundImage: {
         RedGradient:
             'linear-gradient(to top, #890010, #990012)',
+        LoginRedGradient:
+            'linear-gradient(to left, #E65758, #771D32)',    
       }
     },
   },

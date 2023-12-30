@@ -19,10 +19,10 @@ import {
 } from "../components/Icons";
 
 const menuItems = [
-  { id: 1, label: "Đơn hàng mới", icon: AddIcon, link: "/" },
-  { id: 2, label: "Định vị đơn hàng", icon: CompassIcon, link: "/posts" },
-  { id: 3, label: "Danh sách đơn hàng", icon: ArticleIcon, link: "/posts" },
-  { id: 4, label: "Lịch sử đơn hàng", icon: HistoryIcon, link: "/users" },
+  { id: 1, label: "Thêm mới", icon: AddIcon, link: "/" },
+  { id: 2, label: "Định vị", icon: CompassIcon, link: "/posts" },
+  { id: 3, label: "Danh sách đơn", icon: ArticleIcon, link: "/posts" },
+  { id: 4, label: "Lịch sử", icon: HistoryIcon, link: "/users" },
   { id: 5, label: "Thống kê", icon: GraphIcon, link: "/tutorials" },
 ];
 

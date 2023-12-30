@@ -13,10 +13,10 @@ interface LayoutProps {
 
 const Wrapper = ({ children }: LayoutProps) => {
   return (
-    <div className="h-screen flex flex-row justify-start bg-RedGradient">
+    <div className="h-screen w-screen flex bg-RedGradient">
       <Sidebar/>
-      <div className="flex-1 flex flex-col">
-        <div className="flex justify-end">
+      <div className="flex-1  flex flex-col">
+        <div className="flex  justify-end">
           <NotifyIcon />
         </div>
         <div className="bg-primary flex-1 p-4 text-white">
