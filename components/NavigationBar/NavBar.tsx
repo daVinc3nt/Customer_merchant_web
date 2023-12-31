@@ -36,7 +36,7 @@ const NavBar = () => {
           </h1>
         </Link>
         <div style={{ color: `${textColor}` }} className="flex items-center">
-          <ul className="hidden sm:flex">
+          {/* <ul className="hidden sm:flex">
             <li className="p-4">
               <Link href="/">Trang chủ</Link>
             </li>
@@ -46,10 +46,8 @@ const NavBar = () => {
             <li className="p-4">
               <Link href="/#contact">Hỗ trợ</Link>
             </li>
-          </ul>
-          {/* <NotificationIcon/> */}
+          </ul> */}
         </div>
-        {/* Mobile Button */}
         <div onClick={handleNav} className="block sm:hidden z-10">
           {nav ? (
             <AiOutlineClose size={20} style={{ color: `${textColor}` }} />
@@ -57,7 +55,6 @@ const NavBar = () => {
             <AiOutlineMenu size={20} style={{ color: `${textColor}` }} />
           )}
         </div>
-        {/* Mobile Menu */}
         <div
           className={
             nav

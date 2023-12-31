@@ -32,7 +32,7 @@ const LocationForm = () => {
 
       <Dropdown name="Chi tiết địa điểm" options={locationOptions}/>
       
-      <div className="flex flex-col self-center items-left h-6 w-11/12 mt-1 mb-4 z-40">
+      <div className="flex flex-col self-center items-left h-6 w-11/12 mt-1 mb-4 z-[5]">
         <button className="h-6 w-2/6 bg-light pointer-event-stroke text-xs text-left text-black hover:text-orange-600" style={{ whiteSpace: 'nowrap' }}>+ Chi tiết địa chỉ
         </button>
       </div>

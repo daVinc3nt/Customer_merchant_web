@@ -88,7 +88,7 @@ const Sidebar = () => {
       className={wrapperClasses}
       onMouseEnter={onMouseOver}
       onMouseLeave={onMouseOver}
-      style={{ transition: "width 190ms cubic-bezier(0.2, 0, 0, 1) 0s" }}
+      style={{ transition: "width 200ms cubic-bezier(0.2, 0, 0, 1) 0s" }}
     >
       <div className="flex flex-col">
         <div className="flex items-center justify-between relative">
@@ -161,7 +161,7 @@ const Sidebar = () => {
       className={wrapperClassesMobile}
       onMouseEnter={onMouseOver}
       onMouseLeave={onMouseOver}
-      style={{ transition: "width 190ms cubic-bezier(0.2, 0, 0, 1) 0s" }}
+      style={{ transition: "width 200ms cubic-bezier(0.2, 0, 0, 1) 0s" }}
     >
       <div className="flex flex-col">
         <div className="flex items-center justify-between relative">

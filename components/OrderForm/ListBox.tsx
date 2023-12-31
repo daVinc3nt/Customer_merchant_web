@@ -71,7 +71,7 @@ const Dropdown: React.FC<DropdownProps> = ({ name, options }) => {
             ref={dropdownRef}
             className="origin-top-right absolute right-0 w-full 
                         rounded shadow-lg bg-white ring-1 
-                         ring-black ring-opacity-5 z-[100] border-2 border-gray-300"
+                         ring-black ring-opacity-5 z-[10] border-2 border-gray-300"
           >
             <ul
               role="menu"
