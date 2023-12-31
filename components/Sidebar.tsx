@@ -47,7 +47,7 @@ const Sidebar = () => {
     }
   );
   const wrapperClassesMobile = classNames(
-    "h-screen flex lg:hidden px-4 pt-8 pb-4 bg-light justify-between flex-col",
+    "h-screen flex fixed z-50 lg:hidden px-4 pt-8 pb-4 bg-light justify-between flex-col",
     {
       ["w-60"]: !toggleCollapseMobile,
       ["w-0 px-0"]: toggleCollapseMobile,
