@@ -12,3 +12,4 @@ export { default as HistoryIcon} from "./HistoryIcon";
 export { default as GraphIcon} from "./GraphIcon";
 export { default as AddIcon} from "./AddIcon";
 export { default as CompassIcon} from "./CompassIcon";
+export { default as MenuToggle} from "./MenuToggle";

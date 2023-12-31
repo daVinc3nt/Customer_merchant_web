@@ -1,8 +1,8 @@
 const siteMetadata = {
-    title: `TDlogistic`,
+    title: `TDlogistics`,
     author: `SigmaTeam`,
     logoScr: "/tabLogo.png",
-    headerTitle: `TDlogistic`,
+    headerTitle: `TDlogistics`,
     description: `Trang web thông tin về LGBTQI+`,
     language: 'en-us',
     theme: 'system', // system, dark or light

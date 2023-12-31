@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-
+import OTPField from "../OtpField/OtpField";
 const SignupForm = () => {
   interface FormValues {
     name: string;
@@ -15,7 +15,7 @@ const SignupForm = () => {
   const initialValues2: ErrorValues = { name: "", email: "", phoneNum: "" };
   const [formValues, setFormValues] = useState<FormValues>(initialValues);
   const [formErrors, setFormErrors] = useState<ErrorValues>(initialValues2);
-  
+  const [showOtp, setshowOtp] = useState(false);
   const handleName = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
     const updatedFormValues = { ...formValues, name: value };
@@ -66,6 +66,8 @@ const SignupForm = () => {
       return errors;
     };
   return (
+    <div>
+    { !showOtp ? (
     <div className="selection:bg-indigo-500 selection:text-white">
       <div className="flex justify-center items-center">
         <div className="p-4 sm:p-8 flex-1">
@@ -125,20 +127,41 @@ const SignupForm = () => {
                   </label>
                   <p className="text-red-500 fixed mt-1 text-xxs sm:text-sm">{formErrors.phoneNum}</p>
                 </div>
-
-                <input
-                  type="submit"
-                  value="Sign up"
-                  className="mt-10 py-3 px-6 rounded-full bg-indigo-600 hover:bg-indigo-500
-                   text-white font-bold uppercase text-xs text-center block w-full focus:outline-none 
-                   focus:ring focus:ring-offset-2 focus:ring-indigo-500 focus:ring-opacity-80 
-                   cursor-pointer sm:text-sm"
-                />
+                  <button
+                      type="submit"
+                      onClick={(e) => setshowOtp(!showOtp)}
+                      className="mt-10 py-3 px-6 rounded-full bg-indigo-600 hover:bg-indigo-500
+                      text-white font-bold uppercase text-xs text-center block w-full focus:outline-none 
+                      cursor-pointer sm:mt-20 sm:text-sm"
+                    >
+                      Xác thực qua SMS
+                  </button>
               </form>
             </div>
           </div>
         </div>
       </div>
+    </div>) : (
+      <div> 
+      <div className="flex justify-center items-center">
+       <div className="p-6 sm:p-8 flex-1">
+         <div className="mx-auto overflow-hidden">
+           <div className="text-center">
+             <h1 className="text-xl sm:text-5xl font-bold text-indigo-900">
+               Đợi chốc lát bạn nhé!
+             </h1>
+
+             <form className="mt-5 sm:mt-12" action="" method="POST">
+               <OTPField 
+               showOtp={showOtp}
+               setshowOtp={setshowOtp}/>
+             </form>
+           </div>
+         </div>
+       </div>
+     </div>
+   </div>
+    )}
     </div>
   );
 };

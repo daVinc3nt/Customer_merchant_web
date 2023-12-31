@@ -35,9 +35,9 @@ const NotifyIcon = () => {
   };
 
   return (
-    <div className="relative">
+    <div className="fixed right-11  z-30 top-[40px]">
       <button
-        className="relative z-10 p-2 rounded-full focus:outline-none"
+        className="fixed rounded-full focus:outline-none"
         onClick={handleClick}
       >
         {/* draw icon noti here */}
