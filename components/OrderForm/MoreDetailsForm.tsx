@@ -31,7 +31,7 @@ const MoreDetailsForm = () => {
 
       <Dropdown name="Tổng trọng lượng" options={weightOptions}/>
 
-      <h1 className="text-sm font-bold pl-5 text-black text-nowrap cursor-default">Tổng trọng lượng (không bắt buộc)</h1>
+      <h1 className="text-sm font-bold pl-5 text-black text-nowrap cursor-default">Kích thước (không bắt buộc)</h1>
 
       <div className="flex flex-col sm:flex-row justify-center self-center w-11/12 rounded-2xl my-4">
       
