@@ -26,10 +26,12 @@ const menuItems = [
   { id: 4, label: "Lịch sử", icon: HistoryIcon, link: "/users" },
   { id: 5, label: "Thống kê", icon: GraphIcon, link: "/tutorials" },
 ];
-
-const Sidebar = () => {
+interface MyComponentProps {
+  toggleCollapseMobile: boolean;
+}
+const Sidebar: React.FC<MyComponentProps> = ({ toggleCollapseMobile })  => {
   const [toggleCollapse, setToggleCollapse] = useState(false);
-  const [toggleCollapseMobile, setToggleCollapseMobile] = useState(false);
+  // const [toggleCollapseMobile, setToggleCollapseMobile] = useState(false);
   const [isCollapsible, setIsCollapsible] = useState(false);
 
   const router = useRouter();
@@ -40,14 +42,14 @@ const Sidebar = () => {
   );
 
   const wrapperClasses = classNames(
-    "h-screen hidden lg:flex lg:px-4 pt-8 pb-4 bg-light justify-between flex-col",
+    "h-screen hidden z-50 lg:flex lg:px-4 pt-8 pb-4 bg-ligth justify-between flex-col",
     {
       ["lg:w-80"]: !toggleCollapse,
       ["lg:w-20"]: toggleCollapse,
     }
   );
   const wrapperClassesMobile = classNames(
-    "h-screen flex fixed z-50 lg:hidden px-4 pt-8 pb-4 bg-light justify-between flex-col",
+    "h-screen flex z-50 fixed lg:hidden px-4 pt-8 pb-4 bg-light justify-between flex-col",
     {
       ["w-60"]: !toggleCollapseMobile,
       ["w-0 px-0"]: toggleCollapseMobile,
@@ -77,13 +79,12 @@ const Sidebar = () => {
   const handleSidebarToggle = () => {
     setToggleCollapse(!toggleCollapse);
   };
-  const handleSidebarToggleMobile = () => {
-    setToggleCollapseMobile(!toggleCollapseMobile);
-  };
+  // const handleSidebarToggleMobile = () => {
+  //   setToggleCollapseMobile(!toggleCollapseMobile);
+  // };
 
   return (
     <>
-    <MobileMenu toggle ={handleSidebarToggleMobile}/>
     <div
       className={wrapperClasses}
       onMouseEnter={onMouseOver}
@@ -125,7 +126,7 @@ const Sidebar = () => {
                     {!toggleCollapse && (
                       <span
                         className={classNames(
-                          "text-md font-medium text-text-light"
+                          "text-md font-medium text-black"
                         )}
                       >
                         {menu.label}
@@ -147,7 +148,7 @@ const Sidebar = () => {
           {!toggleCollapse && (
             <span
               className={classNames(
-                "text-md font-medium text-text-light"
+                "text-md font-medium text-black"
               )}
             >
               Đăng xuất
@@ -192,13 +193,13 @@ const Sidebar = () => {
               <div key={menu.id} className={classes}>
                 <Link href={menu.link}>
                   <div className="flex py-4 px-3 items-center w-full h-full">
-                    <div style={!toggleCollapse? { width: "2.5rem" }: { width: "0rem" }}>
+                    <div style={!toggleCollapseMobile? { width: "2.5rem" }: { width: "0rem", display: "false"}}>
                       <Icon />
                     </div>
-                    {!toggleCollapse && (
+                    {!toggleCollapseMobile && (
                       <span
                         className={classNames(
-                          "text-md font-medium text-text-light"
+                          "text-md font-medium text-black"
                         )}
                       >
                         {menu.label}
@@ -214,13 +215,13 @@ const Sidebar = () => {
 
       <div className={`${getNavItemClasses({})}`}>
         <div className="flex py-4 px-3 items-center w-full h-full">
-          <div style={ !toggleCollapseMobile? { width: "2.5rem" }: { width: "0rem" }}>
+        {!toggleCollapseMobile && <div style={ { width: "2.5rem" }}>
             <LogoutIcon />
-          </div>
+          </div>}
           {!toggleCollapseMobile && (
             <span
               className={classNames(
-                "text-md font-medium text-text-light"
+                "text-md font-medium text-black"
               )}
             >
               Đăng xuất

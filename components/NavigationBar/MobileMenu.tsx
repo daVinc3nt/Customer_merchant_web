@@ -5,14 +5,13 @@ type MenuItemWithSubMenuProps = {
     toggleOpen: () => void;
   };
 const MobileMenu = ({ toggle }: { toggle: any }) => {
-    const [navShow, setNavShow] = useState(false);
     const [isOpen, toggleOpen] = useCycle(true, false);
     const containerRef = useRef(null);
     return (
         <motion.nav
         initial={false}
         animate={isOpen ? 'open' : 'closed'}
-        className={`fixed w-full md:hidden ${
+        className={`w-full z-50 md:hidden ${
             isOpen ? '' : 'pointer-events-none'
             }`}
         ref={containerRef}

@@ -35,9 +35,9 @@ const NotifyIcon = () => {
   };
 
   return (
-    <div className="fixed right-11  z-30 top-[40px]">
+    <div className="z-40 pl-3">
       <button
-        className="fixed rounded-full focus:outline-none"
+        className="rounded-full focus:outline-none"
         onClick={handleClick}
       >
         {/* draw icon noti here */}
@@ -60,7 +60,7 @@ const NotifyIcon = () => {
       </button>
 
       {showDropdown && (
-        <div className="absolute right-0 mt-2 w-48 bg-light rounded-md shadow-lg text-black">
+        <div className="absolute right-3 w-48 bg-rose-300 rounded-md shadow-lg text-black">
           <ul>
             {notifications.map((notification) => (
               <li key={notification.id}>{notification.message}</li>
