@@ -10,11 +10,13 @@
   },
   "dependencies": {
     "@next/bundle-analyzer": "^12.1.4",
+    "@nextui-org/react": "^2.2.9",
     "framer-motion": "^10.16.16",
     "next": "^14.0.4",
     "next-auth": "^4.24.5",
     "react": "18.2.0",
     "react-dom": "18.2.0",
+    "react-paginate": "^8.2.0",
     "split-type": "^0.3.4"
   },
   "devDependencies": {
