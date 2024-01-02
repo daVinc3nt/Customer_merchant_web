@@ -22,7 +22,7 @@ import {
 const menuItems = [
   { id: 1, label: "Thêm mới", icon: AddIcon, link: "/order" },
   { id: 2, label: "Định vị", icon: CompassIcon, link: "/posts" },
-  { id: 3, label: "Danh sách đơn", icon: ArticleIcon, link: "/posts" },
+  { id: 3, label: "Danh sách đơn", icon: ArticleIcon, link: "/orderhistory" },
   { id: 4, label: "Lịch sử", icon: HistoryIcon, link: "/users" },
   { id: 5, label: "Thống kê", icon: GraphIcon, link: "/tutorials" },
 ];
