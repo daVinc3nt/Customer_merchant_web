@@ -15,6 +15,7 @@ module.exports = {
           DEFAULT: "#FAFBFC",
           lighter: "#F3F4F6",
         }
+
       },
       backgroundImage: {
         RedGradient:
@@ -22,8 +23,9 @@ module.exports = {
         LoginRedGradient:
             'linear-gradient(to left, #E65758, #771D32)', 
         LitghRedGradient:
-            'linear-gradient(-45deg, #ff5959, #ff4040, #ff0d6e, #ff8033,#d74177)'   
+            'linear-gradient(-45deg, #ff5959, #ff4040, #ff0d6e, #ff8033,#d74177)'
       }
+      
     },
   },
   plugins: [],
