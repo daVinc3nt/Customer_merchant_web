@@ -73,7 +73,7 @@ export class OTP {
      * @returns 
      */
     async verifyOTP(info: { phone_number: string, email: string, otp: string }): Promise<boolean> {
-        const { phoneNumber, email, otp } = info;
+        const { phone_number, email, otp } = info;
 
         if (!phone_number || !email || !otp) {
             throw new Error("Không trường thông tin nào được để trống!");
