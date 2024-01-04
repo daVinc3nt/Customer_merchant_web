@@ -51,7 +51,7 @@ export class OTP {
                     "Content-Type": "application/json"
                 },
                 body: JSON.stringify({
-                    phoneNumber: this._phoneNumber,
+                    phone_number: this._phoneNumber,
                     email: this._email,
                 }),
             });
@@ -72,10 +72,10 @@ export class OTP {
      * @param {object} info 
      * @returns 
      */
-    async verifyOTP(info: { phoneNumber: string, email: string, otp: string }): Promise<boolean> {
+    async verifyOTP(info: { phone_number: string, email: string, otp: string }): Promise<boolean> {
         const { phoneNumber, email, otp } = info;
 
-        if (!phoneNumber || !email || !otp) {
+        if (!phone_number || !email || !otp) {
             throw new Error("Không trường thông tin nào được để trống!");
         }
 
