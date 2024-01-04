@@ -77,6 +77,7 @@ const SignupForm = () => {
 
   const Auth = () => {
     const {name, email, phoneNumber} = formValues;
+    console.log("hello")
     if (!name ||!email || !phoneNumber)
       return null;
     const otpCode = new OTP(phoneNumber,email);
