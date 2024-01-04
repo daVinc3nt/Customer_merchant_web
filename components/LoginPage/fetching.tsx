@@ -43,7 +43,7 @@ export class OTP {
      * Method to send OTP
      * @returns {string} - Response's message 
      */
-    async sendOTP(): Promise<string> {
+    async sendOTP(): Promise<any> {
         try {
             const response = await fetch(`${this._baseUrl}/send_otp`, {
                 method: "POST",
