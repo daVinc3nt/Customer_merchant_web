@@ -5,11 +5,12 @@ import { motion, AnimatePresence } from 'framer-motion';
 interface DropdownProps {
   name: string;
   options: string[];
+  selectedOption: number;
+  onSelect: (option: number) => void;
 }
 
-const Dropdown: React.FC<DropdownProps> = ({ name, options }) => {
+const DropdownDP: React.FC<DropdownProps> = ({ name, options, selectedOption, onSelect }) => {
   const [isOpen, setIsOpen] = useState(false);
-  const [selectedOption, setSelectedOption] = useState<string>('');
   const dropdownRef = useRef<HTMLDivElement>(null);
 
   const toggleDropdown = () => {
@@ -20,8 +21,8 @@ const Dropdown: React.FC<DropdownProps> = ({ name, options }) => {
     setIsOpen(false);
   };
 
-  const handleOptionClick = (option: string) => {
-    setSelectedOption(option);
+  const handleOptionClick = (option: number) => {
+    onSelect(option);
     closeDropdown();
   };
 
@@ -37,42 +38,42 @@ const Dropdown: React.FC<DropdownProps> = ({ name, options }) => {
         dropdownRef.current &&
         event.target &&
         !dropdownRef.current.contains(event.target as HTMLElement) &&
-        ((event.target as HTMLElement).id !== 'DropdownButton')
+        ((event.target as HTMLElement).id !== 'DropdownButton3')
       ) {
         closeDropdown();
       }
     };
-  
+
     document.addEventListener('mousedown', handleClickOutside);
-  
+
     return () => {
       document.removeEventListener('mousedown', handleClickOutside);
     };
   }, []);
 
   return (
-    <div className="relative self-center w-11/12 mt-2 mb-4">
-      <motion.div className="relative flex w-full">
+    <div className="relative self-center w-full h-full">
+      <motion.div className="relative flex w-full h-full">
         <motion.button
-          id='DropdownButton'
-          className={`h-12 self-center w-full border border-gray-300 rounded focus:outline-none 
+          id='DropdownButton3'
+          className={`h-full self-center w-full border border-gray-300 rounded focus:outline-none 
                      focus:ring-2 placeholder-gray focus:ring-red-500 text-left pl-3 truncate 
-                     ${selectedOption ? 'text-black' : 'text-gray-400'}`}
+                     text-black`}
           onClick={toggleDropdown}
         >
-          {selectedOption || name}
+            {selectedOption < 10 ? `0${selectedOption}` : `${selectedOption}`}
         </motion.button>
         <AnimatePresence>
           <motion.button
-            className={`flex absolute top-0 h-12 w-10 right-0 items-center pointer-event-stroke 
+            className={`flex absolute top-1.5 h-6 w-3 right-1 items-center pointer-event-stroke 
                       -translate-y-1/2 rounded-r-xl`}
-            id='DropdownButton'
+            id='DropdownButton3'
             onClick={toggleDropdown}
             initial={{ rotate: 0 }}
             animate={{ rotate: isOpen ? 180 : 0 }}
             transition={{ duration: 0.3 }}
           >
-            <HiOutlineChevronDown id='DropdownButton' className="text-gray-400 w-full" />
+            <HiOutlineChevronDown id='DropdownButton3' className="text-black w-full" />
           </motion.button>
         </AnimatePresence>
 
@@ -85,26 +86,26 @@ const Dropdown: React.FC<DropdownProps> = ({ name, options }) => {
               exit="exit"
               variants={dropdownVariants}
               transition={{ duration: 0.3 }}
-              className={`top-14 origin-center absolute w-full rounded-lg shadow bg-white z-10`}
+              className={`top-10 origin-center absolute w-full rounded shadow bg-white z-10`}
             >
               <ul
                 role="menu"
                 aria-orientation="vertical"
                 aria-labelledby="options-menu"
-                className="max-h-48 overflow-y-auto"
+                className="max-h-32 overflow-y-auto no-scrollbar"
               >
                 {options.map((option, index) => (
                   <li key={index}>
                     <button
                       type="button"
-                      className={`block h-12 text-sm text-gray-700 border-b-[1px] 
+                      className={`block h-9 text-sm text-gray-700 border-b-[1px] 
                                  ${index === options.length - 1
                         ? 'border-transparent hover:bg-gray-100 hover:rounded-b w-full'
                         : index === 0
                         ? 'border-gray-300 hover:bg-gray-100 hover:rounded-t w-full'
                         : 'border-gray-300 hover:bg-gray-100 w-full'
                       }`}
-                      onClick={() => handleOptionClick(option)}
+                      onClick={() => handleOptionClick(parseInt(option))}
                     >
                       {option}
                     </button>
@@ -119,4 +120,4 @@ const Dropdown: React.FC<DropdownProps> = ({ name, options }) => {
   );
 };
 
-export default Dropdown;
+export default DropdownDP;

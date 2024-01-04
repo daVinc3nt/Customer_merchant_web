@@ -15,8 +15,11 @@ const OrderForm = () => {
   const wrapperClasses = classNames(
     "relative bottom-0 px-4 pt-10 pb-4 bg-light flex justify-between flex-col rounded-2xl",
     {
-      "h-[calc(100%)] sm:w-full md:w-5/6 lg:w-1/2 xl:5/12 w-full": !toggleCollapse,
+      "h-[calc(100%)] sm:w-full md:w-5/6 lg:w-9/12 xl:w-[calc(45%)] w-full": !toggleCollapse,
       "w-20 h-[calc(5rem)]": toggleCollapse,
+      "@media (min-width: 1152px)": {
+        "w-7/12": !toggleCollapse,
+      },
     }
   );
 
@@ -100,7 +103,7 @@ const OrderForm = () => {
 
             </div>
 
-            <button className="self-center w-full rounded-xl my-3 py-3 bg-red-600 hover:bg-RedGradient" onClick={handleSubmitButton}>
+            <button className="self-center w-full rounded-xl my-3 py-3 bg-red-600 hover:bg-RedGradient text-white" onClick={handleSubmitButton}>
               Tiếp tục
             </button>
           </div>

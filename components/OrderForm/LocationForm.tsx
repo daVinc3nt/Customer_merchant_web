@@ -59,6 +59,8 @@ const LocationForm = () => {
       {
         if (values.phoneNum === "") {
         errors = "Nhập số điện thoại vào nè!";
+      } else if (values.phoneNum[0] != "0") {
+        errors= "Số này không hợp lệ rồi!";
       } else if (!PhoneRegex.test(values.phoneNum)) {
         errors= "Số này không hợp lệ rồi!";
       } else if (values.phoneNum.length < 10) {
@@ -159,7 +161,7 @@ const LocationForm = () => {
 
       </div>
 
-      <button className="self-center w-11/12 rounded-xl mb-4 mt-7 py-3 bg-red-600 hover:bg-RedGradient">
+      <button className="self-center w-11/12 rounded-xl mb-4 mt-7 py-3 bg-red-600 hover:bg-RedGradient text-white">
         Xác nhận
       </button>
 
@@ -248,7 +250,7 @@ const LocationForm = () => {
 
       </div>
 
-      <button className="self-center w-11/12 rounded-xl mb-4 mt-7 py-3 bg-red-600 hover:bg-RedGradient">
+      <button className="self-center w-11/12 rounded-xl mb-4 mt-7 py-3 bg-red-600 hover:bg-RedGradient text-white">
         Xác nhận
       </button>
 
