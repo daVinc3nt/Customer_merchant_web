@@ -13,7 +13,7 @@ const OTPField: FC<RightOverlayContentProps> = ({ showOtp, setshowOtp }): JSX.El
     const handleOnKeyDown = (
         { key }: React.KeyboardEvent<HTMLInputElement>, index: number) => {
         currentOTPIndex = index
-        if (key <= '0' || key >= '9' || key !== "Backspace") return
+        // if (key < '0' || key > '9' || key !== "Backspace") return
         if ( key === "Backspace") setActiveOTPIndex(currentOTPIndex - 1);
     };
 
@@ -21,7 +21,9 @@ const OTPField: FC<RightOverlayContentProps> = ({ showOtp, setshowOtp }): JSX.El
         { target }: React.ChangeEvent<HTMLInputElement>,
        ): void => {
         const { value } = target;
-        if (value && !Number(value)) {
+        console.log(value);
+        if (value && value !=="0" &&!Number(value)) {
+            console.log(!Number(value));
             return;
         }
         const newOTP: string[] = [...otp];
@@ -59,8 +61,8 @@ const OTPField: FC<RightOverlayContentProps> = ({ showOtp, setshowOtp }): JSX.El
             type="submit"
             onClick={(e) => setshowOtp(!showOtp)}
             className="mt-10 py-3 px-6 rounded-full bg-indigo-600 hover:bg-indigo-500
-            text-white font-bold uppercase text-xs text-center block w-full focus:outline-none 
-            cursor-pointer sm:mt-20 sm:text-sm"
+            text-white font-bold uppercase text-xs text-center block w-3/4 focus:outline-none 
+            cursor-pointer lg:mt-20 sm:text-sm"
             >
             Quay lại
         </button>

@@ -33,7 +33,7 @@ const Wrapper = ({ children }: LayoutProps) => {
         <div className="lg:hidden flex-1 flex z-40 fixed inset-0 bg-black bg-opacity-25 backdrop-blur-sm">
         </div>}
 
-        <div className="bg-primary flex flex-1 p-1 lg:p-4 text-black">
+        <div className="bg-primary flex flex-1 text-black">
             {children}
         </div>
       </div>

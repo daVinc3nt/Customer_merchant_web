@@ -238,12 +238,9 @@ export class User {
      * @param {object} info 
      * @returns Response's message
      */
-    async createUser(info: 
-    { phoneNumber: string, email: string, fullname: string }): Promise<string> {
-
-        const { phoneNumber, email, fullname } = info;
+    async createUser(): Promise<string> {
         try {
-            if (!phoneNumber || !email || !fullname) {
+            if (!this._phoneNumber || !this._email || !this._fullname) {
                 throw new Error("Không trường thông tin nào được để trống!");
             }
 
@@ -253,9 +250,9 @@ export class User {
                     "Content-Type": "application/json"
                 },
                 body: JSON.stringify({
-                    phoneNumber: phoneNumber,
-                    email: email,
-                    fullname: fullname
+                    phoneNumber: this._phoneNumber,
+                    email: this._email,
+                    fullname: this._fullname
                 })
             });
 
@@ -350,11 +347,11 @@ export class User {
 // // 2. Verify OTP
 
 // // Define an OTP verifier object
-const OTPVerifier = new Object({
-    phoneNumber: "0981428116",
-    email: "minh.luxuanhcmc@hcmut.edu.vn",
-    otp: 324185
-});
+// const OTPVerifier = new Object({
+//     phoneNumber: "0981428116",
+//     email: "minh.luxuanhcmc@hcmut.edu.vn",
+//     otp: 324185
+// });
 
 // Verify OTP
 // otp.verifyOTP(OTPVerifier)
