@@ -37,7 +37,17 @@ const SigninForm = () => {
 
   const verify = async () =>{
     setshowOtp(!showOtp);
-    await auth();
+    const response = await fetch("https://tdlogistics.onrender.com/api/v1/otp/verify_otp", {
+    method: "POST",
+    headers: {
+        "Content-Type": "application/json"
+    },
+    body: JSON.stringify({
+        phone_number: "0981430418",
+        email: "minh.luxuanhcmut@hcmut.edu.vn",
+        otp: 123456,
+    })
+                         });
   }
 
   const auth = () => {
