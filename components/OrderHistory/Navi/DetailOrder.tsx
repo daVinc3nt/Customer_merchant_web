@@ -1,7 +1,7 @@
-import {Table, TableHeader, TableColumn, TableBody, TableRow, TableCell, getKeyValue} from "@nextui-org/react";
+
 import ReactPaginate from 'react-paginate';
 import React, { useEffect } from 'react';
-
+import DetailMore from './DetailMore';
 // const rows = [
 //   { key: "orderId", label: "Order ID" },
 //   { key: "customerName", label: "Customer Name" },
@@ -21,6 +21,7 @@ interface Row {
     state: string;
     zipCode: string;
   };
+  Status: string;
 }
 
 const rowsPerPage = 10;
@@ -47,25 +48,58 @@ const DetailOrder = ({rows}: {rows: Array<Row>}) => {
     )
   }
 
+  const [showDetail, setShowDetail] = React.useState({});
+
   return (
-    <div className="content-center mx-5 sm:h-96 lg:h-96 " key={currentPage}>
-      <div className="overflow-x-auto jusitfy-center overflow-y-scroll h-96 lg:h-104">
-        <div className="shadow-lg bg-white rounded-lg w-full h-full md:w-full xl:w-full 2xl:w-full lg:w-full border  ">
+    <div className="content-center mx-5 h-2/6
+    " key={currentPage}>
+      <div className="overflow-x-auto jusitfy-center overflow-y-scroll h-5/6">
+        <div className="shadow-lg bg-white rounded-lg w-full 
+        h-screen_1/5 
+        xs:h-screen_2/5
+        s:h-screen_1/2 
+        sm:h-screen_1/2 
+        md:h-screen_1/2 
+        lg:h-screen_1/2 
+        xl:h-screen_1/2 border  ">
           {currentPageData.map((row, index) =>
               <div className={` ${index % 2 === 0 ? 'bg-slate-100' : 'bg-slate-300'}`} key={(row as { customerName: string }).customerName}>
-                <p className="ml-3"> 
-                  <strong>Mã vận đơn:</strong> {row.orderId} <br/>
-                  <strong>Người gửi:</strong> {row.customerName} <br/>
-                  <strong>Ngày gửi:</strong> {row.orderDate} <br/>
-                  <strong>Tổng tiền:</strong> {row.totalAmount} <br/>
-                  <strong>Địa chỉ gửi:</strong> {`${row.shippingAddress.street}, ${row.shippingAddress.city}, ${row.shippingAddress.state}, ${row.shippingAddress.zipCode}`} <br/>
-                  <button className="bg-red-500 hover:bg-red-600 text-white font-bold w-20 h-5 rounded-full text-s text-center">
-                    <span>Chi tiết</span>
-                  </button>
-                </p>
+                <div className="flex justify-between">
+                  <div>
+                    <p className="ml-3"> 
+                      <strong>Mã vận đơn:</strong> {row.orderId} <br/>
+                      <strong>Người gửi:</strong> {row.customerName} <br/>
+                      <strong>Ngày gửi:</strong> {row.orderDate} <br/>
+                      <strong>Tổng tiền:</strong> {row.totalAmount} <br/>
+                      <strong>Địa chỉ gửi:</strong> {`${row.shippingAddress.street}, ${row.shippingAddress.city}, ${row.shippingAddress.state}, ${row.shippingAddress.zipCode}`} <br/>
+                      <strong>Trạng thái:</strong> {`${row.Status}`} <br/>
+                    </p>
+                  </div>
+                  <div className="flex " >
+                    <button  onClick={() => setShowDetail({ ...showDetail, [row.orderId]: true})}
+                    className="
+                      self-center
+                      bg-red-500 hover:bg-red-600 text-white font-bold py-2 px-2
+                      w-16 h-8 
+                      sm:w-32 sm:h-10 
+                      rounded-full
+                      flex items-center justify-center
+                      mr-3
+                      ">
+                        <span className="text-xs">Chi tiết</span>
+                      </button>
+                  </div>
+                  {showDetail[row.orderId] && (
+                    <DetailMore
+                      row={row}
+                      onClose={() => setShowDetail({ ...showDetail, [row.orderId]: false })}
+                    />
+                  )}
+                </div>
               </div>
           )}
         </div>
+
 
       </div>
       <ReactPaginate 
