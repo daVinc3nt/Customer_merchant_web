@@ -45,7 +45,7 @@ const App = () => {
   };
 
   return (
-    <div >
+    <div className='relative'>
         <div >
         <div className="font-sans text-black antialiased rounded-xl">
         <nav className="justify-between flex-wrap bg-white p-6 rounded-xl">
@@ -58,34 +58,34 @@ const App = () => {
         </div>
         </div>
 
-      <div className={` mt-3 w-full block flex-grow lg:flex lg:items-center lg:w-auto ${isOpen ? '' : 'hidden'}`}>
-        <div className="text-sm lg:flex-grow ">
+      <div className={` z-30 absolute  w-5/6 block flex-grow lg:flex lg:items-center lg:w-auto ${isOpen ? '' : 'hidden'}`}>
+        <div className="text-sm lg:flex-grow bg-white  block rounded-xl">
           {/* Your buttons go here */}
-            <button onClick={() => setView('AllOrder')} className="block mt-4 lg:inline-block lg:mt-0 text-black hover:text-red-500 focus:text-red-500 mr-4">
+            <button onClick={() => setView('AllOrder')} className=" rounded-xl z-30 block mt-4 lg:inline-block lg:mt-0 text-black hover:text-red-500 focus:text-red-500 mr-4">
                 Tất cả đơn hàng
             </button>
-            <button onClick={() => setView('Waiting')} className="block mt-4 lg:inline-block lg:mt-0 text-black hover:text-red-500 focus:text-red-500 mr-4">
+            <button onClick={() => setView('Waiting')} className="  rounded-xl z-30 block mt-4 lg:inline-block lg:mt-0 text-black hover:text-red-500 focus:text-red-500 mr-4">
                 Chờ lấy hàng
             </button>
-            <button onClick={() => setView('LookingFor')} className="block mt-4 lg:inline-block lg:mt-0 text-black hover:text-red-500 focus:text-red-500 mr-4">
+            <button onClick={() => setView('LookingFor')} className="  rounded-xl z-30 block mt-4 lg:inline-block lg:mt-0 text-black hover:text-red-500 focus:text-red-500 mr-4">
                 Đang lấy hàng
             </button>
-            <button onClick={() => setView('Delivering')} className="block mt-4 lg:inline-block lg:mt-0 text-black hover:text-red-500 focus:text-red-500 mr-4">
+            <button onClick={() => setView('Delivering')} className=" rounded-xl z-30 block mt-4 lg:inline-block lg:mt-0 text-black hover:text-red-500 focus:text-red-500 mr-4">
                 Đang giao hàng
             </button>
-            <button onClick={() => setView('WaitForConfirm')} className="block mt-4 lg:inline-block lg:mt-0 text-black hover:text-red-500 focus:text-red-500 mr-4">
+            <button onClick={() => setView('WaitForConfirm')} className="  rounded-xl z-30 block mt-4 lg:inline-block lg:mt-0 text-black hover:text-red-500 focus:text-red-500 mr-4">
                 Chờ xác nhận
             </button>
-            <button onClick={() => setView('WaitForPay')} className="block mt-4 lg:inline-block lg:mt-0 text-black hover:text-red-500 focus:text-red-500 mr-4">
+            <button onClick={() => setView('WaitForPay')} className=" rounded-xl z-30 block mt-4 lg:inline-block lg:mt-0 text-black hover:text-red-500 focus:text-red-500 mr-4">
                 Chờ thanh toán
             </button>
-            <button onClick={() => setView('Complete')} className="block mt-4 lg:inline-block lg:mt-0 text-black hover:text-red-500 focus:text-red-500 mr-4">
+            <button onClick={() => setView('Complete')} className=" rounded-xl z-30 block mt-4 lg:inline-block lg:mt-0 text-black hover:text-red-500 focus:text-red-500 mr-4">
                 Hoàn thành
             </button>
-            <button onClick={() => setView('Cancel')} className="block mt-4 lg:inline-block lg:mt-0 text-black hover:text-red-500 focus:text-red-500 mr-4">
+            <button onClick={() => setView('Cancel')} className=" rounded-xl z-30 block mt-4 lg:inline-block lg:mt-0 text-black hover:text-red-500 focus:text-red-500 mr-4">
                 Đã hủy
             </button>
-            <button onClick={() => setView('Received')} className="block mt-4 lg:inline-block lg:mt-0 text-black hover:text-red-500 focus:text-red-500 mr-4">
+            <button onClick={() => setView('Received')} className=" rounded-xl z-30 block mt-4 lg:inline-block lg:mt-0 text-black hover:text-red-500 focus:text-red-500 mr-4">
                 Đã nhận
             </button>
         </div>
@@ -94,7 +94,7 @@ const App = () => {
             
 
         </div>
-            <div className='my-4'>
+            <div className='my-4 '>
                 <div>
                     <div >
                         <SearchBar/>
@@ -108,14 +108,23 @@ const App = () => {
                         </div>
                         <div className='mr-4'>
                             <div className="relative p-4 z-20 ">
-                                    <button className="bg-red-500 hover:bg-red-600 text-white font-bold py-2 px-4 sm:w-32 sm:h-10 rounded-full">
-                                        <span>Xuất dữ liệu</span>
+                                    <button className="bg-red-500 hover:bg-red-600 text-white font-bold py-2 px-2
+                                        w-24 h-8 
+                                        sm:w-32 sm:h-10 
+                                        rounded-full
+                                        flex items-center justify-center
+                                        ">
+                                        <span
+                                            className="text-xs "
+                                        >Xuất dữ liệu</span>
                                     </button>
                             </div>
                         </div>
                     </div>
                 </div>
+                <div className='place-content-center'>
                 {renderView()}
+                </div>
             </div>
         </div>
         
