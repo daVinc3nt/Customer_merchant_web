@@ -72,7 +72,7 @@ export class OTP {
      * @param {object} info 
      * @returns 
      */
-    async verifyOTP(info: { phone_number: string, email: string, otp: string }): Promise<boolean> {
+    async verifyOTP(info: { phone_number: string, email: string, otp: number }): Promise<boolean> {
         const { phone_number, email, otp } = info;
 
         if (!phone_number || !email || !otp) {
