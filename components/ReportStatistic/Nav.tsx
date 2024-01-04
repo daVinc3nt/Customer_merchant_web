@@ -87,14 +87,16 @@ const App = () => {
           <div
           className='overflow-y-scroll mt-2
           h-screen_1/3
-          xs:h-screen_1/3
+          xxs:h-screen_1/3
+          xs:h-screen_2/5
           s:h-screen_1/2
-          sm:h-screen_3/5
-          md:h-screen_4/5
-          lg:h-screen_4/5
-          xl:h-screen_4/5
+          sm:h-screen_1/2
+          md:h-screen_3/5
+          lg:h-screen_3/5
+          xl:h-screen_3/5
           2xl:h-screen_4/5
           3xl:h-screen_4/5
+          mb-2
           '
           >
             {renderView()}
