@@ -23,6 +23,15 @@ module.exports = {
             'linear-gradient(to left, #E65758, #771D32)', 
         LitghRedGradient:
             'linear-gradient(-45deg, #ff5959, #ff4040, #ff0d6e, #ff8033,#d74177)'   
+      },
+      height:{
+        104: '26rem',
+        112: '28rem',
+        120: '30rem',
+        150: '37.5rem',
+        160: '40rem',
+        170: '42.5rem',
+        200: '50rem',
       }
     },
   },
