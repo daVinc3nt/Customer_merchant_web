@@ -38,10 +38,14 @@ const SignupForm = () => {
   };
     const validate = (values: FormValues, type: number): string => {
       var errors: string = "";
-      const EmailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/i;
+      const NameRegex =/^([a-vxyỳọáầảấờễàạằệếýộậốũứĩõúữịỗìềểẩớặòùồợãụủíỹắẫựỉỏừỷởóéửỵẳẹèẽổẵẻỡơôưăêâđ]+)((\s{1}[a-vxyỳọáầảấờễàạằệếýộậốũứĩõúữịỗìềểẩớặòùồợãụủíỹắẫựỉỏừỷởóéửỵẳẹèẽổẵẻỡơôưăêâđ]+){1,})$/i;
+      const EmailRegex =/^[a-zA-Z0-9._-]+@[a-zA-Z0-9._-]+\.[a-zA-Z]{2,4}$/i;
       const PhoneRegex = /^\d+$/;
       if (type == 1 && !values.name) {
         errors = "Thiếu tên mất rồi.";
+      }
+      else if(!NameRegex.test(values.name.toLowerCase())) {
+        errors = "Mình ghi đầy đủ họ tên bạn nhé!";
       }
       if (type == 2)
       {

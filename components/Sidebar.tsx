@@ -17,7 +17,7 @@ import {
   GraphIcon,
   AddIcon,
   CompassIcon
-} from "../components/Icons";
+} from "./Icons";
 
 const menuItems = [
   { id: 1, label: "Thêm mới", icon: AddIcon, link: "/order" },
