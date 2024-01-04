@@ -84,7 +84,8 @@ const SignupForm = () => {
     const user = new User(name, phoneNumber, email);
     // Send OTP
     otpCode.sendOTP()
-    .then( () => otpCode.verifyOTP({phone_number: "0981430418", otp: 123456}))
+    .then( () => return otpCode.verifyOTP({phone_number: "0981430418", otp: 123456}))
+    .then((valid) => console.log(valid));
     .catch(error => console.log(error));
   }
   return (
