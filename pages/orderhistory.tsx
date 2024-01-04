@@ -1,14 +1,15 @@
 import React from 'react';
 import { NextPage } from 'next';
-import Report from '../components/ReportStatistic/Reportrun';
+import Order from '../components/OrderHistory/Order';
 
-const ReportStatistic: NextPage = () => {
+const OrderHistory: NextPage = () => {
   return (
-    <div className="rounded-xl h-full w-full ">
-      <div className="h-[calc(95%)] bg-gradient-to-b from-gray-100 to-gray-300 rounded-xl  content-center mt-10">
-        <Report/>
+    <div className="rounded-xl h-full w-full">
+    <div className="h-[calc(93%)] bg-gradient-to-b from-gray-100 to-gray-300 rounded-2xl content-center mt-10">
+        <Order/>
       </div>
     </div>
   );
-}
-export default ReportStatistic;
+};
+
+export default OrderHistory;
