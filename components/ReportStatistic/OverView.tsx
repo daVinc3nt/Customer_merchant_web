@@ -9,8 +9,14 @@ const OverView = () => {
                 <div className='text-xl font-semibold '> Chỉ số  </div>
             </div>
             <div className='mr-0'>
-                <button className='bg-red-500 hover:bg-red-600 text-white font-bold py-2 px-4 sm:w-32 sm:h-10  rounded-full'>
-                    Tải báo cáo
+                <button className='bg-red-500 hover:bg-red-600 text-white font-bold py-2 px-2
+                                        w-24 h-8 
+                                        sm:w-32 sm:h-10 
+                                        rounded-full
+                                        flex items-center justify-center'>
+                    <span
+                        className="text-xs "
+                    >Tải báo cáo</span>
                 </button>
             </div>
         </div>
