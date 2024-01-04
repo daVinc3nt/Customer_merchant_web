@@ -27,7 +27,7 @@ const App = () => {
   };
 
   return (
-    <div>
+    <div className='w-full' >
     <div className="font-sans text-black antialiased rounded-xl">
     <nav className="flex items-center justify-between flex-wrap bg-white p-6 rounded-xl">
       <div className="flex items-center flex-shrink-0 text-black mr-6">
@@ -56,6 +56,7 @@ const App = () => {
         
 
     </div>
+    <div className=' overflow-y-scroll  h-150 sm:h-150 lg:150 xl: 2xl:h-150'>
         <div className='text-black font-medium ml-3 border-d border mr-3 '>
           <div className='py-4'>
             <p>Thời gian</p>
@@ -82,7 +83,9 @@ const App = () => {
             />
             </div>
         </div>
-    {renderView()}
+       
+          {renderView()}
+          </div>
     </div>
   );
 };
