@@ -5,6 +5,7 @@ import Link from "next/link";
 import LocationForm from "./LocationForm";
 import MoreDetailsForm from "./MoreDetailsForm";
 import OrderNotification from "./OrderNotification";
+import { motion } from "framer-motion";
 
 const OrderForm = () => {
   const [toggleCollapse, setToggleCollapse] = useState(false);
@@ -16,7 +17,7 @@ const OrderForm = () => {
     "relative bottom-0 px-4 pt-10 pb-4 bg-light flex justify-between flex-col rounded-2xl",
     {
       "h-[calc(100%)] sm:w-full md:w-5/6 lg:w-9/12 xl:w-[calc(45%)] w-full": !toggleCollapse,
-      "w-20 h-[calc(5rem)]": toggleCollapse,
+      "w-16 lg:w-20 h-[calc(4rem)] lg:h-[calc(5rem)]": toggleCollapse,
       "@media (min-width: 1152px)": {
         "w-7/12": !toggleCollapse,
       },
@@ -24,7 +25,7 @@ const OrderForm = () => {
   );
 
   const collapseIconClasses = classNames(
-    "p-4 rounded bg-light-lighter hover:bg-gray-300 absolute left-0",
+    "-bottom-2 lg:-bottom-6 p-2 lg:p-4 rounded bg-light-lighter hover:bg-gray-300 absolute left-0",
     {
       "rotate-180": toggleCollapse,
     }
@@ -77,12 +78,15 @@ const OrderForm = () => {
         {!toggleCollapse && !toggleCollapse2 && currentForm > 0 && (
           <div className="flex items-center justify-between relative">
     
-          <button
-            className="p-3 rounded bg-light-lighter text-gray-600 font-medium hover:bg-gray-300 absolute left-4 lg:left-16"
+          <motion.button
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.9 }}
+            transition={{ duration: 0.3 }}
+            className="px-2 py-1 lg:p-3 rounded bg-light-lighter text-gray-600 font-medium hover:bg-gray-300 absolute left-10 lg:left-16 -bottom-2 lg:-bottom-6"
             onClick={handleGoBackButton}
           >
             Quay lại
-          </button>
+          </motion.button>
             
         </div>
         )}

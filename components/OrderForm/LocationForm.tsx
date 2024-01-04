@@ -72,7 +72,7 @@ const LocationForm = () => {
       return errors;
     };
 
-    return <div className="flex flex-col h-5/6 w-full mt-8 border-2 border-red-500 overflow-y-scroll rounded-md">
+    return <div className="flex flex-col h-5/6 w-full mt-4 lg:mt-8 border-2 border-red-500 overflow-y-scroll rounded-md no-scrollbar">
             
     <h1 className="mt-2 text-2xl pl-6 text-black font-bold text-nowrap cursor-default">
         Địa điểm

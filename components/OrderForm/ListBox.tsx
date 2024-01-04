@@ -11,24 +11,28 @@ const Dropdown: React.FC<DropdownProps> = ({ name, options }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [selectedOption, setSelectedOption] = useState<string>('');
   const dropdownRef = useRef<HTMLDivElement>(null);
+  const [isAtBottom, setIsAtBottom] = useState(options.length < 5 ? true : false);
 
   const toggleDropdown = () => {
     setIsOpen(!isOpen);
+    (isOpen) ? {} : setIsAtBottom(options.length < 5 ? true : false);
   };
 
   const closeDropdown = () => {
     setIsOpen(false);
+    setIsAtBottom(options.length < 5 ? true : false);
   };
 
   const handleOptionClick = (option: string) => {
     setSelectedOption(option);
     closeDropdown();
+    setIsAtBottom(options.length < 5 ? true : false);
   };
 
-  const dropdownVariants = {
-    initial: { opacity: 0, scale: 0.9 },
-    animate: { opacity: 1, scale: 1 },
-    exit: { opacity: 0, scale: 0.9 },
+  const borderStyle: React.CSSProperties = {
+    boxShadow: (isAtBottom)
+      ? 'inset 0 0 5px 0 rgba(221, 221, 221, 0.8)'
+      : 'inset 0 -4px 5px 0 rgba(221, 221, 221, 0.8)',
   };
 
   useEffect(() => {
@@ -42,9 +46,9 @@ const Dropdown: React.FC<DropdownProps> = ({ name, options }) => {
         closeDropdown();
       }
     };
-  
+
     document.addEventListener('mousedown', handleClickOutside);
-  
+
     return () => {
       document.removeEventListener('mousedown', handleClickOutside);
     };
@@ -83,22 +87,39 @@ const Dropdown: React.FC<DropdownProps> = ({ name, options }) => {
               initial="initial"
               animate="animate"
               exit="exit"
-              variants={dropdownVariants}
+              variants={{ initial: { opacity: 0, scale: 0.9 }, animate: { opacity: 1, scale: 1 }, exit: { opacity: 0, scale: 0.9 } }}
               transition={{ duration: 0.3 }}
-              className={`top-14 origin-center absolute w-full rounded-lg shadow bg-white z-10`}
+              className={`top-14 origin-center absolute w-full rounded shadow bg-white z-10`}
+              onScroll={(e) => {
+                const target = e.target as HTMLElement;
+                if (target.scrollHeight - target.scrollTop === target.clientHeight) {
+                  setIsAtBottom(true);
+                } else {
+                  setIsAtBottom(false);
+                }
+              }}
             >
               <ul
                 role="menu"
                 aria-orientation="vertical"
                 aria-labelledby="options-menu"
-                className="max-h-48 overflow-y-auto"
+                className={`max-h-48 overflow-y-auto no-scrollbar rounded`}
+                style={borderStyle}
+                onScroll={(e) => {
+                  const target = e.target as HTMLElement;
+                  if (target.scrollHeight - target.scrollTop === target.clientHeight) {
+                    setIsAtBottom(true);
+                  } else {
+                    setIsAtBottom(false);
+                  }
+                }}
               >
                 {options.map((option, index) => (
                   <li key={index}>
                     <button
                       type="button"
                       className={`block h-12 text-sm text-gray-700 border-b-[1px] 
-                                 ${index === options.length - 1
+                                ${index === options.length - 1
                         ? 'border-transparent hover:bg-gray-100 hover:rounded-b w-full'
                         : index === 0
                         ? 'border-gray-300 hover:bg-gray-100 hover:rounded-t w-full'
