@@ -16,7 +16,8 @@ import {
   HistoryIcon,
   GraphIcon,
   AddIcon,
-  CompassIcon
+  CompassIcon,
+  HelpIcon,
 } from "./Icons";
 
 const menuItems = [
@@ -24,6 +25,7 @@ const menuItems = [
   { id: 2, label: "Định vị", icon: CompassIcon, link: "/posts" },
   { id: 3, label: "Lịch sử", icon: HistoryIcon, link: "/orderhistory" },
   { id: 4, label: "Thống kê", icon: GraphIcon, link: "/reportpage"},
+  { id: 5, label: "Trợ giúp", icon: HelpIcon, link: "/helpcenter"},
 ];
 interface MyComponentProps {
   toggleCollapseMobile: boolean;
