@@ -41,7 +41,7 @@ const Dropdown: React.FC<DropdownProps> = ({ name, options }) => {
         dropdownRef.current &&
         event.target &&
         !dropdownRef.current.contains(event.target as HTMLElement) &&
-        ((event.target as HTMLElement).id !== 'DropdownButton')
+        ((event.target as HTMLElement).id !== name)
       ) {
         closeDropdown();
       }
@@ -58,10 +58,10 @@ const Dropdown: React.FC<DropdownProps> = ({ name, options }) => {
     <div className="relative self-center w-11/12 mt-2 mb-4">
       <motion.div className="relative flex w-full">
         <motion.button
-          id='DropdownButton'
+          id={name}
           className={`h-12 self-center w-full border border-gray-300 rounded focus:outline-none 
-                     focus:ring-2 placeholder-gray focus:ring-red-500 text-left pl-3 truncate 
-                     ${selectedOption ? 'text-black' : 'text-gray-400'}`}
+                     focus:ring-2 placeholder-gray  text-left text-sm pl-3 truncate focus:ring-blue-500
+                     ${selectedOption ? 'text-black ' : 'text-gray-600'}`}
           onClick={toggleDropdown}
         >
           {selectedOption || name}
@@ -70,7 +70,7 @@ const Dropdown: React.FC<DropdownProps> = ({ name, options }) => {
           <motion.button
             className={`flex absolute top-0 h-12 w-10 right-0 items-center pointer-event-stroke 
                       -translate-y-1/2 rounded-r-xl`}
-            id='DropdownButton'
+            id={name}
             onClick={toggleDropdown}
             initial={{ rotate: 0 }}
             animate={{ rotate: isOpen ? 180 : 0 }}
@@ -120,11 +120,11 @@ const Dropdown: React.FC<DropdownProps> = ({ name, options }) => {
                       type="button"
                       className={`block h-12 text-sm text-gray-700 border-b-[1px] 
                                 ${index === options.length - 1
-                        ? 'border-transparent hover:bg-gray-100 hover:rounded-b w-full'
-                        : index === 0
-                        ? 'border-gray-300 hover:bg-gray-100 hover:rounded-t w-full'
-                        : 'border-gray-300 hover:bg-gray-100 w-full'
-                      }`}
+                          ? 'border-transparent hover:bg-gray-100 hover:rounded-b w-full'
+                          : index === 0
+                            ? 'border-gray-300 hover:bg-gray-100 hover:rounded-t w-full'
+                            : 'border-gray-300 hover:bg-gray-100 w-full'
+                        }`}
                       onClick={() => handleOptionClick(option)}
                     >
                       {option}

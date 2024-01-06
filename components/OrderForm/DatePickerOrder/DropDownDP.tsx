@@ -61,7 +61,7 @@ const DropdownDP: React.FC<DropdownProps> = ({ name, options, selectedOption, on
                      text-black`}
           onClick={toggleDropdown}
         >
-            {selectedOption < 10 ? `0${selectedOption}` : `${selectedOption}`}
+          {selectedOption < 10 ? `0${selectedOption}` : `${selectedOption}`}
         </motion.button>
         <AnimatePresence>
           <motion.button
@@ -100,11 +100,11 @@ const DropdownDP: React.FC<DropdownProps> = ({ name, options, selectedOption, on
                       type="button"
                       className={`block h-9 text-sm text-gray-700 border-b-[1px] 
                                  ${index === options.length - 1
-                        ? 'border-transparent hover:bg-gray-100 hover:rounded-b w-full'
-                        : index === 0
-                        ? 'border-gray-300 hover:bg-gray-100 hover:rounded-t w-full'
-                        : 'border-gray-300 hover:bg-gray-100 w-full'
-                      }`}
+                          ? 'border-transparent hover:bg-gray-100 hover:rounded-b w-full'
+                          : index === 0
+                            ? 'border-gray-300 hover:bg-gray-100 hover:rounded-t w-full'
+                            : 'border-gray-300 hover:bg-gray-100 w-full'
+                        }`}
                       onClick={() => handleOptionClick(parseInt(option))}
                     >
                       {option}

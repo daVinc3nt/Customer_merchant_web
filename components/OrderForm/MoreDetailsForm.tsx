@@ -1,55 +1,89 @@
 import React, { useState } from "react";
-import { FaPlus , FaMinus } from 'react-icons/fa';
+import { FaPlus, FaMinus } from 'react-icons/fa';
 import Dropdown from "./ListBox";
 import DatePickerOrder from "./DatePickerOrder/DatePickerOrder";
+import { motion, Variants } from "framer-motion";
 
 const MoreDetailsForm = () => {
-    const typesOfGoods = ['Mỹ phẩm', 'Dược phẩm', 'Thực phẩm', 'Đồ uống' , 'Vật liệu phục vụ sản xuất' , 'Thiết bị, máy móc, đồ điện tử' , 'Nội thất, trang trí' , 'Bao bì, may mặc'];
-    const weightOptions = ['Dưới 500kg', '500 - 1000kg', '1001 - 1500kg', 'Trên 1500kg'];
-    const [value, setValue] = useState(0);
-    const [value1, setValue1] = useState(0);
-    const [value2, setValue2] = useState(0);
+  const typesOfGoods = ['Mỹ phẩm', 'Dược phẩm', 'Thực phẩm', 'Đồ uống', 'Vật liệu phục vụ sản xuất', 'Thiết bị, máy móc, đồ điện tử', 'Nội thất, trang trí', 'Bao bì, may mặc'];
+  const weightOptions = ['Dưới 500kg', '500 - 1000kg', '1001 - 1500kg', 'Trên 1500kg'];
+  const [value, setValue] = useState(0);
+  const [value1, setValue1] = useState(0);
+  const [value2, setValue2] = useState(0);
+  const tabContentVariants: Variants = {
+    initial: {
+      x: 20,
+      opacity: 0
+    },
+    enter: {
+      x: 0,
+      opacity: 1
+    },
+    exit: {
+      x: -20,
+      opacity: 0
+    }
+  }
 
-    const handleIncrement = () => {
-      setValue((prevValue) => (prevValue + 1) % 51);
-    };
+  const handleIncrement = () => {
+    setValue((prevValue) => (prevValue + 1) % 51);
+  };
 
-    const handleDecrement = () => {
-      setValue((prevValue) => (prevValue - 1 + 51) % 51);
-    };
+  const handleDecrement = () => {
+    setValue((prevValue) => (prevValue - 1 + 51) % 51);
+  };
 
-    const handleIncrement1 = () => {
-      setValue1((prevValue) => (prevValue + 1) % 51);
-    };
+  const handleIncrement1 = () => {
+    setValue1((prevValue) => (prevValue + 1) % 51);
+  };
 
-    const handleDecrement1 = () => {
-      setValue1((prevValue) => (prevValue - 1 + 51) % 51);
-    };
+  const handleDecrement1 = () => {
+    setValue1((prevValue) => (prevValue - 1 + 51) % 51);
+  };
 
-    const handleIncrement2 = () => {
-      setValue2((prevValue) => (prevValue + 1) % 51);
-    };
+  const handleIncrement2 = () => {
+    setValue2((prevValue) => (prevValue + 1) % 51);
+  };
 
-    const handleDecrement2 = () => {
-      setValue2((prevValue) => (prevValue - 1 + 51) % 51);
-    };
+  const handleDecrement2 = () => {
+    setValue2((prevValue) => (prevValue - 1 + 51) % 51);
+  };
 
-    return <div className="flex flex-col h-5/6 w-full mt-4 lg:mt-8 border-2 border-red-500 rounded-md overflow-y-auto">  
-    <h1 className="mt-2 text-2xl font-bold pl-6 text-black text-nowrap cursor-default">Thêm chi tiết</h1>
-    <div className="flex flex-col items-stretch self-center w-11/12 mb-5 mt-2 bg-light rounded-2xl">
-      
+  return <div className="flex flex-col h-5/6 w-full mt-4 lg:mt-8 border-2 border-red-500 rounded-md overflow-y-auto">
+    <motion.h1
+      variants={tabContentVariants}
+      initial="initial"
+      animate="enter"
+      exit="exit"
+      transition={{
+        duration: .5
+      }}
+      className="mt-2 text-2xl font-bold pl-6 text-black text-nowrap cursor-default">
+      Thêm chi tiết
+    </motion.h1>
+    <motion.div
+      variants={tabContentVariants}
+      initial="initial"
+      animate="enter"
+      exit="exit"
+      transition={{
+        duration: .5
+      }}
+      className="flex flex-col items-stretch self-center w-11/12 mb-5 mt-2 bg-formBgColor-firstChild rounded-2xl"
+    >
+
       <h1 className="mt-4 text-sm font-bold pl-5 text-black text-nowrap cursor-default">Thời gian lấy hàng</h1>
-      
-      <DatePickerOrder/>
 
-      <Dropdown name="Loại hàng hóa" options={typesOfGoods}/>
+      <DatePickerOrder />
 
-      <Dropdown name="Tổng trọng lượng" options={weightOptions}/>
+      <Dropdown name="Loại hàng hóa" options={typesOfGoods} />
+
+      <Dropdown name="Tổng trọng lượng" options={weightOptions} />
 
       <h1 className="text-sm font-bold pl-5 text-black text-nowrap cursor-default">Kích thước (không bắt buộc)</h1>
 
       <div className="flex flex-col sm:flex-row justify-center self-center w-11/12 rounded-2xl my-4">
-      
+
         <div className="relative self-center sm:grow w-full">
           <input
             id="orderLength1"
@@ -65,7 +99,7 @@ const MoreDetailsForm = () => {
             htmlFor="orderLength1"
             className="absolute left-3 -top-2.5 bg-white px-1 text-xxs leading-5 text-gray-600 transition-all 
                       peer-placeholder-shown:text-sm peer-placeholder-shown:text-gray-700 peer-placeholder-shown:top-3.5 
-                      peer-focus:-top-0 peer-focus:leading-5 peer-focus:text-red-500 peer-focus:text-xxs"
+                      peer-focus:-top-0 peer-focus:leading-5 peer-focus:text-red-500 peer-focus:text-xxs rounded-3xl"
           >
             Dài (m)
           </label>
@@ -103,7 +137,7 @@ const MoreDetailsForm = () => {
             htmlFor="orderLength2"
             className="absolute left-3 -top-2.5 bg-white px-1 text-xxs leading-5 text-gray-600 transition-all 
                       peer-placeholder-shown:text-sm peer-placeholder-shown:text-gray-700 peer-placeholder-shown:top-3.5 
-                      peer-focus:-top-0 peer-focus:leading-5 peer-focus:text-red-500 peer-focus:text-xxs"
+                      peer-focus:-top-0 peer-focus:leading-5 peer-focus:text-red-500 peer-focus:text-xxs rounded-3xl"
           >
             Rộng (m)
           </label>
@@ -141,7 +175,7 @@ const MoreDetailsForm = () => {
             htmlFor="orderLength3"
             className="absolute left-3 -top-2.5 bg-white px-1 text-xxs leading-5 text-gray-600 transition-all 
                       peer-placeholder-shown:text-sm peer-placeholder-shown:text-gray-700 peer-placeholder-shown:top-3.5 
-                      peer-focus:-top-0 peer-focus:leading-5 peer-focus:text-red-500 peer-focus:text-xxs"
+                      peer-focus:-top-0 peer-focus:leading-5 peer-focus:text-red-500 peer-focus:text-xxs rounded-3xl"
           >
             Cao (m)
           </label>
@@ -165,7 +199,7 @@ const MoreDetailsForm = () => {
 
       </div>
 
-    </div>
+    </motion.div>
 
   </div>
 }

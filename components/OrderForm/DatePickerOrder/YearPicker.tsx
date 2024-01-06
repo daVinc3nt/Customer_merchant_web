@@ -1,7 +1,7 @@
 import React from "react";
 
 type YearPickerProps = {
-  setYearValue: (year:number) => void;
+  setYearValue: (year: number) => void;
   datepickerHeaderDate: Date;
 };
 
@@ -17,15 +17,15 @@ const YearPicker: React.FC<YearPickerProps> = ({
           key={i - 9}
           onClick={() => {
             setYearValue(
-                datepickerHeaderDate.getFullYear() + i
+              datepickerHeaderDate.getFullYear() + i
             );
           }}
           style={{ width: "25%" }}
         >
           <div
             className={`cursor-pointer p-3 font-semibold text-center text-sm rounded-lg hover:bg-gray-200 ${datepickerHeaderDate.getFullYear() + i === datepickerHeaderDate.getFullYear()
-                ? "bg-blue-500 text-white"
-                : "text-gray-700 hover:bg-blue-200"
+              ? "bg-blue-500 text-white"
+              : "text-gray-700 hover:bg-blue-200"
               }`}
           >
             {datepickerHeaderDate.getFullYear() + i}

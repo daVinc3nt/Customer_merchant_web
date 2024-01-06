@@ -1,11 +1,10 @@
 import type { NextPage } from "next";
 import OrderForm from "../components/OrderForm/OrderForm";
-import MobileNav from "../components/NavigationBar/MobileMenu";
 const Order: NextPage = () => {
   return (
-    <>
-    <OrderForm/>
-    </>
+    <div className="relative bg-black h-full w-full">
+      <OrderForm />
+    </div>
   );
 };
 

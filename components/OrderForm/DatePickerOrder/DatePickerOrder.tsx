@@ -1,4 +1,4 @@
-import React, { useState, useEffect , useRef } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import Header from "./Header";
 import DayDisplay from "./DayDisplay";
 import YearPicker from "./YearPicker";
@@ -86,17 +86,17 @@ const DatePickerOrder = () => {
   };
 
   const isSelectedMonth = (month: number) =>
-  isEqual(
-    month, 
-    selectedDate.getMonth()
-  );
-
-  const isToday = (date: number) => 
     isEqual(
-      date, 
+      month,
+      selectedDate.getMonth()
+    );
+
+  const isToday = (date: number) =>
+    isEqual(
+      date,
       selectedDate.getDate()
     )
-    
+
 
 
   const setDateValue = (date: number) => () => {
@@ -176,9 +176,9 @@ const DatePickerOrder = () => {
         setShowDatepicker(false);
       }
     };
-  
+
     document.addEventListener('mousedown', handleClickOutside);
-  
+
     return () => {
       document.removeEventListener('mousedown', handleClickOutside);
     };
@@ -206,7 +206,7 @@ const DatePickerOrder = () => {
           id='DropdownButton2'
         >
           <svg
-            className={`h-6 w-full ${showDatepicker? 'text-red-500':'text-gray-400'}`}
+            className={`h-6 w-full ${showDatepicker ? 'text-red-500' : 'text-gray-400'}`}
             fill="none"
             viewBox="0 0 24 24"
             stroke="currentColor"
@@ -265,8 +265,8 @@ const DatePickerOrder = () => {
                         >
                           <div
                             className={`cursor-pointer p-5 font-semibold text-center text-sm rounded-lg hover:bg-gray-200 ${isSelectedMonth(i)
-                                ? "bg-blue-500 text-white"
-                                : "text-gray-700 hover:bg-blue-200"
+                              ? "bg-blue-500 text-white"
+                              : "text-gray-700 hover:bg-blue-200"
                               }`}
                           >
                             {format(
@@ -283,40 +283,40 @@ const DatePickerOrder = () => {
                   </div>
                 )}
 
-              {type === "year" && (
-                <YearPicker
-                  setYearValue={(year: number) => {
-                    setDatepickerHeaderDate(
-                      new Date(
-                        year,
-                        selectedDate.getMonth(),
-                        selectedDate.getDate(),
-                        selectedHour,
-                        selectedMinute
-                      )
-                    );
-                    setSelectedDate(
-                      new Date(
-                        year,
-                        selectedDate.getMonth(),
-                        selectedDate.getDate(),
-                        selectedHour,
-                        selectedMinute
-                      )
-                    );
-                    setType("date");
-                  }}
-                  datepickerHeaderDate={datepickerHeaderDate}
-                />
-              )}
-                
+                {type === "year" && (
+                  <YearPicker
+                    setYearValue={(year: number) => {
+                      setDatepickerHeaderDate(
+                        new Date(
+                          year,
+                          selectedDate.getMonth(),
+                          selectedDate.getDate(),
+                          selectedHour,
+                          selectedMinute
+                        )
+                      );
+                      setSelectedDate(
+                        new Date(
+                          year,
+                          selectedDate.getMonth(),
+                          selectedDate.getDate(),
+                          selectedHour,
+                          selectedMinute
+                        )
+                      );
+                      setType("date");
+                    }}
+                    datepickerHeaderDate={datepickerHeaderDate}
+                  />
+                )}
+
               </div>
 
               <div className="relative flex self-center items-center content-center sm:ml-3 flex-col pt-5 sm:pt-0">
                 <h1 className="sm:top-10 text-center text-md">
                   Chọn giờ lấy hàng
                 </h1>
-                
+
                 <div className="flex flex-row my-5">
                   <div className="mr-2 bg-white w-12 text-right h-9">
                     <DropdownDP
@@ -348,11 +348,11 @@ const DatePickerOrder = () => {
                 </motion.button>
 
               </div>
-              
+
             </motion.div>
-            
+
           )}
-          
+
         </AnimatePresence>
       </div>
     </div>
