@@ -3,7 +3,7 @@ import HelpOther from './HelpOther'
 import HelpProblem from './HelpProblem'
 import HelpQuick from './HelpQuick'
 import classNames from 'classnames'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { CollapsIcon } from '../Icons'
 const Data ='Nguyễn Văn A'
 const HelpExport = () => {
@@ -21,13 +21,25 @@ const HelpExport = () => {
   const wrapperClasses = classNames(
     "relative bottom-0 px-4 pt-10 pb-4 bg-light flex justify-between flex-col rounded-2xl",
     {
-      "h-[calc(100%)] w-full ": !toggleCollapse,
+      "h-full w-full ": !toggleCollapse,
       "w-16 lg:w-20 h-[calc(4rem)] lg:h-[calc(5rem)]": toggleCollapse,
       "@media (min-width: 1152px)": {
         "w-full": !toggleCollapse,
       },
     }
   );
+  const [toggleCollapse2, setToggleCollapse2] = useState(false);
+
+  useEffect(() => {
+    let timer: NodeJS.Timeout;
+      timer = setTimeout(() => {
+        setToggleCollapse2(toggleCollapse);
+      }, 200);
+  
+    return () => {
+      clearTimeout(timer);
+    };
+  }, [toggleCollapse]);
   return (
     <div 
     className={wrapperClasses}
@@ -41,7 +53,7 @@ const HelpExport = () => {
           <CollapsIcon />
         </button>
       </div>
-      {!toggleCollapse && (
+      {!toggleCollapse &&!toggleCollapse2&& (
           <div className='bg-gradient-to-b from-gray-100 to-gray-300 rounded-xl content-center overflow-y-auto no-scrollbar h-[calc(100vh-3rem)] w-full'>
             <div className='bg-gradient-to-tr from-white to-white h-20 flex place-content-start rounded-xl'>
               <p className='self-center 
