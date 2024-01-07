@@ -15,3 +15,4 @@ export { default as CompassIcon} from "./CompassIcon";
 export { default as MenuToggle} from "./MenuToggle";
 export { default as HelpIcon} from "./HelpIcon";
 export { default as UploadIcon} from "./UploadIcon";
+export { default as HelpContact} from "./HelpContact";
