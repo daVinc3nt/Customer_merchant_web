@@ -1,25 +1,34 @@
-import React, { useState } from 'react';
-import Overview from './OverView';
-import Distribution from './Distribution';
-import Performance from './Performenta';
-
-
-
+import React, { useState } from "react";
+import Overview from "./OverView";
+import Distribution from "./Distribution";
+import Performance from "./Performenta";
+import { motion, Variants } from "framer-motion";
+import DateInput from "./TimeDropDown2";
 const App = () => {
-  const [view, setView] = useState('overview');
+  const [view, setView] = useState("overview");
   const [isOpen, setIsOpen] = useState(false);
+  const leftSideVariant: Variants = {
+    initial: { x: -50, opacity: 0 },
+    enter: { x: 0, opacity: 1 },
+    exit: { x: -20, opacity: 0 },
+  };
 
+  const rightSideVariant: Variants = {
+    initial: { x: 50, opacity: 0 },
+    enter: { x: 0, opacity: 1 },
+    exit: { x: -20, opacity: 0 },
+  };
   const toggleNav = () => {
     setIsOpen(!isOpen);
   };
 
   const renderView = () => {
-    switch(view) {
-      case 'overview':
+    switch (view) {
+      case "overview":
         return <Overview />;
-      case 'distribution':
+      case "distribution":
         return <Distribution />;
-      case 'performance':
+      case "performance":
         return <Performance />;
       default:
         return <Overview />;
@@ -27,65 +36,97 @@ const App = () => {
   };
 
   return (
-      <div className='w-full ' >
-      <div className="font-sans text-black antialiased rounded-xl">
-      <nav className="justify-between flex-wrap bg-white p-6 rounded-xl">
-      <div className="flex justify-between  flex-shrink-0 text-black mr-6">
-        <span className="font-semibold text-xl tracking-tight">Báo cáo thống kê</span>
-        <div className="block lg:hidden">
-        <button onClick={toggleNav} className="flex items-center px-3 py-2 border rounded text-black border-teal-400 hover:text-red-100 focus:text-red-100 hover:border-white">
-          <svg className="fill-current h-3 w-3" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><title>Menu</title><path d="M0 3h20v2H0V3zm0 6h20v2H0V9zm0 6h20v2H0v-2z"/></svg>
-        </button>
-      </div>
-      </div>
-      
-      <div className={` z-10 absolute  w-5/6 block flex-grow lg:flex lg:items-center lg:w-auto ${isOpen ? '' : 'hidden'}`}>
-        <div className="text-sm lg:flex-grow bg-white  block rounded-xl">
-          {/* Your buttons go here */}
-          <button onClick={() => setView('overview')} className="rounded-xl block mt-4 z-10 lg:inline-block lg:mt-0 text-black hover:text-red-100 focus:text-red-100 mr-4">
-            Tổng quan
-          </button>
-          <button onClick={() => setView('distribution')} className="rounded-xl block mt-4 z-10 lg:inline-block lg:mt-0 text-black hover:text-red-100 focus:text-red-100 mr-4">
-            Phân phối
-          </button>
-          <button onClick={() => setView('performance')} className="rounded-xl block mt-4 z-10 lg:inline-block lg:mt-0 text-black hover:text-red-100 focus:text-red-100 mr-4">
-            Hiệu suất
-          </button>
-        </div>
-      </div>
-    </nav>
-        
-
-    </div>
-    <div className="">
-        <div className='text-black font-semibold text-sm ml-6 border-d border mr-6  '>
-          <div className='mt-5'>
-            <p>Thời gian</p>
-            <input
-                className="shadow appearance-none border rounded w-full  px-2 text-gray-700 leading-tight focus:outline-none focus:shadow-outline py-3"
-                type="text"
-                placeholder= {"Nhập thời gian"}
-            />
+    <div className="w-full ">
+      <motion.div
+        variants={leftSideVariant}
+        initial="initial"
+        animate="enter"
+        exit="exit"
+        transition={{ duration: 0.5 }}
+        className="font-sans text-black antialiased rounded-xl"
+      >
+        <nav className="justify-between flex-wrap bg-white p-6 rounded-xl ">
+          <div className="flex justify-between  flex-shrink-0 text-black mr-6">
+            <span className="font-semibold text-2xl tracking-tight">
+              Báo cáo thống kê
+            </span>
+            <div className="block lg:hidden">
+              <button
+                onClick={toggleNav}
+                className="flex items-center px-3 py-2 border rounded text-black border-teal-400 hover:text-red-500 focus:text-red-500 hover:border-white"
+              >
+                <svg
+                  className="fill-current h-3 w-3"
+                  viewBox="0 0 20 20"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <title>Menu</title>
+                  <path d="M0 3h20v2H0V3zm0 6h20v2H0V9zm0 6h20v2H0v-2z" />
+                </svg>
+              </button>
             </div>
-            <div className='mt-5'>
+          </div>
+
+          <div
+            className={` z-10 mt-2  w-5/6 block flex-grow lg:flex lg:items-center lg:w-auto ${
+              isOpen ? "" : "hidden"
+            }`}
+          >
+            <div className="text-base lg:flex-grow bg-white  block rounded-xl text-gray-500">
+              {/* Your buttons go here */}
+              <button
+                onClick={() => setView("overview")}
+                className="rounded-xl block mt-4 z-10 lg:inline-block lg:mt-0  hover:text-red-500 focus:text-red-500 focus:underline focus:underline-offset-4 mr-4"
+              >
+                Tổng quan
+              </button>
+              <button
+                onClick={() => setView("distribution")}
+                className="rounded-xl block mt-4 z-10 lg:inline-block lg:mt-0  hover:text-red-500 focus:text-red-500 focus:underline focus:underline-offset-4 mr-4"
+              >
+                Phân phối
+              </button>
+              <button
+                onClick={() => setView("performance")}
+                className="rounded-xl block mt-4 z-10 lg:inline-block lg:mt-0  hover:text-red-500 focus:text-red-500 focus:underline focus:underline-offset-4 mr-4"
+              >
+                Hiệu suất
+              </button>
+            </div>
+          </div>
+        </nav>
+      </motion.div>
+      <motion.div
+        variants={leftSideVariant}
+        initial="initial"
+        animate="enter"
+        exit="exit"
+        transition={{ duration: 0.5 }}
+      >
+        <div className="text-black font-semibold text-sm ml-6 border-d border mr-6  ">
+          <div className="mt-5">
+            <p>Thời gian</p>
+            <DateInput />
+          </div>
+          <div className="mt-5">
             <p>Nhân viên</p>
             <input
-                className="shadow appearance-none border rounded w-full  px-2 text-gray-700 leading-tight focus:outline-none focus:shadow-outline py-3"
-                type="text"
-                placeholder= {"Tất cả nhân viên"}
+              className="shadow appearance-none border rounded w-full  px-2 text-gray-700 leading-tight focus:outline-none focus:shadow-outline py-3"
+              type="text"
+              placeholder={"Tất cả nhân viên"}
             />
-            </div>
-            <div className='mt-5'>
+          </div>
+          <div className="mt-5">
             <p>Dịch vụ</p>
             <input
-                className="shadow appearance-none border rounded w-full  px-2 text-gray-700 leading-tight focus:outline-none focus:shadow-outline py-3"
-                type="text"
-                placeholder= {"Tất cả dịch vụ"}
+              className="shadow appearance-none border rounded w-full  px-2 text-gray-700 leading-tight focus:outline-none focus:shadow-outline py-3"
+              type="text"
+              placeholder={"Tất cả dịch vụ"}
             />
-            </div>
+          </div>
         </div>
-          <div
-          className='overflow-y-scroll mt-2
+        <div
+          className=" mt-2
           h-screen_1/3
           xxs:h-screen_1/3
           xs:h-screen_2/5
@@ -97,11 +138,11 @@ const App = () => {
           2xl:h-screen_4/5
           3xl:h-screen_4/5
           mb-2
-          '
-          >
-            {renderView()}
-          </div>
+          "
+        >
+          {renderView()}
         </div>
+      </motion.div>
     </div>
   );
 };
