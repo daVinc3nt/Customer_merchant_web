@@ -21,7 +21,7 @@ const DayDisplay: React.FC<DayDisplayProps> = ({
       <div className="flex flex-wrap mb-3 -mx-1">
         {DAYS.map((day, i) => (
           <div key={i} style={{ width: "14.26%" }} className="px-1">
-            <div className="text-gray-800 font-medium text-center text-xs">
+            <div className="text-gray-800 font-medium text-center text-xxs xs:text-xs">
               {day}
             </div>
           </div>
@@ -39,7 +39,7 @@ const DayDisplay: React.FC<DayDisplayProps> = ({
           <div key={i} style={{ width: "14.26%" }} className="px-1 mb-1">
             <div
               onClick={setDateValue(d)}
-              className={`cursor-pointer text-center text-sm rounded-full leading-loose transition ease-in-out duration-100 ${isToday(d)
+              className={`cursor-pointer text-center text-xxs xs:text-sm rounded-full leading-loose transition ease-in-out duration-100 ${isToday(d)
                 ? "bg-blue-500 text-white"
                 : "text-gray-700 hover:bg-blue-200"
                 }`}

@@ -156,8 +156,8 @@ const Sidebar: React.FC<MyComponentProps> = ({ toggleCollapseMobile })  => {
             const classes = getNavItemClasses(menu);
             return (
               <div key={menu.id} className={classes}>
-                <Link href={menu.link}>
-                  <div className="flex py-4 px-3 items-center w-full h-full">
+                <Link href={menu.link} className="w-full">
+                  <div className="flex py-4 px-[0.6rem] items-center w-full h-full">
                     <div style={!toggleCollapse? { width: "2.5rem" }: { width: "0rem" }}>
                       <Icon />
                     </div>
@@ -178,7 +178,7 @@ const Sidebar: React.FC<MyComponentProps> = ({ toggleCollapseMobile })  => {
         </div>
       </div>
       <div className={`${getNavItemClasses({})}`}>
-        <div className="flex py-4 px-3 items-center w-full h-full">
+        <div className="flex py-4 px-2 items-center w-full h-full">
           <div style={ !toggleCollapse? { width: "2.5rem" }: { width: "0rem" }}>
             <LogoutIcon />
           </div>
@@ -251,12 +251,12 @@ const Sidebar: React.FC<MyComponentProps> = ({ toggleCollapseMobile })  => {
         </div>
         )}
 
-        <div className="flex flex-col items-start mt-10">
+        <div className={`flex flex-col items-start ${!toggleCollapseMobile?'mt-10':'mt-44'}`}>
           {menuItems.map(({ icon: Icon, ...menu }) => {
             const classes = getNavItemClasses(menu);
             return (
               <div key={menu.id} className={classes}>
-                <Link href={menu.link}>
+                <Link href={menu.link} className="w-full">
                   <div className="flex py-4 px-3 items-center w-full h-full">
                     <div style={!toggleCollapseMobile? { width: "2.5rem" }: { width: "0rem", display: "false"}}>
                       <Icon />

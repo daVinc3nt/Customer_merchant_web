@@ -76,6 +76,10 @@ module.exports = {
             'linear-gradient(-45deg, #ff5959, #ff4040, #ff0d6e, #ff8033,#d74177)',
         confeti: 'url("/confetti.png")',
       },
+      borderColor: {
+        LitghRedGradient:
+          'linear-gradient(-45deg, #ff5959, #ff4040, #ff0d6e, #ff8033,#d74177)',
+      },
       height:{
         104: '26rem',
         112: '28rem',
@@ -105,23 +109,30 @@ module.exports = {
       },
       animation: {
         'shake': 'shake 0.82s cubic-bezier(.36, .07,.19,.97) both',
+        'hoverScale': 'hover-scale 5s cubic-bezier(.36, .07,.19,.97) infinite',
+      },
+      keyframes: {
+        'shake': {
+          '10%, 90%' : {
+            transform: 'translate3d(-1px, 0, 0)'
+          },
+          '20%, 80%' : { 
+            transform: 'translate3d(2px, 0, 0)'
+          },
+          '30%, 50%, 70%' : { 
+            transform: 'translate3d(-4px, 0, 0)'
+          },
+          '40%, 60%' : { 
+            transform: 'translate3d(4px, 0, 0)'
+          },
         },
-        keyframes: {
-          'shake': {
-              '10%, 90%' : {
-                  transform: 'translate3d(-1px, 0, 0)'
-          },
-              '20%, 80%' : { 
-                  transform: 'translate3d(2px, 0, 0)'
-          },
-              '30%, 50%, 70%' : { 
-                  transform: 'translate3d(-4px, 0, 0)'
-          },
-              '40%, 60%' : { 
-                  transform: 'translate3d(4px, 0, 0)'
-          }
-        }
-      }
+        'hover-scale': {
+          '0%, 100%': { transform: 'scale(1)' },
+          '40%, 60%': { transform: 'scale(1.2) rotate(0)'},
+          '46%, 50%, 54%, 42%, 58%': { transform: 'scale(1.2) rotate(5deg)' },
+          '48%, 52% , 44%, 56%': { transform: 'scale(1.2) rotate(-5deg)' },
+        },
+      },
     },
   },
   plugins: [],

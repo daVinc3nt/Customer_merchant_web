@@ -22,7 +22,7 @@ const LocationForm = () => {
   const [formErrors, setFormErrors] = useState<ErrorValues>(initialValues2);
   const [formValues2, setFormValues2] = useState<FormValues>(initialValues);
   const [formErrors2, setFormErrors2] = useState<ErrorValues>(initialValues2);
-  const containerRef = useRef<HTMLDivElement>(null);
+  const containerRef1 = useRef<HTMLDivElement>(null);
   const [isAtBottom, setIsAtBottom] = useState(false);
 
   const tabContentVariants: Variants = {
@@ -128,9 +128,9 @@ const LocationForm = () => {
               right-[calc(50%-1rem)] text-center text-buttonColorForm-text z-30 animate-bounce
               outline outline-scrollBottomBt-outline"
       onClick={() => {
-        if (containerRef.current) {
-          containerRef.current.scrollTo({
-            top: containerRef.current.scrollHeight,
+        if (containerRef1.current) {
+          containerRef1.current.scrollTo({
+            top: containerRef1.current.scrollHeight,
             behavior: 'smooth',
           })
         }
@@ -138,14 +138,11 @@ const LocationForm = () => {
     >
       <HiOutlineChevronDown />
     </motion.button>)}
-    <div ref={containerRef}
+    <div ref={containerRef1}
       onScroll={(e) => {
         const target = e.target as HTMLElement;
-        if (target.scrollHeight - target.scrollTop === target.clientHeight) {
-          setIsAtBottom(true);
-        } else {
-          setIsAtBottom(false);
-        }
+        const isBottom = Math.abs(target.scrollHeight - target.scrollTop - target.clientHeight) < 1;
+        setIsAtBottom(isBottom);
       }}
       className="bg-formBgColor-firstChild absolute flex flex-col h-full w-full overflow-y-scroll rounded no-scrollbar"
     >
@@ -193,7 +190,7 @@ const LocationForm = () => {
                   peer-focus:-top-0 peer-focus:leading-5 peer-focus:text-xxs
                   ${formErrors.address ? 'peer-focus:text-red-500' : 'peer-focus:text-blue-600'}`}
           >
-            Địa chỉ lấy hàng (Số nhà, Tổ,...)
+            Địa chỉ lấy hàng
           </label>
           <p className="text-red-500 absolute text-sm overflow-hidden pt-1">{formErrors.address}</p>
           <button className="absolute top-1/2 h-12 w-10 right-0 flex items-center pointer-event-stroke
@@ -307,7 +304,7 @@ const LocationForm = () => {
                   peer-focus:-top-0 peer-focus:leading-5 peer-focus:text-xxs
                   ${formErrors2.address ? 'peer-focus:text-red-500' : 'peer-focus:text-blue-600'}`}
           >
-            Địa chỉ giao hàng (Số nhà, Tổ,...)
+            Địa chỉ giao hàng
           </label>
           <p className="text-red-500 absolute text-sm overflow-hidden pt-1">{formErrors2.address}</p>
           <button className="absolute top-1/2 h-12 w-10 right-0 flex items-center pointer-event-stroke
