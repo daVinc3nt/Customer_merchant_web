@@ -63,10 +63,12 @@ const NotifyIcon = () => {
           initial={wrapperVariants.closed}
           variants={wrapperVariants}
           style={{ originY: "top", translateX: "-50%" }}
-          className="flex flex-col gap-2 p-2 rounded-lg bg-white shadow-xl absolute top-[120%] left-[70%] overflow-hidden"
+          className="flex flex-col p-2 rounded-lg bg-white shadow-xl absolute top-[120%] left-12 w-40 overflow-hidden"
         >
               {notifications.map((notification) => (
+                <div key={notification.id}>
                 <Option text={notification.message} />
+                </div>
               ))}
         </motion.ul>
     </motion.div>
