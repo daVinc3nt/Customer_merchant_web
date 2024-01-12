@@ -1,6 +1,6 @@
 import React from "react";
 import { useState, useEffect } from 'react';
-
+import { motion } from "framer-motion";
 // const fetchNotifications = async () => {
 //   try {
 //     const response = await fetch('/api/notifications'); // Đường dẫn API của máy chủ để lấy thông báo
@@ -33,12 +33,13 @@ const NotifyIcon = () => {
   const handleClick = () => {
     setShowDropdown(!showDropdown);
   };
-
+  const [open, setOpen] = useState(false);
   return (
     <div className="z-40 pl-3">
+    <motion.div animate={open ? "open" : "closed"} className="relative">   
       <button
         className="rounded-full focus:outline-none"
-        onClick={handleClick}
+        onClick={() => setOpen((pv) => !pv)}
       >
         {/* draw icon noti here */}
         <svg
@@ -58,18 +59,72 @@ const NotifyIcon = () => {
             strokeLinejoin="round" />
         </svg>
       </button>
-
-      {showDropdown && (
-        <div className="absolute right-3 w-48 bg-rose-300 rounded-md shadow-lg text-black">
-          <ul>
-            {notifications.map((notification) => (
-              <li key={notification.id}>{notification.message}</li>
-            ))}
-          </ul>
-        </div>
-      )}
+        <motion.ul
+          initial={wrapperVariants.closed}
+          variants={wrapperVariants}
+          style={{ originY: "top", translateX: "-50%" }}
+          className="flex flex-col gap-2 p-2 rounded-lg bg-white shadow-xl absolute top-[120%] left-[70%] overflow-hidden"
+        >
+              {notifications.map((notification) => (
+                <Option text={notification.message} />
+              ))}
+        </motion.ul>
+    </motion.div>
     </div>
+  );
+};
+const Option = ({ text}) => {
+  return (
+    <motion.li
+      variants={itemVariants}
+      className="flex z-50 items-center p-2 text-xs font-medium whitespace-nowrap rounded-md hover:bg-indigo-100 text-slate-700 hover:text-indigo-500 transition-colors cursor-pointer"
+    >
+      <span>{text}</span>
+    </motion.li>
   );
 };
 
 export default NotifyIcon;
+const wrapperVariants = {
+  open: {
+    scaleY: 1,
+    transition: {
+      when: "beforeChildren",
+      staggerChildren: 0.1,
+    },
+  },
+  closed: {
+    scaleY: 0,
+    transition: {
+      when: "afterChildren",
+      staggerChildren: 0.1,
+    },
+  },
+};
+
+const iconVariants = {
+  open: { rotate: 180 },
+  closed: { rotate: 0 },
+};
+
+const itemVariants = {
+  open: {
+    opacity: 1,
+    y: 0,
+    transition: {
+      when: "beforeChildren",
+    },
+  },
+  closed: {
+    opacity: 0,
+    y: -15,
+    transition: {
+      when: "afterChildren",
+    },
+  },
+};
+
+const actionIconVariants = {
+  open: { scale: 1, y: 0 },
+  closed: { scale: 0, y: -7 },
+};

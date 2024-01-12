@@ -4,6 +4,7 @@ import OTPField from "../OtpField/OtpField";
 import Link from "next/link";
 import { OTP, User } from "./fetching";
 import classNames from "classnames";
+import { FormattedMessage, useIntl, IntlShape, } from "react-intl";
 const SigninForm = () => {
   interface FormValues {
     email: string;
@@ -15,14 +16,15 @@ const SigninForm = () => {
     phoneNumberEr: string;
   }
   let user, otpCode;
-  
-  const router = useRouter();
   const initialValues: FormValues = {  email: "", phoneNumber: "", otp: ""};
   const initialValues2: ErrorValues = { emailEr: "", phoneNumberEr: "" };
   const [formValues, setFormValues] = useState<FormValues>(initialValues);
   const [formErrors, setFormErrors] = useState<ErrorValues>(initialValues2);
   const [showOtp, setshowOtp] = useState(false);
   const [shake, setshake] = useState(false);
+
+
+  const welcome = <FormattedMessage id="loginpage.welcome.message" />
 
   const buttonstyle = classNames(
     "mt-7 py-3 px-4  w-[calc(95%)] rounded-full text-white font-bold uppercase text-xs text-center block focus:outline-none cursor-pointer sm:mt-10 sm:text-sm transition duration-150",
@@ -107,7 +109,7 @@ const SigninForm = () => {
             <div className="mx-auto overflow-hidden">
               <div className="text-center">
                 <h1 className="text-2xl sm:text-5xl font-bold text-indigo-900">
-                  XIN CHÀO!
+                  <FormattedMessage id="loginpage.welcome.message" />
                 </h1>
                 <form className="mt-5 sm:mt-12" action="" method="POST">
                   <div className="mt-5 sm:mt-10 relative">

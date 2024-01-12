@@ -5,6 +5,7 @@ import {
   NotifyIcon,
   GlobseIcon
 } from "../components/Icons"
+import LangSelector from "@/components/LangSelector/LangSelector";
 import { FaCarSide } from "react-icons/fa";
 interface LayoutProps {
   children: ReactNode;
@@ -18,15 +19,20 @@ const Wrapper = ({ children }: LayoutProps) => {
     setToggleCollapseMobile(!toggleCollapseMobile);
   };
   return (
-    <div className="flex">
+    <div className="flex ">
       <Sidebar toggleCollapseMobile={toggleCollapseMobile}/>
-      <div className="flex-1 flex flex-col h-screen bg-RedGradient">
+      <div className="flex-1 flex flex-col h-screen bg-red-600">
         <div className="flex flex-col">
-          <header className="h-12 flex justify-end w-full items-center px-4 xl:px-0">
+          <header className="h-12 flex justify-end w-full items-center px-4 xl:px-2">
+            <div className="flex items-center">
                 <div className="flex items-center">
-                  <NotifyIcon/>
-                  <MobileMenu toggle ={handleSidebarToggleMobile}/>
+                  <div className="flex md:flex-row-reverse flex-row gap-2">
+                    <LangSelector/>
+                    <NotifyIcon/>
+                  </div>
+                    <MobileMenu toggle ={handleSidebarToggleMobile}/>
                 </div>
+            </div>
           </header>
         </div>
         {!toggleCollapseMobile && 
