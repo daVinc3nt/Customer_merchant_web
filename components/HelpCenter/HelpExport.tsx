@@ -5,6 +5,7 @@ import HelpQuick from "./HelpQuick";
 import classNames from "classnames";
 import { useState, useEffect } from "react";
 import { motion, Variants } from "framer-motion";
+import { FormattedMessage, useIntl, IntlShape } from "react-intl";
 
 const Data = "Nguyễn Văn A";
 const HelpExport = () => {
@@ -52,18 +53,6 @@ const HelpExport = () => {
     };
   }, [toggleCollapse]);
   return (
-    // className={wrapperClasses}
-    // style={{ transition: "width 500ms cubic-bezier(0.2, 0, 0, 1) 0s, height 500ms cubic-bezier(0.2, 0, 0, 1) 0s"}}
-    // >
-    //   <div className="flex items-center justify-between relative">
-    //     <button
-    //       className={collapseIconClasses}
-    //       onClick={handleOrderFormToggle}
-    //     >
-    //       <CollapsIcon />
-    //     </button>
-    //   </div>
-    //   {!toggleCollapse &&!toggleCollapse2&& (
     <div className=" h-[calc(100vh-3rem)] w-full bg-gradient-to-b from-gray-100 to-gray-300  content-center  overflow-y-scroll ">
       <motion.div
         variants={leftSideVariant}
@@ -80,8 +69,9 @@ const HelpExport = () => {
                 font-semibold
                 text-black mx-5 rounded-xl"
         >
-          Xin chào <span className="text-red-500 font-extrabold ">{Data}</span>,
-          chúng tôi có thể giúp gì cho bạn?
+          <FormattedMessage id="Helpcenter.title.welcome" />
+          <span className="text-red-500 font-extrabold ">{Data}</span>,
+          <FormattedMessage id="Helpcenter.title.script" />
         </p>
       </motion.div>
       <motion.div
@@ -106,8 +96,6 @@ const HelpExport = () => {
         </div>
       </motion.div>
     </div>
-    //   )}
-    // </div>
   );
 };
 

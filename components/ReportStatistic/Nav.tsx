@@ -4,6 +4,7 @@ import Distribution from "./Distribution";
 import Performance from "./Performenta";
 import { motion, Variants } from "framer-motion";
 import DateInput from "./TimeDropDown2";
+import { FormattedMessage } from "react-intl";
 const App = () => {
   const [view, setView] = useState("overview");
   const [isOpen, setIsOpen] = useState(false);
@@ -48,7 +49,7 @@ const App = () => {
         <nav className="justify-between flex-wrap bg-white p-6 rounded-xl ">
           <div className="flex justify-between  flex-shrink-0 text-black mr-6">
             <span className="font-semibold text-2xl tracking-tight">
-              Báo cáo thống kê
+              <FormattedMessage id="ReportStatistics.title" />
             </span>
             <div className="block lg:hidden">
               <button
@@ -78,19 +79,19 @@ const App = () => {
                 onClick={() => setView("overview")}
                 className="rounded-xl block mt-4 z-10 lg:inline-block lg:mt-0  hover:text-red-500 focus:text-red-500 focus:underline focus:underline-offset-4 mr-4"
               >
-                Tổng quan
+                <FormattedMessage id="ReportStatistics.option1" />
               </button>
               <button
                 onClick={() => setView("distribution")}
                 className="rounded-xl block mt-4 z-10 lg:inline-block lg:mt-0  hover:text-red-500 focus:text-red-500 focus:underline focus:underline-offset-4 mr-4"
               >
-                Phân phối
+                <FormattedMessage id="ReportStatistics.option2" />
               </button>
               <button
                 onClick={() => setView("performance")}
                 className="rounded-xl block mt-4 z-10 lg:inline-block lg:mt-0  hover:text-red-500 focus:text-red-500 focus:underline focus:underline-offset-4 mr-4"
               >
-                Hiệu suất
+                <FormattedMessage id="ReportStatistics.option3" />
               </button>
             </div>
           </div>
@@ -105,10 +106,12 @@ const App = () => {
       >
         <div className="text-black font-semibold text-sm ml-6 border-d border mr-6  ">
           <div className="mt-5">
-            <p>Thời gian</p>
+            <p>
+              <FormattedMessage id="ReportStatistics.time" />
+            </p>
             <DateInput />
           </div>
-          <div className="mt-5">
+          {/* <div className="mt-5">
             <p>Nhân viên</p>
             <input
               className="shadow appearance-none border rounded w-full  px-2 text-gray-700 leading-tight focus:outline-none focus:shadow-outline py-3"
@@ -123,7 +126,7 @@ const App = () => {
               type="text"
               placeholder={"Tất cả dịch vụ"}
             />
-          </div>
+          </div> */}
         </div>
         <div
           className=" mt-2

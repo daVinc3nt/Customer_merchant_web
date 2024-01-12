@@ -13,6 +13,8 @@ import TimeDropDown from "./TimeDropDown";
 import ExportDropDown from "./ExportDropDown";
 import { motion, Variants } from "framer-motion";
 
+import { FormattedMessage } from "react-intl";
+
 const App = () => {
   const [view, setView] = useState("AllOrder");
   const [isOpen, setIsOpen] = useState(false);
@@ -69,7 +71,7 @@ const App = () => {
         <nav className="justify-between flex-wrap bg-white p-6 rounded-xl">
           <div className="flex justify-between flex-shrink-0 text-black mr-6">
             <span className="font-semibold text-2xl tracking-tight">
-              Lịch sử
+              <FormattedMessage id="OrderHistory.title" />
             </span>
             <div className=" block lg:hidden">
               <button
@@ -99,55 +101,55 @@ const App = () => {
                 onClick={() => setView("AllOrder")}
                 className=" rounded-xl z-30 block mt-4 lg:inline-block lg:mt-0 hover:text-red-500 focus:text-red-500 focus:underline focus:underline-offset-4 mr-4"
               >
-                Tất cả đơn hàng
+                <FormattedMessage id="OrderHistory.option1" />
               </button>
               <button
                 onClick={() => setView("Waiting")}
                 className="  rounded-xl z-30 block mt-4 lg:inline-block lg:mt-0 hover:text-red-500 focus:text-red-500 focus:underline focus:underline-offset-4 mr-4"
               >
-                Chờ lấy hàng
+                <FormattedMessage id="OrderHistory.option2" />
               </button>
               <button
                 onClick={() => setView("LookingFor")}
                 className="  rounded-xl z-30 block mt-4 lg:inline-block lg:mt-0 hover:text-red-500 focus:text-red-500 focus:underline focus:underline-offset-4 mr-4"
               >
-                Đang lấy hàng
+                <FormattedMessage id="OrderHistory.option3" />
               </button>
               <button
                 onClick={() => setView("Delivering")}
                 className=" rounded-xl z-30 block mt-4 lg:inline-block lg:mt-0 hover:text-red-500 focus:text-red-500 focus:underline focus:underline-offset-4 mr-4"
               >
-                Đang giao hàng
+                <FormattedMessage id="OrderHistory.option4" />
               </button>
               <button
                 onClick={() => setView("WaitForConfirm")}
                 className="  rounded-xl z-30 block mt-4 lg:inline-block lg:mt-0 hover:text-red-500 focus:text-red-500 focus:underline focus:underline-offset-4 mr-4"
               >
-                Chờ xác nhận
+                <FormattedMessage id="OrderHistory.option5" />
               </button>
               <button
                 onClick={() => setView("WaitForPay")}
                 className=" rounded-xl z-30 block mt-4 lg:inline-block lg:mt-0 hover:text-red-500 focus:text-red-500 focus:underline focus:underline-offset-4 mr-4"
               >
-                Chờ thanh toán
+                <FormattedMessage id="OrderHistory.option6" />
               </button>
               <button
                 onClick={() => setView("Complete")}
                 className=" rounded-xl z-30 block mt-4 lg:inline-block lg:mt-0 hover:text-red-500 focus:text-red-500 focus:underline focus:underline-offset-4 mr-4"
               >
-                Hoàn thành
+                <FormattedMessage id="OrderHistory.option7" />
               </button>
               <button
                 onClick={() => setView("Cancel")}
                 className=" rounded-xl z-30 block mt-4 lg:inline-block lg:mt-0 hover:text-red-500 focus:text-red-500 focus:underline focus:underline-offset-4 mr-4"
               >
-                Đã hủy
+                <FormattedMessage id="OrderHistory.option8" />
               </button>
               <button
                 onClick={() => setView("Received")}
                 className=" rounded-xl z-30 block mt-4 lg:inline-block lg:mt-0 hover:text-red-500 focus:text-red-500 focus:underline focus:underline-offset-4 mr-4"
               >
-                Đã nhận
+                <FormattedMessage id="OrderHistory.option9" />
               </button>
             </div>
           </div>
@@ -173,12 +175,15 @@ const App = () => {
               <div className="relative p-4 z-20 ">
                 <button
                   className="bg-red-500 hover:bg-red-600 text-white font-bold py-2 px-2
-                                        sm:w-32 sm:h-10 
-                                        rounded-full
-                                        flex items-center justify-center
-                                        "
+                    w-24 h-8 
+                    sm:w-32 sm:h-10 
+                    rounded-full
+                    flex items-center justify-center
+                    "
                 >
-                  <span className="text-xs ">Xuất dữ liệu</span>
+                  <span className="text-xs ">
+                    <FormattedMessage id="OrderHistory.export" />
+                  </span>
                 </button>
               </div>
             </div>

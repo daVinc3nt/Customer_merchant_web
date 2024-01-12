@@ -1,12 +1,15 @@
 import React from "react";
 import Box from "./Box";
 import { info } from "console";
+import { FormattedMessage } from "react-intl";
 const OverView = () => {
   return (
     <div className="text-black ml-4 text-l mr-4 my-4">
       <div className="flex justify-between">
         <div className="ml-0">
-          <div className="text-xl font-semibold "> Chỉ số </div>
+          <div className="text-xl font-semibold ">
+            <FormattedMessage id="ReportStatistics.overview.index" />
+          </div>
         </div>
         <div className="mr-0">
           <button
@@ -16,12 +19,16 @@ const OverView = () => {
                                         rounded-full
                                         flex items-center justify-center"
           >
-            <span className="text-xs ">Tải báo cáo</span>
+            <span className="text-xs ">
+              <FormattedMessage id="ReportStatistics.overview.downloadreport" />
+            </span>
           </button>
         </div>
       </div>
       <div>
-        <div>Chỉ số đơn hàng</div>
+        <div>
+          <FormattedMessage id="ReportStatistics.overview.indexorder" />
+        </div>
         <div className="flex flex-wrap ">
           <div className="m-4">
             <Box
@@ -38,16 +45,6 @@ const OverView = () => {
               data={{
                 text: "Điểm giao",
                 info: "Tổng điểm giao hoàn thành",
-                num: 0,
-                percent: 0,
-              }}
-            />
-          </div>
-          <div className="m-4">
-            <Box
-              data={{
-                text: "Tỷ lệ ghép đơn",
-                info: "Tỷ lệ tổng điểm giao trên tổng đơn hàng",
                 num: 0,
                 percent: 0,
               }}
@@ -76,7 +73,9 @@ const OverView = () => {
         </div>
       </div>
       <div>
-        <div>Chỉ số tài chính</div>
+        <div>
+          <FormattedMessage id="ReportStatistics.overview.indexfin" />
+        </div>
         <div className="flex flex-wrap ">
           <div className="m-4">
             <Box
@@ -130,7 +129,7 @@ const OverView = () => {
           </div>
         </div>
       </div>
-      <div>
+      {/* <div>
         <div>Chỉ số khác</div>
         <div className="flex flex-wrap ">
           <div className="m-4">
@@ -174,7 +173,7 @@ const OverView = () => {
             />
           </div>
         </div>
-      </div>
+      </div> */}
     </div>
   );
 };
