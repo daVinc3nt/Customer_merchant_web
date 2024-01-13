@@ -1,8 +1,11 @@
-import React, { useState, useRef, useEffect } from "react";
+import React, { useState, useRef, useEffect, useContext } from "react";
 import { HiDotsHorizontal, HiOutlineChevronDown } from 'react-icons/hi';
 import { FaUserCircle, FaMobile } from "react-icons/fa";
 import Dropdown from "./ListBox";
-import { motion, Variants } from "framer-motion";
+import { AnimatePresence, motion, Variants } from "framer-motion";
+import { UserLocationContext } from "context/UserLocationContext";
+import { getGeocode } from "../MapRender/GetLocationAdress";
+import { useIntl } from "react-intl";
 
 const LocationForm = () => {
   interface FormValues {
@@ -15,7 +18,14 @@ const LocationForm = () => {
     phoneNum: string;
     address: string;  
   }
-  const locationOptions = ['Mặt tiền/Mặt phố', 'Bãi xe', 'Hẻm/Ngõ 2m', 'Hẻm/Ngõ 3m', 'Hẻm/Ngõ ô tô'];
+  const intl = useIntl();
+  const locationOptions = [
+    intl.formatMessage({ id: 'OrderForm.LocationForm.locationOption1' }),
+    intl.formatMessage({ id: 'OrderForm.LocationForm.locationOption2' }),
+    intl.formatMessage({ id: 'OrderForm.LocationForm.locationOption3' }),
+    intl.formatMessage({ id: 'OrderForm.LocationForm.locationOption4' }),
+    intl.formatMessage({ id: 'OrderForm.LocationForm.locationOption5' }),
+  ];
   const initialValues: FormValues = { name: "", phoneNum: "", address: "" };
   const initialValues2: ErrorValues = { name: "", phoneNum: "", address: "" };
   const [formValues, setFormValues] = useState<FormValues>(initialValues);
@@ -24,6 +34,49 @@ const LocationForm = () => {
   const [formErrors2, setFormErrors2] = useState<ErrorValues>(initialValues2);
   const containerRef1 = useRef<HTMLDivElement>(null);
   const [isAtBottom, setIsAtBottom] = useState(false);
+  const userLocationContext = useContext(UserLocationContext);
+  const [isOpen1, setIsOpen1] = useState(false);
+  const [selectedOption1, setselectedOption1] = useState<number>();
+  const dropdownRef2 = useRef<HTMLDivElement>(null);
+  const [formattedAddress1, setFormattedAddress1] = useState("");
+
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (
+        dropdownRef2.current &&
+        event.target &&
+        !dropdownRef2.current.contains(event.target as HTMLElement) &&
+        ((event.target as HTMLElement).id !== `orderAddress`)
+      ) {
+        setIsOpen1(false);
+      }
+    };
+
+    document.addEventListener('mousedown', handleClickOutside);
+
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, []);
+
+  if (!userLocationContext) {
+    throw new Error("UserLocationContext not provided!");
+  }
+
+  const { userLocation, setUserLocation } = userLocationContext;
+
+  const handleResetLocation = () => {
+    navigator.geolocation.getCurrentPosition((position) => {
+      setUserLocation({
+        lat: position.coords.latitude,
+        lng: position.coords.longitude,
+      });
+      getGeocode(position.coords.latitude, position.coords.longitude)
+      .then((result:string) => {
+        setFormattedAddress1(result);
+      })
+    });
+  };
 
   const tabContentVariants: Variants = {
     initial: {
@@ -173,16 +226,18 @@ const LocationForm = () => {
         <h1 className="mt-4 text-sm font-bold pl-5 text-headlineText-default text-nowrap cursor-default">Địa điểm lấy hàng</h1>
 
         <div className={`relative self-center w-11/12 ${formErrors.address ? 'mb-5' : 'mb-2'} mt-3`}>
-          <input
-            id="orderAddress"
-            name="orderAddress"
-            type="text"
-            className={`peer h-12 self-center w-full border border-gray-300 rounded focus:outline-none 
-                  ${formErrors.address ? 'ring-2 ring-red-500 focus:ring-2 focus:ring-red-500' : 'focus:ring-2 focus:ring-blue-500'}
-                  text-left placeholder-transparent pl-3 pt-2 text-headlineText-default pr-12`}
-            placeholder="Địa chỉ"
-            onChange={handleAddress}
-          />
+        <input
+          id="orderAddress"
+          name="orderAddress"
+          type="text"
+          className={`peer h-12 self-center w-full border border-gray-300 rounded focus:outline-none truncate
+            ${formErrors.address ? 'ring-2 ring-red-500 focus:ring-2 focus:ring-red-500' : 'focus:ring-2 focus:ring-blue-500'}
+            text-left placeholder-transparent pl-3 pt-2 text-headlineText-default pr-12`}
+          placeholder="Địa chỉ"
+          onChange={handleAddress}
+          value={selectedOption1 ? formattedAddress1 : ""}
+          onFocus={()=>{setIsOpen1(true)}}
+        />
           <label
             htmlFor="orderAddress"
             className={`absolute left-3 -top-0 text-xxs leading-5 text-gray-600 transition-all 
@@ -193,11 +248,65 @@ const LocationForm = () => {
             Địa chỉ lấy hàng
           </label>
           <p className="text-red-500 absolute text-sm overflow-hidden pt-1">{formErrors.address}</p>
-          <button className="absolute top-1/2 h-12 w-10 right-0 flex items-center pointer-event-stroke
+          <button id="orderAddress" className="absolute top-1/2 h-12 w-10 right-0 flex items-center pointer-event-stroke
                   -translate-y-1/2
-                  rounded-r-xl">
-            <HiDotsHorizontal className={`text-gray-400 w-full border-l-2 ${formErrors.address ? 'border-red-500' : ''}`} />
+                  rounded-r-xl"
+                  onClick={()=>{setIsOpen1(!isOpen1)}}>
+            <HiDotsHorizontal id="orderAddress" className={`text-gray-400 w-full border-l-2 ${formErrors.address ? 'border-red-500' : ''}`} />
           </button>
+          <AnimatePresence>
+          {isOpen1 && (
+            <motion.div
+              ref={dropdownRef2}
+              initial="initial"
+              animate="animate"
+              exit="exit"
+              variants={{ initial: { opacity: 0, scale: 0.9 }, animate: { opacity: 1, scale: 1 }, exit: { opacity: 0, scale: 0.9 } }}
+              transition={{ duration: 0.3 }}
+              className={`right-0 -top-20 absolute w-full xs:w-1/2 rounded  bg-white border-[1px] border-gray-300`}
+            >
+              <ul
+                role="menu"
+                aria-orientation="vertical"
+                aria-labelledby="options-menu"
+                className={`rounded z-30`}
+              >
+                
+                <li key={1}>
+                  <button
+                    type="button"
+                    className={`block h-9 w-full text-sm z-20 text-center pl-2 border-b-[1px] border-gray-300 hover:bg-gray-100 hover:rounded-t text-gray-700}`}
+                      onClick={() => {
+                          setselectedOption1(1);
+                          setIsOpen1(false);
+                          handleResetLocation();
+                        }}
+                  >
+                    Chọn vị trí hiện tại
+                  </button>
+                </li>
+
+                <li key={2}>
+                  <button
+                    type="button"
+                    className={`block h-9 w-full text-sm z-20 text-center pl-2 border-gray-300 hover:bg-gray-100 hover:rounded-t text-gray-700'}`}
+                      onClick={() => {
+                          setselectedOption1(2);
+                          setIsOpen1(false);
+                          getGeocode(userLocation.lat, userLocation.lng)
+                          .then((result:string) => {
+                            setFormattedAddress1(result);
+                          })
+                        }}
+                  >
+                    Chọn vị trí đã chọn
+                  </button>
+                </li>
+                
+              </ul>
+            </motion.div>
+          )}
+        </AnimatePresence>
         </div>
 
         <Dropdown name="Chi tiết địa điểm" options={locationOptions} />
@@ -214,7 +323,7 @@ const LocationForm = () => {
               id="orderName"
               name="orderName"
               type="text"
-              className={`peer h-12 self-center w-full border border-gray-300 rounded focus:outline-none 
+              className={`peer h-12 self-center w-full border border-gray-300 rounded focus:outline-none  truncate
                     ${formErrors.name ? 'ring-2 ring-red-500 focus:ring-2 focus:ring-red-500' : 'focus:ring-2 focus:ring-blue-500'} 
                     text-left placeholder-transparent pl-3 pt-2 text-headlineText-default pr-12`}
               placeholder="Tên người gửi"
@@ -242,7 +351,7 @@ const LocationForm = () => {
               id="orderPhoneNum"
               name="orderPhoneNum"
               type="text"
-              className={`peer h-12 self-center w-full border border-gray-300 rounded focus:outline-none 
+              className={`peer h-12 self-center w-full border border-gray-300 rounded focus:outline-none truncate
                     ${formErrors.phoneNum ? 'ring-2 ring-red-500 focus:ring-2 focus:ring-red-500' : 'focus:ring-2 focus:ring-blue-500'} 
                     text-left placeholder-transparent pl-3 pt-2 text-headlineText-default pr-12`}
               placeholder="Số điện thoại"
@@ -291,11 +400,11 @@ const LocationForm = () => {
             id="orderAddress2"
             name="orderAddress2"
             type="text"
-            className={`peer h-12 self-center w-full border border-gray-300 rounded focus:outline-none 
+            className={`peer h-12 self-center w-full border border-gray-300 rounded focus:outline-none truncate
                   ${formErrors2.address ? 'ring-2 ring-red-500 focus:ring-2 focus:ring-red-500' : 'focus:ring-2 focus:ring-blue-500'}
-                  text-left placeholder-transparent pl-3 pt-2 text-headlineText-default pr-12`}
+                  text-left placeholder-transparent pl-3 pt-2 text-headlineText-default pr-1`}
             placeholder="Địa chỉ"
-            onChange={handleAddress}
+            onChange={handleAddress2}
           />
           <label
             htmlFor="orderAddress2"
@@ -328,7 +437,7 @@ const LocationForm = () => {
               id="receiverName"
               name="receiverName"
               type="text"
-              className={`peer h-12 self-center w-full border border-gray-300 rounded focus:outline-none 
+              className={`peer h-12 self-center w-full border border-gray-300 rounded focus:outline-none truncate
                     ${formErrors2.name ? 'ring-2 ring-red-500 focus:ring-2 focus:ring-red-500' : 'focus:ring-2 focus:ring-blue-500'}  
                     text-left placeholder-transparent pl-3 pt-2 text-headlineText-default pr-12`}
               placeholder="Tên người nhận"
@@ -356,7 +465,7 @@ const LocationForm = () => {
               id="receiverPhoneNum"
               name="receiverPhoneNum"
               type="text"
-              className={`peer h-12 self-center w-full border border-gray-300 rounded focus:outline-none 
+              className={`peer h-12 self-center w-full border border-gray-300 rounded focus:outline-none truncate
                     ${formErrors2.phoneNum ? 'ring-2 ring-red-500 focus:ring-2 focus:ring-red-500' : 'focus:ring-2 ring-blue-500'} 
                     text-left placeholder-transparent pl-3 pt-2 text-headlineText-default pr-12`}
               placeholder="Số điện thoại"
@@ -369,7 +478,7 @@ const LocationForm = () => {
             </button>
             <label
               htmlFor="receiverPhoneNum"
-              className={`sm:left-7 absolute left-3 -top-0 text-xxs leading-5 text-gray-600 transition-all 
+              className={`sm:left-7 absolute left-3 -top-0 text-xxs leading-5 text-gray-600 transition-all
                     peer-placeholder-shown:text-sm peer-placeholder-shown:text-gray-700 peer-placeholder-shown:top-3.5 
                     peer-focus:-top-0 peer-focus:leading-5 peer-focus:text-xxs 
                     ${formErrors2.phoneNum ? 'peer-focus:text-red-500' : 'peer-focus:text-blue-600'}`}

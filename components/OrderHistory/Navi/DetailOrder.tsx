@@ -1,6 +1,7 @@
 import ReactPaginate from "react-paginate";
 import React, { useEffect } from "react";
 import DetailMore from "./DetailMore";
+import { FormattedMessage } from "react-intl";
 // const rows = [
 //   { key: "orderId", label: "Order ID" },
 //   { key: "customerName", label: "Customer Name" },
@@ -50,7 +51,7 @@ const DetailOrder = ({ rows }: { rows: Array<Row> }) => {
     return (
       <div>
         <div className="text-black text-xl ml-3 mt-5">
-          Không tìm thấy đơn hàng nào
+          <FormattedMessage id="OrderHistory.detail.nodata" />
         </div>
       </div>
     );
@@ -76,11 +77,25 @@ const DetailOrder = ({ rows }: { rows: Array<Row> }) => {
               <div className="flex justify-between p-5">
                 <div>
                   <p className="ml-3">
-                    <strong>Mã vận đơn:</strong> {row.orderId} <br />
-                    <strong>Người gửi:</strong> {row.customerName} <br />
-                    <strong>Ngày gửi:</strong> {row.orderDate} <br />
-                    <strong>Tổng tiền:</strong> {row.totalAmount} <br />
-                    <strong>Địa chỉ gửi:</strong>{" "}
+                    <strong>
+                      <FormattedMessage id="OrderHistory.detail.option1" />:
+                    </strong>{" "}
+                    {row.orderId} <br />
+                    <strong>
+                      <FormattedMessage id="OrderHistory.detail.option2" />:
+                    </strong>{" "}
+                    {row.customerName} <br />
+                    <strong>
+                      <FormattedMessage id="OrderHistory.detail.option3" />:
+                    </strong>{" "}
+                    {row.orderDate} <br />
+                    <strong>
+                      <FormattedMessage id="OrderHistory.detail.option8" />:
+                    </strong>{" "}
+                    {row.totalAmount} <br />
+                    <strong>
+                      <FormattedMessage id="OrderHistory.detail.option10" />:
+                    </strong>{" "}
                     {`${row.shippingAddress.street}, ${row.shippingAddress.city}, ${row.shippingAddress.state}, ${row.shippingAddress.zipCode}`}{" "}
                     <br />
                     {/* <strong>Trạng thái:</strong> {`${row.Status}`} <br /> */}
@@ -101,7 +116,9 @@ const DetailOrder = ({ rows }: { rows: Array<Row> }) => {
                       mr-3
                       "
                   >
-                    <span className="text-xs">Chi tiết</span>
+                    <span className="text-xs">
+                      <FormattedMessage id="OrderHistory.detail.title" />
+                    </span>
                   </button>
                 </div>
                 {showDetail[row.orderId] && (

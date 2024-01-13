@@ -6,6 +6,7 @@ import LocationForm from "./LocationForm";
 import MoreDetailsForm from "./MoreDetailsForm";
 import OrderNotification from "./OrderNotification";
 import { motion } from "framer-motion";
+import { FormattedMessage } from "react-intl";
 
 const OrderForm = () => {
   const [toggleCollapse, setToggleCollapse] = useState(false);
@@ -14,7 +15,7 @@ const OrderForm = () => {
   const [showNotification, setShowNotification] = useState(false);
 
   const wrapperClasses = classNames(
-    "relative bottom-0 px-4 pt-10 pb-4 ml-2 lg:ml-4  mt-2 lg:mt-4 bg-formBgColor-parent flex flex-col justify-between rounded-2xl",
+    "relative bottom-0 px-4 pt-10 pb-4 ml-2 lg:ml-4  mt-2 lg:mt-4 bg-formBgColor-parent flex flex-col justify-between rounded-2xl z-20",
     {
       "h-[calc(100%-1rem)] sm:w-[calc(100%-1rem)] lg:h-[calc(100%-2rem)] md:w-5/6 lg:w-9/12 xl:w-[calc(45%)] w-[calc(100%-1rem)]": !toggleCollapse,
       "w-16 lg:w-20 h-[calc(4rem)] lg:h-[calc(5rem)]": toggleCollapse,
@@ -60,7 +61,7 @@ const OrderForm = () => {
   }, [toggleCollapse]);
 
   return (
-    <div className="absolute h-[calc(100%)] w-full">
+    <div className="absolute top-0 h-[calc(100%)] w-full">
       <div
         className={wrapperClasses}
         style={{ transition: "width 500ms cubic-bezier(0.2, 0, 0, 1) 0s, height 500ms cubic-bezier(0.2, 0, 0, 1) 0s" }}
@@ -87,7 +88,7 @@ const OrderForm = () => {
                         hover:bg-goBackNCollapse-hover absolute left-10 lg:left-16 -bottom-2 lg:-bottom-6"
                 onClick={handleGoBackButton}
               >
-                Quay lại
+                <FormattedMessage id="OrderForm.GoBack"/>
               </motion.button>
 
             </div>
@@ -102,17 +103,15 @@ const OrderForm = () => {
             <div className="flex flex-col justify-start self-center w-full rounded-2xl">
               <div className="flex flex-col justify-start self-center w-full rounded-2xl">
 
-                <h1 className="mt-4 text-xs pb-1 text-black cursor-default">Mức đền bù
-                  tối đa cho sự cố
-                  hư hỏng, mất hàng của TDLogistic là ... đồng.</h1>
+                <h1 className="mt-4 text-xs pb-1 text-black cursor-default"><FormattedMessage id="OrderForm.Compensation"/></h1>
                 <Link href="/order" className="text-xs underline  text-link-text text-nowrap">
-                  Chính sách đền bù
+                  <FormattedMessage id="OrderForm.Policy"/>
                 </Link>
 
               </div>
 
               <button className="self-center w-full rounded-xl my-3 py-3 bg-buttonColorForm-default hover:bg-buttonColorForm-hover text-buttonColorForm-text" onClick={handleSubmitButton}>
-                Tiếp tục
+                <FormattedMessage id="OrderForm.Continue"/>
               </button>
             </div>
           )}

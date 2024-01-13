@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-
+import { FormattedMessage } from "react-intl";
 const DateInput = () => {
   const [startDate, setStartDate] = useState("");
   const [endDate, setEndDate] = useState("");
@@ -15,7 +15,7 @@ const DateInput = () => {
           htmlFor="start-date"
           className="block text-sm font-medium text-gray-700"
         >
-          Ngày bắt đầu
+          <FormattedMessage id="ReportStatistics.time1" />
         </label>
         <input
           type="date"
@@ -31,7 +31,7 @@ const DateInput = () => {
           htmlFor="end-date"
           className="block text-sm font-medium text-gray-700"
         >
-          Ngày kết thúc
+          <FormattedMessage id="ReportStatistics.time2" />
         </label>
         <input
           type="date"
@@ -43,7 +43,9 @@ const DateInput = () => {
         />
       </div>
       {startDate > endDate ? (
-        <p className="text-red-500">Ngày bắt đầu phải sớm hơn ngày kết thúc</p>
+        <p className="text-red-500">
+          <FormattedMessage id="OrderHistory.warning" />
+        </p>
       ) : (
         <p></p>
       )}
@@ -51,7 +53,7 @@ const DateInput = () => {
         type="submit"
         className="px-4 py-2 text-white bg-red-500 rounded hover:bg-red-600"
       >
-        Áp dụng
+        <FormattedMessage id="ReportStatistics.timebutton" />
       </button>
     </form>
   );

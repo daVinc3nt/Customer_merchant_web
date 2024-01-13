@@ -1,5 +1,6 @@
 import React from "react";
 import SubmitExport from "./SubmitProblem/SubmitExport";
+import { FormattedMessage } from "react-intl";
 const HelpOther = () => {
   const [isClicked, setIsClicked] = React.useState(false);
   const handleClick = () => {
@@ -7,16 +8,19 @@ const HelpOther = () => {
   };
   return (
     <div className="mx-5 my-5">
-      <h1 className="text-2xl font-semibold text-gray-600">Các vấn đề khác</h1>
+      <h1 className="text-2xl font-semibold text-gray-600">
+        <FormattedMessage id="Helpcenter.title.OtherProblem" />
+      </h1>
       <p className="font-normal text-sm text-gray-500 mt-5">
-        Các vấn đề về tài khoản, chương trình ưu đãi, lỗi ứng dụng,... có thể
-        được báo cáo tại đây
+        <FormattedMessage id="Helpcenter.title.content" />
       </p>
       <button
         onClick={handleClick}
         className="text-blue-500 hover:text-sky-700 font-medium text-sm mt-5"
       >
-        <span>Gửi yêu cầu trợ giúp</span>
+        <span>
+          <FormattedMessage id="Helpcenter.title.link" />
+        </span>
       </button>
       {isClicked && <SubmitExport onClose={handleClick} />}
     </div>

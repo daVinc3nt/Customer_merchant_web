@@ -6,7 +6,7 @@ interface RechargeNotificationProps {
   onClose: () => void;
 }
 
-const RechargeNotification: React.FC<RechargeNotificationProps> = ({ onClose }) => {
+const WithdrawNotification: React.FC<RechargeNotificationProps> = ({ onClose }) => {
   const [formValues, setFormValues] = useState<number>();
   const [formErrors, setFormErrors] = useState<string>();
   const [isShaking, setIsShaking] = useState(false);
@@ -96,7 +96,7 @@ const RechargeNotification: React.FC<RechargeNotificationProps> = ({ onClose }) 
         transition={{ duration: 0.5 }}
       >
         <div className="relative items-center flex-col flex h-10 w-full border-b-2 border-gray-300">
-          <div className="font-bold text-xl">Nạp tiền</div>
+          <div className="font-bold text-xl">Rút tiền</div>
           <button className="absolute right-0 w-8 h-8 rounded-full mb-2 hover:bg-gray-300" onClick={handleClose}>
             <IoMdClose className="text-gray-500 w-5/6 h-5/6 ml-[0.2rem]"/>
           </button>
@@ -128,7 +128,7 @@ const RechargeNotification: React.FC<RechargeNotificationProps> = ({ onClose }) 
         <div className="mt-2 pb-4 border-b-2 border-gray-300">
           <p className="pl-1">Hoặc chọn giá trị top-up:</p>
           <div className="grid grid-cols-2 xs:grid-cols-3  gap-2 mt-2">
-          {topUpValues.map((value, index) => (
+            {topUpValues.map((value, index) => (
               <motion.button
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.9 }}
@@ -156,4 +156,4 @@ const RechargeNotification: React.FC<RechargeNotificationProps> = ({ onClose }) 
   );
 };
 
-export default RechargeNotification;
+export default WithdrawNotification;

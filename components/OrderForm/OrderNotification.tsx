@@ -1,6 +1,7 @@
 import React, { useRef, useEffect, useState } from "react";
 import Link from "next/link";
 import { motion } from "framer-motion";
+import { FormattedMessage } from "react-intl";
 
 interface OrderNotificationProps {
   onClose: () => void; // Callback function to close the notification window
@@ -36,7 +37,7 @@ const OrderNotification: React.FC<OrderNotificationProps> = ({ onClose }) => {
 
   return (
     <motion.div
-      className="fixed top-0 left-0 right-0 bottom-0 flex items-center justify-center bg-black bg-opacity-50 z-50"
+      className="fixed top-0 left-0 right-0 bottom-0 flex items-center justify-center bg-black bg-opacity-50 z-[100]"
       initial={{ opacity: 0 }}
       animate={{ opacity: isVisible ? 1 : 0 }}
       exit={{ opacity: 0 }}
@@ -51,8 +52,8 @@ const OrderNotification: React.FC<OrderNotificationProps> = ({ onClose }) => {
         exit={{ scale: 0 }}
         transition={{ duration: 0.5 }}
       >
-        <h2 className="text-gray-600 text-xl font-bold mb-2">Thông báo</h2>
-        <p className="text-gray-600">Đơn hàng đã được tạo mới thành công!</p>
+        <h2 className="text-gray-600 text-xl font-bold mb-2"><FormattedMessage id="OrderForm.OrderNotification.noti"/></h2>
+        <p className="text-gray-600"><FormattedMessage id="OrderForm.OrderNotification.detail"/></p>
 
         <motion.button
             whileHover={{ scale: 1.05 }}
@@ -61,7 +62,7 @@ const OrderNotification: React.FC<OrderNotificationProps> = ({ onClose }) => {
             className="absolute bottom-5 left-5 mt-4 px-4 py-2 bg-gray-100 hover:bg-gray-300 text-black rounded"
         >
         <Link href="/" >
-            Quay về trang chủ
+        <FormattedMessage id="OrderForm.OrderNotification.backHome"/>
         </Link>
         </motion.button>
 
@@ -72,7 +73,7 @@ const OrderNotification: React.FC<OrderNotificationProps> = ({ onClose }) => {
             className="absolute bottom-5 right-5 mt-4 px-4 py-2 bg-red-500 hover:bg-red-600 text-white rounded"
             onClick={handleClose}
         >
-          Đóng
+          <FormattedMessage id="OrderForm.OrderNotification.closeBtn"/>
         </motion.button>
       </motion.div>
     </motion.div>

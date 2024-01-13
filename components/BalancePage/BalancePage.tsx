@@ -12,6 +12,7 @@ import { IoIosArrowBack } from "react-icons/io";
 import { SiZalo } from "react-icons/si";
 import { FaCreditCard } from "react-icons/fa";
 import TradeHistory from './TradeHistory';
+import WithdrawNotification from './WithdrawNotification';
 
 interface CustomerInfo {
   accountBalance: number;
@@ -22,6 +23,7 @@ interface CustomerInfo {
 const BalancePage = () => {
   const [showNotification, setShowNotification] = useState(false);
   const [showNotification2, setShowNotification2] = useState(false);
+  const [showNotification3, setShowNotification3] = useState(false);
   const [isPopoverVisible, setPopoverVisibility] = useState(false);
   const [isPopoverVisible2, setPopoverVisibility2] = useState(false);
   const [currentForm, setCurrentForm] = useState<number>(0);
@@ -55,6 +57,10 @@ const BalancePage = () => {
 
   const handleNotificationClose2 = () => {
     setShowNotification2(false);
+  };
+
+  const handleNotificationClose3 = () => {
+    setShowNotification3(false);
   };
 
   const handleStatisticsClick = () => {
@@ -132,21 +138,22 @@ const BalancePage = () => {
               <div className="ml-2 w-1/2 border-r-[1px] border-gray-300 pr-2"><motion.button
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.9 }}
-                  transition={{ duration: 0.2 }}
+                  transition={{ duration: 0.3 }}
+                  onClick={() => {setShowNotification3(true)}}
                   className="w-full h-full flex items-center justify-center"
               >
-                <BsCashCoin className="mt-1  text-xl"/>
+                <BsCashCoin className="mt-1 text-base"/>
                 <p className="ml-2 font-bold text-sm ">Rút tiền</p>
               </motion.button></div>
 
               <div className="mr-2 w-1/2 pl-2"><motion.button
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.9 }}
-                  transition={{ duration: 0.2 }}
+                  transition={{ duration: 0.3 }}
                   onClick={handleStatisticsClick}
                   className="w-full h-full flex items-center justify-center"
               >
-                <RiPieChart2Fill className="text-xl text-gray-600"/>
+                <RiPieChart2Fill className="text-lg text-gray-600"/>
                 <p className="ml-1.5 font-bold text-sm">Thống kê</p>
               </motion.button></div>
             </div>
@@ -189,7 +196,7 @@ const BalancePage = () => {
                       initial="initial"
                       animate={controls}
                       exit="exit"
-                      transition={{ duration: 0.4 }}
+                      transition={{ duration: 0.5 }}
                       id="popover-right"
                       role="tooltip"
                       className={`-top-1/2 absolute z-10 ${
@@ -206,7 +213,7 @@ const BalancePage = () => {
                   <motion.button
                       whileHover={{ scale: 1.2 }}
                       whileTap={{ scale: 0.9 }}
-                      transition={{ duration: 0.2 }}
+                      transition={{ duration: 0.3 }}
                       className="absolute h-6 right-4 px-1.5 bg-white hover:bg-gray-300 border-2 border-gray-300 text-gray-500 text-xs font-bold rounded"
                   >
                     Thêm
@@ -241,7 +248,7 @@ const BalancePage = () => {
                       initial="initial"
                       animate={controls2}
                       exit="exit"
-                      transition={{ duration: 0.4 }}
+                      transition={{ duration: 0.5 }}
                       id="popover-right"
                       role="tooltip"
                       className={`-top-1/2 absolute  ${
@@ -258,7 +265,7 @@ const BalancePage = () => {
                   <motion.button
                       whileHover={{ scale: 1.2 }}
                       whileTap={{ scale: 0.9 }}
-                      transition={{ duration: 0.2 }}
+                      transition={{ duration: 0.3 }}
                       className="absolute h-6 right-4 px-1.5 bg-white hover:bg-gray-300 border-2 border-gray-300 text-gray-500 text-xs font-bold rounded z-20"
                   >
                     Kích hoạt
@@ -268,7 +275,7 @@ const BalancePage = () => {
           </motion.div>
           <motion.div 
             variants={leftSideVariant} initial="initial" animate="enter" exit="exit"
-            transition={{ duration: .5, delay: .5}}
+            transition={{ duration: .5, delay: .6}}
             className="mt-1 mb-1 bg-white rounded ml-0 sm:ml-1 lg:ml-0">
               <div className="h-10 w-full rounded-t pl-4 pr-4">
                 <div className="h-full w-full text-base font-semibold pt-3 border-b-2 border-gray-500"><p>Phương thức thanh toán</p></div>
@@ -281,7 +288,7 @@ const BalancePage = () => {
                   <motion.button
                       whileHover={{ scale: 1.2 }}
                       whileTap={{ scale: 0.9 }}
-                      transition={{ duration: 0.2 }}
+                      transition={{ duration: 0.3 }}
                       className="absolute h-6 right-4 px-1.5 bg-white hover:bg-gray-300 border-2 border-gray-300 text-gray-500 text-xs font-bold rounded"
                   >
                     Liên kết
@@ -297,7 +304,7 @@ const BalancePage = () => {
                   <motion.button
                       whileHover={{ scale: 1.2 }}
                       whileTap={{ scale: 0.9 }}
-                      transition={{ duration: 0.2 }}
+                      transition={{ duration: 0.3 }}
                       className="absolute h-6 right-4 px-1.5 bg-white hover:bg-gray-300 border-2 border-gray-300 text-gray-500 text-xs font-bold rounded"
                   >
                     Liên kết
@@ -309,7 +316,7 @@ const BalancePage = () => {
                   <motion.button
                       whileHover={{ scale: 1.2 }}
                       whileTap={{ scale: 0.9 }}
-                      transition={{ duration: 0.2  }}
+                      transition={{ duration: 0.3 }}
                       className="absolute h-6 right-4 px-1.5 bg-white hover:bg-gray-300 border-2 border-gray-300 text-gray-500 text-xs font-bold rounded"
                   >
                     Thêm
@@ -321,23 +328,23 @@ const BalancePage = () => {
         <div ref={scrollRef} className='static w-full grow lg:p-3 lg:pl-0 lg:h-[52.3rem]'>
           {currentForm == 0 && <motion.div 
             variants={rightSideVariant}
-            initial="initial" animate="enter" transition={{ duration: .7 }}
-            className="bg-white h-full lg:rounded-xl block">
+            initial="initial" animate="enter" transition={{ duration: .8 }}
+            className="bg-white h-full lg:rounded-xl flex flex-col max-h-96 lg:max-h-full">
             <div className="h-14 w-full rounded-t-xl pl-4 pr-4">
-              <div className="h-full w-full text-black text-xl font-semibold pt-4 border-b-2 border-gray-500"><p>Lịch sử giao dịch</p></div>
+              <div className="h-14 w-full text-black text-xl font-semibold pt-4 border-b-2 border-gray-500"><p>Lịch sử giao dịch</p></div>
             </div>
             <TradeHistory/>
           </motion.div>}
           {currentForm == 1 && <motion.div 
             variants={rightSideVariant}
-            initial="initial" animate="enter" transition={{ duration: .7 }}
+            initial="initial" animate="enter" transition={{ duration: .8 }}
             className=" bg-white h-full lg:rounded-xl block">
             <div className="h-14 w-full rounded-t-xl pl-4 pr-4">
               <div className="h-full w-full text-black text-xl font-semibold pt-2 border-b-2 border-gray-500 flex">
                 <motion.button
                     whileHover={{ scale: 1.2 }}
                     whileTap={{ scale: 0.9 }}
-                    transition={{ duration: 0.2 }}
+                    transition={{ duration: 0.3 }}
                     onClick={()=>{setCurrentForm(0)}}
                     className="w-8 h-8 mt-1 rounded-full hover:bg-gray-200 mb-2 flex items-center justify-center"
                 >
@@ -355,6 +362,10 @@ const BalancePage = () => {
 
         {showNotification2 && (
           <CreditCardNotification customerInfo={customerInfo} onClose={handleNotificationClose2} />
+        )}
+
+        {showNotification3 && (   
+          <WithdrawNotification onClose={handleNotificationClose3}/>
         )}
     </div>
   );

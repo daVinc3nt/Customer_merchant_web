@@ -1,6 +1,7 @@
 import React, { useRef, useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import SubmitSelect from "./SubmitSelect";
+import { FormattedMessage } from "react-intl";
 interface OrderNotificationProps {
   onClose: () => void; // Callback function to close the notification window
 }
@@ -60,7 +61,9 @@ const OrderNotification: React.FC<OrderNotificationProps> = ({ onClose }) => {
         transition={{ duration: 0.2 }}
       >
         <div>
-          <div className="font-bold">Trợ giúp</div>
+          <div className="font-bold">
+            <FormattedMessage id="Helpcenter.title.inlink.title" />
+          </div>
           <div>
             <div>
               <SubmitSelect />
@@ -81,7 +84,7 @@ const OrderNotification: React.FC<OrderNotificationProps> = ({ onClose }) => {
           className="mt-5 px-4 py-2 bg-red-500 hover:bg-red-600 text-white rounded"
           onClick={handleSubmit}
         >
-          Gửi yêu cầu
+          <FormattedMessage id="Helpcenter.title.link" />
         </motion.button>
       </motion.div>
     </motion.div>

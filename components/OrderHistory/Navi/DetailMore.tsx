@@ -1,7 +1,7 @@
 import React, { useRef, useEffect, useState } from "react";
 import Link from "next/link";
 import { motion } from "framer-motion";
-
+import { FormattedMessage } from "react-intl";
 interface DetailMoreProps {
   onClose: () => void; // Callback function to close the notification window
   row: {
@@ -70,11 +70,25 @@ const DetailMore: React.FC<DetailMoreProps> = ({ onClose, row }) => {
       >
         <div>
           <p>
-            <strong>Mã vận đơn:</strong> {`${row.orderId}`} <br />
-            <strong>Người gửi:</strong> {`${row.customerName}`} <br />
-            <strong>Ngày gửi:</strong> {`${row.orderDate}`} <br />
-            <strong>Tổng tiền:</strong> {`${row.totalAmount}`} <br />
-            <strong>Địa chỉ gửi:</strong>{" "}
+            <strong>
+              <FormattedMessage id="OrderHistory.detail.option1" />:
+            </strong>{" "}
+            {row.orderId} <br />
+            <strong>
+              <FormattedMessage id="OrderHistory.detail.option2" />:
+            </strong>{" "}
+            {row.customerName} <br />
+            <strong>
+              <FormattedMessage id="OrderHistory.detail.option3" />:
+            </strong>{" "}
+            {row.orderDate} <br />
+            <strong>
+              <FormattedMessage id="OrderHistory.detail.option8" />:
+            </strong>{" "}
+            {row.totalAmount} <br />
+            <strong>
+              <FormattedMessage id="OrderHistory.detail.option10" />:
+            </strong>{" "}
             {`${row.shippingAddress.street}, ${row.shippingAddress.city}, ${row.shippingAddress.state}, ${row.shippingAddress.zipCode}`}{" "}
             <br />
             {/* <strong>Trạng thái:</strong> {`${row.Status}`} <br /> */}
@@ -88,7 +102,7 @@ const DetailMore: React.FC<DetailMoreProps> = ({ onClose, row }) => {
           className="absolute bottom-5 right-5 mt-4 px-4 py-2 bg-red-500 hover:bg-red-600 text-white rounded"
           onClick={handleClose}
         >
-          Đóng
+          <FormattedMessage id="OrderHistory.Close" />
         </motion.button>
       </motion.div>
     </motion.div>

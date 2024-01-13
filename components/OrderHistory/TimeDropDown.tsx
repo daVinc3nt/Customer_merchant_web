@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { FormattedMessage } from "react-intl";
 
 const TimeDropDown = () => {
   const [startDate, setStartDate] = useState("");
@@ -31,7 +32,9 @@ const TimeDropDown = () => {
       flex items-center justify-center
       "
       >
-        <span className="text-xs">Thời gian</span>
+        <span className="text-xs">
+          <FormattedMessage id="OrderHistory.time" />
+        </span>
       </button>
       {isOpen && (
         <div className="absolute bg-white px-4 py-4 rounded-xl mt-2">
@@ -41,7 +44,7 @@ const TimeDropDown = () => {
                 htmlFor="start-date"
                 className="block text-sm font-medium text-gray-700"
               >
-                Ngày bắt đầu
+                <FormattedMessage id="OrderHistory.time1" />
               </label>
               <input
                 type="date"
@@ -57,7 +60,7 @@ const TimeDropDown = () => {
                 htmlFor="end-date"
                 className="block text-sm font-medium text-gray-700"
               >
-                Ngày kết thúc
+                <FormattedMessage id="OrderHistory.time2" />
               </label>
               <input
                 type="date"
@@ -70,7 +73,7 @@ const TimeDropDown = () => {
             </div>
             {startDate > endDate ? (
               <p className="text-red-500">
-                Ngày bắt đầu phải sớm hơn ngày kết thúc
+                <FormattedMessage id="OrderHistory.warning" />
               </p>
             ) : (
               <p></p>
@@ -80,7 +83,7 @@ const TimeDropDown = () => {
                 type="submit"
                 className="px-4 py-1 text-white bg-red-500 rounded-xl hover:bg-red-600 "
               >
-                Áp dụng
+                <FormattedMessage id="OrderHistory.timebutton" />
               </button>
             </div>
           </form>
