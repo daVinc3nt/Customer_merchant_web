@@ -52,7 +52,7 @@ const Sidebar: React.FC<MyComponentProps> = ({ toggleCollapseMobile })  => {
   }
 
   const wrapperClasses = classNames(
-    "h-screen hidden z-50 lg:px-4 lg:flex pt-8 pb-4 bg-ligth justify-between flex-col",
+    "h-screen hidden lg:px-4 lg:flex pt-8 pb-4 bg-ligth justify-between flex-col",
     {
       ["lg:w-80"]: !toggleCollapse,
       ["lg:w-20"]: toggleCollapse,

@@ -29,7 +29,7 @@ const LangSelector = () => {
       <motion.div animate={open ? "open" : "closed"} className="relative">
         <button
           onClick={() => setOpen((pv) => !pv)}
-          className="flex items-center z-50 gap-4 px-3 py-1 rounded-lg w-20 text-indigo-50 bg-indigo-500 hover:bg-indigo-500 transition-colors"
+          className="flex items-center z-50 gap-4 px-3 py-1 rounded-lg w-20 text-indigo-50 bg-blue-700 hover:bg-indigo-500 transition-colors"
         >
            <FiGlobe size={30}/>
           <motion.span variants={iconVariants}>
