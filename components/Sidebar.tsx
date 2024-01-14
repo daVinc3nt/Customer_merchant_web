@@ -2,7 +2,6 @@ import classNames from "classnames";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import React, { useState, useMemo } from "react";
-import siteMetadata from '../data/siteMetadata'
 import Image from "next/image";
 import { motion, Variants } from "framer-motion";
 import MobileMenu from "./NavigationBar/MobileMenu";
@@ -111,7 +110,7 @@ const Sidebar: React.FC<MyComponentProps> = ({ toggleCollapseMobile })  => {
               hidden: toggleCollapse,
               })}
             >
-              {siteMetadata.title}
+              TDLogistics
             </span>
           </div>
           {isCollapsible && (
@@ -211,7 +210,7 @@ const Sidebar: React.FC<MyComponentProps> = ({ toggleCollapseMobile })  => {
               hidden: toggleCollapseMobile,
               })}
             >
-              {siteMetadata.title}
+              TDLogistics
             </span>
           </div>
           {isCollapsible && (
