@@ -3,12 +3,11 @@ import { HiDotsHorizontal, HiOutlineChevronDown } from 'react-icons/hi';
 import { FaUserCircle, FaMobile } from "react-icons/fa";
 import Dropdown from "./ListBox";
 import { AnimatePresence, motion, Variants } from "framer-motion";
-import { UserLocationContext } from "context/UserLocationContext";
-import { getGeocode } from "../MapRender/GetLocationAdress";
 import { useIntl } from "react-intl";
 import GooglePlacesAutocomplete from "react-google-places-autocomplete";
 import { SourceContext } from "@/context/SourceContext";
 import { DestinationContext } from "@/context/DestinationContext";
+import { getGeocode } from "../MapRender/GetLocationAdress";
 
 const LocationForm = ({value, setValue, value2, setValue2,
                       formValues, setFormValues, formErrors, setFormErrors,
@@ -24,17 +23,43 @@ const LocationForm = ({value, setValue, value2, setValue2,
   ];
 
   //Context
-  const { userLocation, setUserLocation } = useContext(UserLocationContext);
   const { source, setSource } = useContext(SourceContext);
   const { destination, setDestination } = useContext(DestinationContext);
-
   const [isAtBottom, setIsAtBottom] = useState(false);
 
   const containerRef1 = useRef<HTMLDivElement>(null);
   const dropdownRef1 = useRef<HTMLDivElement>(null);
   const [isOpen1, setIsOpen1] = useState(false);
 
-  // const [formattedAddress1, setFormattedAddress1] = useState("");
+  const getCurrentLocation = (type) => {
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(
+        (position) => {
+          const userLat = position.coords.latitude;
+          const userLng = position.coords.longitude;
+          getGeocode(userLat, userLng)
+            .then((name) => {
+              const currentLocation = {
+                lat: userLat,
+                lng: userLng,
+                name: name,
+                label: name,
+              };
+              type == "source" ? setSource(currentLocation): setDestination(currentLocation);
+              setValue({ label: name, value: currentLocation });
+            })
+            .catch((error) => {
+              console.error("Error getting geocode:", error);
+            });
+        },
+        (error) => {
+          console.error("Error getting current location:", error.message);
+        }
+      );
+    } else {
+      console.error("Geolocation is not supported by this browser.");
+    }
+  };  
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
@@ -54,19 +79,6 @@ const LocationForm = ({value, setValue, value2, setValue2,
       document.removeEventListener('mousedown', handleClickOutside);
     };
   }, []);
-
-  // const handleResetLocation = () => {
-  //   navigator.geolocation.getCurrentPosition((position) => {
-  //     setUserLocation({
-  //       lat: position.coords.latitude,
-  //       lng: position.coords.longitude,
-  //     });
-  //     getGeocode(position.coords.latitude, position.coords.longitude)
-  //     .then((result:string) => {
-  //       setFormattedAddress1(result);
-  //     })
-  //   });
-  // };
 
   const tabContentVariants: Variants = {
     initial: { x: -20, opacity: 0 },
@@ -110,13 +122,6 @@ const LocationForm = ({value, setValue, value2, setValue2,
     setFormErrors({ ...formErrors, name: validate(updatedFormValues, 1) });
   };
 
-  const handleAddress = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const value = e.target.value;
-    const updatedFormValues = { ...formValues, address: value };
-    setFormValues(updatedFormValues);
-    setFormErrors({ ...formErrors, address: validate(updatedFormValues, 2) });
-  };
-
   const handleNum = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     const updatedFormValues = { ...formValues, phoneNum: value };
@@ -129,13 +134,6 @@ const LocationForm = ({value, setValue, value2, setValue2,
     const updatedFormValues = { ...formValues2, name: value };
     setFormValues2(updatedFormValues);
     setFormErrors2({ ...formErrors2, name: validate(updatedFormValues, 1) });
-  };
-
-  const handleAddress2 = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const value = e.target.value;
-    const updatedFormValues = { ...formValues2, address: value };
-    setFormValues2(updatedFormValues);
-    setFormErrors2({ ...formErrors2, address: validate(updatedFormValues, 2) });
   };
 
   const handleNum2 = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -285,12 +283,12 @@ const LocationForm = ({value, setValue, value2, setValue2,
                 className={`rounded z-30`}
               >
                 <li key={1}>
-                  <button
+                <button
                     type="button"
                     className={`block h-9 w-full text-sm z-20 text-center pl-2 rounded border-gray-300 hover:bg-gray-100 hover:rounded-t text-gray-700}`}
                       onClick={() => {
                           setIsOpen1(false);
-                          // handleResetLocation();
+                          getCurrentLocation("source");
                         }}
                   >
                     Chọn vị trí hiện tại

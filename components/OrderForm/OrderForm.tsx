@@ -8,8 +8,7 @@ import OrderNotification from "./OrderNotification";
 import { motion } from "framer-motion";
 import { FormattedMessage } from "react-intl";
 
-const OrderForm = () => {
-  const [toggleCollapse, setToggleCollapse] = useState(false);
+const OrderForm = ({toggleCollapse, setToggleCollapse}) => {
   const [toggleCollapse2, setToggleCollapse2] = useState(false);
   const [currentForm, setCurrentForm] = useState<number>(0);
   const [showNotification, setShowNotification] = useState(false);
@@ -35,7 +34,7 @@ const OrderForm = () => {
   const wrapperClasses = classNames(
     "relative bottom-0 px-4 pt-10 pb-4 ml-2 lg:ml-4  mt-2 lg:mt-4 bg-formBgColor-parent flex flex-col justify-between rounded-2xl z-20",
     {
-      "h-[calc(100%-1rem)] sm:w-[calc(100%-1rem)] lg:h-[calc(100%-2rem)] md:w-5/6 lg:w-9/12 xl:w-[calc(45%)] w-[calc(100%-1rem)]": !toggleCollapse,
+      "h-[calc(100%-1rem)] sm:w-[calc(100%-1rem)] lg:h-[calc(100%-2rem)] md:w-4/6 lg:w-7/12 xl:w-[calc(45%)] w-[calc(100%-1rem)]": !toggleCollapse,
       "w-16 lg:w-20 h-[calc(4rem)] lg:h-[calc(5rem)]": toggleCollapse,
       "@media (min-width: 1152px)": {
         "w-7/12": !toggleCollapse,
