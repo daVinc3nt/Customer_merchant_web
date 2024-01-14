@@ -6,18 +6,14 @@ import { AnimatePresence, motion, Variants } from "framer-motion";
 import { UserLocationContext } from "context/UserLocationContext";
 import { getGeocode } from "../MapRender/GetLocationAdress";
 import { useIntl } from "react-intl";
+import GooglePlacesAutocomplete from "react-google-places-autocomplete";
+import { SourceContext } from "@/context/SourceContext";
+import { DestinationContext } from "@/context/DestinationContext";
 
-const LocationForm = () => {
-  interface FormValues {
-    name: string;
-    phoneNum: string;
-    address: string;
-  }
-  interface ErrorValues {
-    name: string;
-    phoneNum: string;
-    address: string;  
-  }
+const LocationForm = ({value, setValue, value2, setValue2,
+                      formValues, setFormValues, formErrors, setFormErrors,
+                      formValues2, setFormValues2, formErrors2, setFormErrors2,
+                      selectedOption1, setSelectedOption1, selectedOption2, setSelectedOption2}) => {
   const intl = useIntl();
   const locationOptions = [
     intl.formatMessage({ id: 'OrderForm.LocationForm.locationOption1' }),
@@ -26,26 +22,26 @@ const LocationForm = () => {
     intl.formatMessage({ id: 'OrderForm.LocationForm.locationOption4' }),
     intl.formatMessage({ id: 'OrderForm.LocationForm.locationOption5' }),
   ];
-  const initialValues: FormValues = { name: "", phoneNum: "", address: "" };
-  const initialValues2: ErrorValues = { name: "", phoneNum: "", address: "" };
-  const [formValues, setFormValues] = useState<FormValues>(initialValues);
-  const [formErrors, setFormErrors] = useState<ErrorValues>(initialValues2);
-  const [formValues2, setFormValues2] = useState<FormValues>(initialValues);
-  const [formErrors2, setFormErrors2] = useState<ErrorValues>(initialValues2);
-  const containerRef1 = useRef<HTMLDivElement>(null);
+
+  //Context
+  const { userLocation, setUserLocation } = useContext(UserLocationContext);
+  const { source, setSource } = useContext(SourceContext);
+  const { destination, setDestination } = useContext(DestinationContext);
+
   const [isAtBottom, setIsAtBottom] = useState(false);
-  const userLocationContext = useContext(UserLocationContext);
+
+  const containerRef1 = useRef<HTMLDivElement>(null);
+  const dropdownRef1 = useRef<HTMLDivElement>(null);
   const [isOpen1, setIsOpen1] = useState(false);
-  const [selectedOption1, setselectedOption1] = useState<number>();
-  const dropdownRef2 = useRef<HTMLDivElement>(null);
-  const [formattedAddress1, setFormattedAddress1] = useState("");
+
+  // const [formattedAddress1, setFormattedAddress1] = useState("");
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       if (
-        dropdownRef2.current &&
+        dropdownRef1.current &&
         event.target &&
-        !dropdownRef2.current.contains(event.target as HTMLElement) &&
+        !dropdownRef1.current.contains(event.target as HTMLElement) &&
         ((event.target as HTMLElement).id !== `orderAddress`)
       ) {
         setIsOpen1(false);
@@ -59,37 +55,51 @@ const LocationForm = () => {
     };
   }, []);
 
-  if (!userLocationContext) {
-    throw new Error("UserLocationContext not provided!");
-  }
-
-  const { userLocation, setUserLocation } = userLocationContext;
-
-  const handleResetLocation = () => {
-    navigator.geolocation.getCurrentPosition((position) => {
-      setUserLocation({
-        lat: position.coords.latitude,
-        lng: position.coords.longitude,
-      });
-      getGeocode(position.coords.latitude, position.coords.longitude)
-      .then((result:string) => {
-        setFormattedAddress1(result);
-      })
-    });
-  };
+  // const handleResetLocation = () => {
+  //   navigator.geolocation.getCurrentPosition((position) => {
+  //     setUserLocation({
+  //       lat: position.coords.latitude,
+  //       lng: position.coords.longitude,
+  //     });
+  //     getGeocode(position.coords.latitude, position.coords.longitude)
+  //     .then((result:string) => {
+  //       setFormattedAddress1(result);
+  //     })
+  //   });
+  // };
 
   const tabContentVariants: Variants = {
-    initial: {
-      x: -20,
-      opacity: 0
-    },
-    enter: {
-      x: 0,
-      opacity: 1
-    },
-    exit: {
-      x: -20,
-      opacity: 0
+    initial: { x: -20, opacity: 0 },
+    enter: { x: 0, opacity: 1 },
+    exit: { x: -20, opacity: 0 }
+  }
+
+  const getLatandLng = (place, type) =>{
+    if (place){
+      const placeId = place.value.place_id;
+      const service = new google.maps.places.PlacesService(document.createElement('div'));
+      service.getDetails({placeId},(place,status)=>{
+        if(status === "OK" && place.geometry && place.geometry.location){
+          if(type == "source"){
+            setSource({
+              lat:place.geometry.location.lat(),
+              lng:place.geometry.location.lng(),
+              name:place.formatted_address,
+              label:place.name
+            })
+          }
+          else {
+            setDestination({
+              lat:place.geometry.location.lat(),
+              lng:place.geometry.location.lng(),
+              name:place.formatted_address,
+              label:place.name
+            })
+          }
+        }
+    })}
+    else {
+      (type == "source") ? setSource(null) : setDestination(null);
     }
   }
 
@@ -135,7 +145,7 @@ const LocationForm = () => {
     setFormErrors2({ ...formErrors2, phoneNum: validate(updatedFormValues, 3) });
   };
 
-  const validate = (values: FormValues, type: number): string => {
+  const validate = (values, type: number): string => {
     var errors: string = "";
     const PhoneRegex = /^\d+$/;
     if (type == 1 && !values.name) {
@@ -162,21 +172,11 @@ const LocationForm = () => {
 
   return <div className="relative h-5/6 w-full mt-4 lg:mt-8 border-2 border-formBorder-parent rounded-md">
     {!isAtBottom && (<motion.button
-      variants={{
-        initial: {
-          opacity: 0
-        },
-        enter: {
-          opacity: 1
-        }
-      }}
+      variants={{initial: { opacity: 0 }, enter: { opacity: 1 }}}
       initial="initial"
       animate="enter"
       whileTap={{ opacity: 0, transition: { duration: 0 } }}
-      transition={{
-        duration: 1,
-        delay: 1,
-      }}
+      transition={{ duration: 1, delay: 1 }}
       className="absolute bg-scrollBottomBt-default p-1 rounded-3xl bottom-3 hover:bg-scrollBottomBt-hover
               right-[calc(50%-1rem)] text-center text-buttonColorForm-text z-30 animate-bounce
               outline outline-scrollBottomBt-outline"
@@ -205,9 +205,7 @@ const LocationForm = () => {
         initial="initial"
         animate="enter"
         exit="exit"
-        transition={{
-          duration: .5
-        }}
+        transition={{ duration: .5 }}
         className="mt-2 text-2xl pl-6 text-headlineText-default font-bold text-nowrap cursor-default">
         Địa điểm
       </motion.h1>
@@ -217,33 +215,48 @@ const LocationForm = () => {
         initial="initial"
         animate="enter"
         exit="exit"
-        transition={{
-          duration: .5
-        }}
+        transition={{ duration: .5 }}
         className="bg-formBgColor-secondChild flex flex-col items-stretch self-center w-11/12 mb-5 mt-2 bg-transparent rounded-2xl border-2 border-formBorder-children"
       >
 
         <h1 className="mt-4 text-sm font-bold pl-5 text-headlineText-default text-nowrap cursor-default">Địa điểm lấy hàng</h1>
 
-        <div className={`relative self-center w-11/12 ${formErrors.address ? 'mb-5' : 'mb-2'} mt-3`}>
-        <input
-          id="orderAddress"
-          name="orderAddress"
-          type="text"
-          className={`peer h-12 self-center w-full border border-gray-300 rounded focus:outline-none truncate
-            ${formErrors.address ? 'ring-2 ring-red-500 focus:ring-2 focus:ring-red-500' : 'focus:ring-2 focus:ring-blue-500'}
-            text-left placeholder-transparent pl-3 pt-2 text-headlineText-default pr-12`}
-          placeholder="Địa chỉ"
-          onChange={handleAddress}
-          value={selectedOption1 ? formattedAddress1 : ""}
-          onFocus={()=>{setIsOpen1(true)}}
-        />
+        <div className={`relative self-center w-11/12 ${formErrors.address ? 'mb-5' : 'mb-2'} mt-3`} onClick={() => setIsOpen1(!isOpen1)} >
+          <GooglePlacesAutocomplete
+            selectProps={{
+              id: "orderAddress",
+              onChange:(place)=>{
+                          getLatandLng(place, "source");
+                          setValue(place)
+                        },
+              value: value,
+              placeholder: "Nhập địa chỉ lấy hàng",
+              isClearable: true,
+              className: `peer h-12 self-center w-full border border-gray-300 focus:border-blue-300 rounded text-left pt-1 pr-10`,
+              components: {
+                DropdownIndicator: null,
+                LoadingIndicator: null,
+              },
+              styles: {
+                control: (provided, state) => ({
+                  ...provided,
+                  backgroundColor: "transparent",
+                  border: "none",
+                  boxShadow: state.isFocused ? "none" : provided.boxShadow,
+                  "&:hover": {
+                    border: "none"
+                  }
+                }),
+                placeholder: (provided) => ({
+                  ...provided,
+                  color: "#4a5568",
+                  fontSize: "0.875rem",
+                }),
+              },
+            }}
+          />
           <label
-            htmlFor="orderAddress"
-            className={`absolute left-3 -top-0 text-xxs leading-5 text-gray-600 transition-all 
-                  peer-placeholder-shown:text-sm peer-placeholder-shown:text-gray-700 peer-placeholder-shown:top-3.5 
-                  peer-focus:-top-0 peer-focus:leading-5 peer-focus:text-xxs
-                  ${formErrors.address ? 'peer-focus:text-red-500' : 'peer-focus:text-blue-600'}`}
+            className="absolute left-3 -top-2.5 bg-white px-1 text-xxs leading-5 text-gray-600 transition-all rounded-3xl"
           >
             Địa chỉ lấy hàng
           </label>
@@ -257,13 +270,13 @@ const LocationForm = () => {
           <AnimatePresence>
           {isOpen1 && (
             <motion.div
-              ref={dropdownRef2}
+              ref={dropdownRef1}
               initial="initial"
               animate="animate"
               exit="exit"
               variants={{ initial: { opacity: 0, scale: 0.9 }, animate: { opacity: 1, scale: 1 }, exit: { opacity: 0, scale: 0.9 } }}
               transition={{ duration: 0.3 }}
-              className={`right-0 -top-20 absolute w-full xs:w-1/2 rounded  bg-white border-[1px] border-gray-300`}
+              className={`right-0 -top-10 absolute w-full xs:w-1/2 rounded bg-white border-[1px] border-gray-300`}
             >
               <ul
                 role="menu"
@@ -271,47 +284,27 @@ const LocationForm = () => {
                 aria-labelledby="options-menu"
                 className={`rounded z-30`}
               >
-                
                 <li key={1}>
                   <button
                     type="button"
-                    className={`block h-9 w-full text-sm z-20 text-center pl-2 border-b-[1px] border-gray-300 hover:bg-gray-100 hover:rounded-t text-gray-700}`}
+                    className={`block h-9 w-full text-sm z-20 text-center pl-2 rounded border-gray-300 hover:bg-gray-100 hover:rounded-t text-gray-700}`}
                       onClick={() => {
-                          setselectedOption1(1);
                           setIsOpen1(false);
-                          handleResetLocation();
+                          // handleResetLocation();
                         }}
                   >
                     Chọn vị trí hiện tại
                   </button>
                 </li>
-
-                <li key={2}>
-                  <button
-                    type="button"
-                    className={`block h-9 w-full text-sm z-20 text-center pl-2 border-gray-300 hover:bg-gray-100 hover:rounded-t text-gray-700'}`}
-                      onClick={() => {
-                          setselectedOption1(2);
-                          setIsOpen1(false);
-                          getGeocode(userLocation.lat, userLocation.lng)
-                          .then((result:string) => {
-                            setFormattedAddress1(result);
-                          })
-                        }}
-                  >
-                    Chọn vị trí đã chọn
-                  </button>
-                </li>
-                
               </ul>
             </motion.div>
           )}
         </AnimatePresence>
         </div>
 
-        <Dropdown name="Chi tiết địa điểm" options={locationOptions} />
+        <Dropdown name="Chi tiết địa điểm" options={locationOptions} selectedOption={selectedOption1} setSelectedOption={setSelectedOption1}/>
 
-        <div className="flex flex-col self-center items-left h-6 w-11/12 mb-4 z-[5]">
+        <div className="flex flex-col self-center items-left h-6 w-11/12 mb-4">
           <button className="h-6 w-2/6 bg-light pointer-event-stroke text-xs text-left text-headlineText-default hover:text-orange-600" style={{ whiteSpace: 'nowrap' }}>+ Chi tiết địa chỉ
           </button>
         </div>
@@ -328,6 +321,7 @@ const LocationForm = () => {
                     text-left placeholder-transparent pl-3 pt-2 text-headlineText-default pr-12`}
               placeholder="Tên người gửi"
               onChange={handleName}
+              value={formValues.name}
             />
             <label
               htmlFor="orderName"
@@ -356,6 +350,7 @@ const LocationForm = () => {
                     text-left placeholder-transparent pl-3 pt-2 text-headlineText-default pr-12`}
               placeholder="Số điện thoại"
               onChange={handleNum}
+              value={formValues.phoneNum}
             />
             <button className="absolute top-1/2 h-12 w-10 right-0 flex items-center pointer-event-stroke
                     -translate-y-1/2
@@ -387,31 +382,48 @@ const LocationForm = () => {
         initial="initial"
         animate="enter"
         exit="exit"
-        transition={{
-          duration: .5
-        }}
+        transition={{ duration: .5 }}
         className="bg-formBgColor-secondChild flex flex-col items-stretch self-center w-11/12 mb-5 mt-2 rounded-2xl border-2 border-formBorder-children"
       >
 
         <h1 className="mt-4 text-sm font-bold pl-5 text-headlineText-default text-nowrap cursor-default">Địa điểm giao hàng</h1>
 
         <div className={`relative self-center w-11/12 ${formErrors2.address ? 'mb-5' : 'mb-2'} mt-3`}>
-          <input
-            id="orderAddress2"
-            name="orderAddress2"
-            type="text"
-            className={`peer h-12 self-center w-full border border-gray-300 rounded focus:outline-none truncate
-                  ${formErrors2.address ? 'ring-2 ring-red-500 focus:ring-2 focus:ring-red-500' : 'focus:ring-2 focus:ring-blue-500'}
-                  text-left placeholder-transparent pl-3 pt-2 text-headlineText-default pr-1`}
-            placeholder="Địa chỉ"
-            onChange={handleAddress2}
+        <GooglePlacesAutocomplete
+            selectProps={{
+              id: "orderAddress2",
+              value: value2,
+              onChange:(place)=>{
+                                getLatandLng(place, "destination");
+                                setValue2(place)
+                              },
+              placeholder: "Nhập địa chỉ giao hàng",
+              isClearable: true,
+              className: `peer h-12 self-center w-full border border-gray-300 focus:border-blue-300 rounded text-left pt-1 pr-10`,
+              components: {
+                DropdownIndicator: null,
+                LoadingIndicator: null,
+              },
+              styles: {
+                control: (provided, state) => ({
+                  ...provided,
+                  backgroundColor: "transparent",
+                  border: "none",
+                  boxShadow: state.isFocused ? "none" : provided.boxShadow,
+                  "&:hover": {
+                    border: "none"
+                  }
+                }),
+                placeholder: (provided) => ({
+                  ...provided,
+                  color: "#4a5568",
+                  fontSize: "0.875rem",
+                }),
+              },
+            }}
           />
           <label
-            htmlFor="orderAddress2"
-            className={`absolute left-3 -top-0 text-xxs leading-5 text-gray-600 transition-all 
-                  peer-placeholder-shown:text-sm peer-placeholder-shown:text-gray-700 peer-placeholder-shown:top-3.5 
-                  peer-focus:-top-0 peer-focus:leading-5 peer-focus:text-xxs
-                  ${formErrors2.address ? 'peer-focus:text-red-500' : 'peer-focus:text-blue-600'}`}
+            className="absolute left-3 -top-2.5 bg-white px-1 text-xxs leading-5 text-gray-600 transition-all rounded-3xl"
           >
             Địa chỉ giao hàng
           </label>
@@ -423,7 +435,7 @@ const LocationForm = () => {
           </button>
         </div>
 
-        <Dropdown name="Chi tiết địa điểm" options={locationOptions} />
+        <Dropdown name="Chi tiết địa điểm" options={locationOptions} selectedOption={selectedOption2} setSelectedOption={setSelectedOption2}/>
 
         <div className="flex flex-col self-center items-left h-6 w-11/12 mb-4">
           <button className="h-6 w-2/6 bg-light pointer-event-stroke text-xs text-left text-headlineText-default hover:text-orange-600" style={{ whiteSpace: 'nowrap' }}>+ Chi tiết địa chỉ
@@ -442,6 +454,7 @@ const LocationForm = () => {
                     text-left placeholder-transparent pl-3 pt-2 text-headlineText-default pr-12`}
               placeholder="Tên người nhận"
               onChange={handleName2}
+              value={formValues2.name}
             />
             <label
               htmlFor="receiverName"
@@ -470,6 +483,7 @@ const LocationForm = () => {
                     text-left placeholder-transparent pl-3 pt-2 text-headlineText-default pr-12`}
               placeholder="Số điện thoại"
               onChange={handleNum2}
+              value={formValues2.phoneNum}
             />
             <button className="absolute top-1/2 h-12 w-10 right-0 flex items-center pointer-event-stroke
                     -translate-y-1/2
