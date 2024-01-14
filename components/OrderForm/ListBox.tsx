@@ -2,14 +2,8 @@ import React, { useState, useEffect, useRef } from 'react';
 import { HiOutlineChevronDown } from 'react-icons/hi';
 import { motion, AnimatePresence } from 'framer-motion';
 
-interface DropdownProps {
-  name: string;
-  options: string[];
-}
-
-const Dropdown: React.FC<DropdownProps> = ({ name, options }) => {
+const Dropdown = ({ name, options, selectedOption, setSelectedOption}) => {
   const [isOpen, setIsOpen] = useState(false);
-  const [selectedOption, setSelectedOption] = useState<string>('');
   const dropdownRef = useRef<HTMLDivElement>(null);
   const [isAtBottom, setIsAtBottom] = useState(options.length < 5 ? true : false);
 
@@ -60,7 +54,7 @@ const Dropdown: React.FC<DropdownProps> = ({ name, options }) => {
         <motion.button
           id={name}
           className={`h-12 self-center w-full border border-gray-300 rounded focus:outline-none 
-                     focus:ring-2 placeholder-gray  text-left text-sm pl-3 truncate focus:ring-blue-500
+                     focus:ring-2 text-left text-sm pl-3 truncate focus:ring-blue-500
                      ${selectedOption ? 'text-black ' : 'text-gray-600'}`}
           onClick={toggleDropdown}
         >

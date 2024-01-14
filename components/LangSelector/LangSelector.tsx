@@ -4,6 +4,7 @@ import {
   FiTrash,
   FiShare,
   FiPlusSquare,
+  FiGlobe
 } from "react-icons/fi";
 import { motion } from "framer-motion";
 import { useState } from "react";
@@ -28,9 +29,9 @@ const LangSelector = () => {
       <motion.div animate={open ? "open" : "closed"} className="relative">
         <button
           onClick={() => setOpen((pv) => !pv)}
-          className="flex items-center z-50 gap-2 px-3 py-2 rounded-md w-28 text-indigo-50 bg-indigo-500 hover:bg-indigo-500 transition-colors"
+          className="flex items-center z-50 gap-4 px-3 py-1 rounded-lg w-20 text-indigo-50 bg-indigo-500 hover:bg-indigo-500 transition-colors"
         >
-          <span className="font-medium text-sm w-24">{display}</span>
+           <FiGlobe size={30}/>
           <motion.span variants={iconVariants}>
             <FiChevronDown />
           </motion.span>
@@ -54,7 +55,7 @@ const Option = ({ text, Icon, handle }) => {
     <motion.li
       variants={itemVariants}
       onClick={() => { handle(text) }}
-      className="flex z-50 items-center gap-2 w-full p-2 text-xs font-medium whitespace-nowrap rounded-md hover:bg-indigo-100 text-slate-700 hover:text-indigo-500 transition-colors cursor-pointer"
+      className="flex z-50 items-center gap-2 w-full py-2 text-xs font-medium whitespace-nowrap rounded-md hover:bg-indigo-100 text-slate-700 hover:text-indigo-500 transition-colors cursor-pointer"
     >
       <motion.span variants={actionIconVariants}>
       </motion.span>

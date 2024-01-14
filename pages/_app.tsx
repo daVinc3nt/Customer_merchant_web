@@ -1,14 +1,14 @@
 import "@/styles/globals.css";
 import type { AppProps } from "next/app";
-import NavBar from "@/components/NavigationBar/NavBar";
 import Wrapper from "@/components/LayoutWrapper";
-import { LoginPage } from "@/components/LoginPage";
 import { useRouter } from "next/router";
 import { IntlProvider } from "react-intl";
 import * as en from "@/lang/en.json"
-import * as vi from "@/lang/vi.json"
-import { UserLocationContext } from "@/context/UserLocationContext";
+import * as vi from "@/lang/vi.json";
 import { useState, useEffect } from "react";
+import { Libraries, LoadScript, LoadScriptProps } from "@react-google-maps/api";
+
+const googleMapsLibraries: Libraries = ['places'];
 
 interface UserLocation {
   lat: number;
@@ -26,10 +26,9 @@ function MyApp({ Component, pageProps }: AppProps) {
     vi,
     en
   };
-
   const [userLocation, setUserLocation] = useState<UserLocation>({
-    lat: 10.46,
-    lng: 106.4,
+    lat: 10.816360162758764,
+    lng: 106.62860159222816,
   });
 
   const getUserLocation = () => {
@@ -47,13 +46,11 @@ function MyApp({ Component, pageProps }: AppProps) {
 
   return (
     <IntlProvider locale={locale} messages={messages[locale]}>
-       <Wrapper>
-        <UserLocationContext.Provider
-          value={{ userLocation, setUserLocation }}
-        >
+      <LoadScript libraries={googleMapsLibraries} googleMapsApiKey={"AIzaSyDQ0pDRDKSyAO4lm10ttEXa2_uoZmWQzHc"}>
+        <Wrapper>
           <Component {...pageProps} />
-        </UserLocationContext.Provider>
-      </Wrapper>
+        </Wrapper>
+      </LoadScript>
     </IntlProvider>
   );
 }

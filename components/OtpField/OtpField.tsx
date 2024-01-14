@@ -1,6 +1,7 @@
 import React, { FC, useState, useRef, useEffect} from "react";
 import { useRouter } from 'next/router'
 import { User, OTP } from "../LoginPage/fetching"
+import { FormattedMessage } from "react-intl";
 interface OptFieldProps {
     showOtp: boolean;
     setshowOtp: React.Dispatch<React.SetStateAction<boolean>>;
@@ -80,7 +81,7 @@ const OTPField: FC<OptFieldProps> = ({showOtp, setshowOtp, user, otp}) => {
             text-white font-bold uppercase text-xs text-center block w-3/4 focus:outline-none 
             cursor-pointer lg:mt-20 sm:text-sm"
             >
-            Quay lại
+            <FormattedMessage id="sms.getback" />
         </button>
         </div>
         </>

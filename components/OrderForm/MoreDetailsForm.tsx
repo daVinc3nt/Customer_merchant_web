@@ -4,7 +4,7 @@ import Dropdown from "./ListBox";
 import DatePickerOrder from "./DatePickerOrder/DatePickerOrder";
 import { motion, Variants } from "framer-motion";
 
-const MoreDetailsForm = () => {
+const MoreDetailsForm = ({selectedOption3, setSelectedOption3, selectedOption4, setSelectedOption4}) => {
   const typesOfGoods = ['Mỹ phẩm', 'Dược phẩm', 'Thực phẩm', 'Đồ uống', 'Vật liệu phục vụ sản xuất', 'Thiết bị, máy móc, đồ điện tử', 'Nội thất, trang trí', 'Bao bì, may mặc'];
   const weightOptions = ['Dưới 500kg', '500 - 1000kg', '1001 - 1500kg', 'Trên 1500kg'];
   const [value, setValue] = useState(0);
@@ -76,9 +76,9 @@ const MoreDetailsForm = () => {
 
       <DatePickerOrder />
 
-      <Dropdown name="Loại hàng hóa" options={typesOfGoods} />
+      <Dropdown name="Loại hàng hóa" options={typesOfGoods} selectedOption={selectedOption3} setSelectedOption={setSelectedOption3}/>
 
-      <Dropdown name="Tổng trọng lượng" options={weightOptions} />
+      <Dropdown name="Tổng trọng lượng" options={weightOptions} selectedOption={selectedOption4} setSelectedOption={setSelectedOption4}/>
 
       <h1 className="text-sm font-bold pl-5 text-black text-nowrap cursor-default">Kích thước (không bắt buộc)</h1>
 

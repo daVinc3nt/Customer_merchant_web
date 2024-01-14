@@ -14,6 +14,24 @@ const OrderForm = () => {
   const [currentForm, setCurrentForm] = useState<number>(0);
   const [showNotification, setShowNotification] = useState(false);
 
+  //State for LocationForm
+  interface FormValues { name: string; phoneNum: string; address: string; }
+  interface ErrorValues { name: string; phoneNum: string; address: string; }
+  const initialValues: FormValues = { name: "", phoneNum: "", address: "" };
+  const initialValues2: ErrorValues = { name: "", phoneNum: "", address: "" };
+  const [formValues, setFormValues] = useState<FormValues>(initialValues);
+  const [formErrors, setFormErrors] = useState<ErrorValues>(initialValues2);
+  const [formValues2, setFormValues2] = useState<FormValues>(initialValues);
+  const [formErrors2, setFormErrors2] = useState<ErrorValues>(initialValues2);
+  const [valueSourceSearchBox, setValueSourceSearchBox] = useState(null);
+  const [valueDestinationSearchBox, setValueDestinationSearchBox] = useState(null);
+  const [selectedOption1, setSelectedOption1] = useState<string>('');
+  const [selectedOption2, setSelectedOption2] = useState<string>('');
+
+  //State for MoreDetailsForm
+  const [selectedOption3, setSelectedOption3] = useState<string>('');
+  const [selectedOption4, setSelectedOption4] = useState<string>('');
+
   const wrapperClasses = classNames(
     "relative bottom-0 px-4 pt-10 pb-4 ml-2 lg:ml-4  mt-2 lg:mt-4 bg-formBgColor-parent flex flex-col justify-between rounded-2xl z-20",
     {
@@ -94,10 +112,28 @@ const OrderForm = () => {
             </div>
           )}
           {!toggleCollapse && !toggleCollapse2 && currentForm == 0 && (
-            <LocationForm />
+            <LocationForm value={valueSourceSearchBox} 
+                          setValue={setValueSourceSearchBox}
+                          value2={valueDestinationSearchBox}
+                          setValue2={setValueDestinationSearchBox}
+                          formValues={formValues}
+                          setFormValues={setFormValues}
+                          formErrors={formErrors}
+                          setFormErrors={setFormErrors}
+                          formValues2={formValues2}
+                          setFormValues2={setFormValues2}
+                          formErrors2={formErrors2}
+                          setFormErrors2={setFormErrors2}
+                          selectedOption1={selectedOption1}
+                          setSelectedOption1={setSelectedOption1}
+                          selectedOption2={selectedOption2}
+                          setSelectedOption2={setSelectedOption2}/>
           )}
           {!toggleCollapse && !toggleCollapse2 && currentForm == 1 && (
-            <MoreDetailsForm />
+            <MoreDetailsForm selectedOption3={selectedOption3}
+                             setSelectedOption3={setSelectedOption3}
+                             selectedOption4={selectedOption4}
+                             setSelectedOption4={setSelectedOption4}/>
           )}
           {!toggleCollapse && !toggleCollapse2 && currentForm < 2 && (
             <div className="flex flex-col justify-start self-center w-full rounded-2xl">

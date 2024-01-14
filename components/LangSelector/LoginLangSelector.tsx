@@ -4,6 +4,7 @@ import {
   FiTrash,
   FiShare,
   FiPlusSquare,
+  FiGlobe
 } from "react-icons/fi";
 import { motion } from "framer-motion";
 import { useState } from "react";
@@ -25,26 +26,24 @@ const LangSelector = () => {
     router.push(router.asPath, router.asPath, { locale: Name2CountryCode[text]})
   }
   return (
-      <motion.div animate={open ? "open" : "closed"} className="relative">
+      <motion.div animate={open ? "open" : "closed"} className="flex">
         <button
           onClick={() => setOpen((pv) => !pv)}
-          className="flex items-center z-50 gap-2 px-3 py-2 rounded-md w-28 text-indigo-50 bg-indigo-500 hover:bg-indigo-500 transition-colors"
+          className="flex items-center gap-2 px-3 py-2 rounded-xl active:scale-85 text-indigo-50 bg-indigo-500 hover:bg-indigo-500 transition-colors"
         >
-          <span className="font-medium text-sm w-24">{display}</span>
-          <motion.span variants={iconVariants}>
-            <FiChevronDown />
-          </motion.span>
+          <FiGlobe size={20}/>
         </button>
-
+        <div>
         <motion.ul
           initial={wrapperVariants.closed}
           variants={wrapperVariants}
-          style={{ originY: "top", translateX: "-50%" }}
-          className="flex flex-col gap-2 p-2  z-50  rounded-lg bg-white shadow-xl absolute top-[120%] left-[50%] w-full overflow-hidden"
+          style={{ originY: "left", translateX: "-50%" }}
+          className="flex gap-2 p-2  z-50 rounded-lg bg-white shadow-xl top-[120%] left-[50%] w-full overflow-hidden"
         >
           <Option handle={handleOnClick} Icon={FiEdit} text="English" />
           <Option handle={handleOnClick} Icon={FiPlusSquare} text="Tiếng Việt" />
         </motion.ul>
+        </div>
       </motion.div>
   );
 };

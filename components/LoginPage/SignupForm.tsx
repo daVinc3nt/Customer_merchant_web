@@ -2,6 +2,10 @@ import { useState, useEffect } from "react";
 import OTPField from "../OtpField/OtpField";
 import { OTP, User } from "./fetching";
 import classNames from "classnames";
+import LoginLangSelector from "@/components/LangSelector/LoginLangSelector"
+import { FormattedMessage, useIntl, IntlShape, } from "react-intl";
+
+
 const SignupForm = () => {
   interface FormValues {
     name: string;
@@ -108,14 +112,17 @@ const SignupForm = () => {
   }
   return (
     <div>
+    <div className="pl-6">
+          <LoginLangSelector/>
+    </div>
     { !showOtp ? (
     <div className="selection:bg-indigo-500 selection:text-white">
       <div className="flex justify-center items-center">
         <div className="p-4 sm:p-8 flex-1">
           <div className="mx-auto overflow-hidden">
             <div className="text-center flex flex-col items-center">
-              <h1 className="text-3xl sm:text-4xl font-bold text-indigo-900">
-                Tạo tài khoản
+              <h1 className="text-2xl sm:text-3xl font-bold text-indigo-900">
+                <FormattedMessage id="signinpage.createaccount" />
               </h1>
               <form className="mt-5 w-5/6" action="" method="POST">
                 <div className="relative">
@@ -131,7 +138,7 @@ const SignupForm = () => {
                     htmlFor="name"
                     className=" absolute left-0 -top-3.5 text-gray-600 text-xs sm:text-sm transition-all peer-placeholder-shown:text-base peer-placeholder-shown:text-gray-400 peer-placeholder-shown:top-2 peer-focus:-top-3.5 peer-focus:text-gray-600 peer-focus:text-sm"
                   >
-                    Tên
+                    <FormattedMessage id="signinpage.name" />
                   </label>
                   <p className="text-red-500 fixed mt-1 text-xxs sm:text-sm">{formErrors.nameEr}</p>
                 </div>
@@ -163,7 +170,7 @@ const SignupForm = () => {
                     htmlFor="phoneNumber"
                     className="absolute left-0 -top-3.5 text-gray-600 text-xs sm:text-sm transition-all peer-placeholder-shown:text-base peer-placeholder-shown:text-gray-400 peer-placeholder-shown:top-2 peer-focus:-top-3.5 peer-focus:text-gray-600 peer-focus:text-sm"
                   >
-                    Số điện thoại
+                    <FormattedMessage id="signinpage.phoneNumber" />
                   </label>
                   <p className="text-red-500 fixed mt-1 text-xxs sm:text-sm">{formErrors.phoneNumberEr}</p>
                 </div>
@@ -172,7 +179,7 @@ const SignupForm = () => {
                     onClick={SignUp}
                     className={buttonstyle}
                   >
-                    Xác thực SMS
+                    <FormattedMessage id="signinpage.verify" />
               </button>
             </div>
           </div>
@@ -181,14 +188,14 @@ const SignupForm = () => {
     </div>) : (
       <div> 
       <div className="flex justify-center items-center">
-       <div className="p-6 sm:p-8 flex-1">
+       <div className="p-4 sm:p-8 flex-1">
          <div className="mx-auto overflow-hidden">
-           <div className="text-center">
-             <h1 className="text-lg pt-5 sm:text-5xl font-bold text-indigo-900">
-               Đợi chốc lát bạn nhé!
+           <div className="text-center flex flex-col items-center">
+             <h1 className="text-lg sm:text-5xl font-bold text-indigo-900">
+                <FormattedMessage id="sms.wait" />
              </h1>
 
-             <form className="mt-5 sm:mt-12" action="" method="POST">
+             <form className="mt-5 sm:mt-12 w-5/6" action="" method="POST">
                <OTPField 
                showOtp={showOtp}
                setshowOtp={setshowOtp}

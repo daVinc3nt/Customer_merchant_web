@@ -13,7 +13,7 @@ const LoginPage = () => {
     "bg-LoginRedGradient";
 
   return (
-  <div className="fixed z-50 inset-0 bg-red-100 flex flex-col items-center justify-center">
+    <div className=" flex flex-col items-center justify-center fixed z-50 inset-0 bg-red-100">
       <div className= "container w-11/12 h-120 lg:h-120 lg:w-4/6 max-w-5xl bg-white relative overflow-hidden rounded-lg">          
           <div
             id="signin"
@@ -76,10 +76,7 @@ const LoginPage = () => {
           
           </div>
       </div>
-      <div>
-          <LoginLangSelector/>
-      </div>
-  </div>
+    </div>
   );
 };
 
