@@ -3,26 +3,31 @@ import { FaPlus, FaMinus } from 'react-icons/fa';
 import Dropdown from "./ListBox";
 import DatePickerOrder from "./DatePickerOrder/DatePickerOrder";
 import { motion, Variants } from "framer-motion";
+import { FormattedMessage, useIntl } from "react-intl";
 
-const MoreDetailsForm = ({selectedOption3, setSelectedOption3, selectedOption4, setSelectedOption4}) => {
-  const typesOfGoods = ['Mỹ phẩm', 'Dược phẩm', 'Thực phẩm', 'Đồ uống', 'Vật liệu phục vụ sản xuất', 'Thiết bị, máy móc, đồ điện tử', 'Nội thất, trang trí', 'Bao bì, may mặc'];
-  const weightOptions = ['Dưới 500kg', '500 - 1000kg', '1001 - 1500kg', 'Trên 1500kg'];
-  const [value, setValue] = useState(0);
-  const [value1, setValue1] = useState(0);
-  const [value2, setValue2] = useState(0);
+const MoreDetailsForm = ({selectedOption3, setSelectedOption3, selectedOption4, setSelectedOption4,
+                          value, setValue, value1, setValue1, value2, setValue2}) => {
+  const intl = useIntl();
+  const typesOfGoods = [
+    intl.formatMessage({ id: 'OrderForm.MoreDetailsForm.typesOfGoods1' }),
+    intl.formatMessage({ id: 'OrderForm.MoreDetailsForm.typesOfGoods2' }),
+    intl.formatMessage({ id: 'OrderForm.MoreDetailsForm.typesOfGoods3' }),
+    intl.formatMessage({ id: 'OrderForm.MoreDetailsForm.typesOfGoods4' }),
+    intl.formatMessage({ id: 'OrderForm.MoreDetailsForm.typesOfGoods5' }),
+    intl.formatMessage({ id: 'OrderForm.MoreDetailsForm.typesOfGoods6' }),
+    intl.formatMessage({ id: 'OrderForm.MoreDetailsForm.typesOfGoods7' }),
+    intl.formatMessage({ id: 'OrderForm.MoreDetailsForm.typesOfGoods8' })
+  ];
+  const massOptions = [
+    intl.formatMessage({ id: 'OrderForm.MoreDetailsForm.massOption1' }),
+    intl.formatMessage({ id: 'OrderForm.MoreDetailsForm.massOption2' }),
+    intl.formatMessage({ id: 'OrderForm.MoreDetailsForm.massOption3' }),
+    intl.formatMessage({ id: 'OrderForm.MoreDetailsForm.massOption4' })
+  ]
   const tabContentVariants: Variants = {
-    initial: {
-      x: 20,
-      opacity: 0
-    },
-    enter: {
-      x: 0,
-      opacity: 1
-    },
-    exit: {
-      x: -20,
-      opacity: 0
-    }
+    initial: { x: 20, opacity: 0 },
+    enter: { x: 0, opacity: 1 },
+    exit: { x: -20, opacity: 0 }
   }
 
   const handleIncrement = () => {
@@ -58,8 +63,8 @@ const MoreDetailsForm = ({selectedOption3, setSelectedOption3, selectedOption4, 
       transition={{
         duration: .5
       }}
-      className="mt-2 text-2xl font-bold pl-6 text-black text-nowrap cursor-default">
-      Thêm chi tiết
+      className="mt-2 text-2xl font-bold px-4 xs:px-6 text-black text-nowrap cursor-default">
+      <FormattedMessage id="OrderForm.MoreDetailsForm.moreDetails"/>
     </motion.h1>
     <motion.div
       variants={tabContentVariants}
@@ -69,18 +74,18 @@ const MoreDetailsForm = ({selectedOption3, setSelectedOption3, selectedOption4, 
       transition={{
         duration: .5
       }}
-      className="flex flex-col items-stretch self-center w-11/12 mb-5 mt-2 bg-formBgColor-firstChild rounded-2xl"
+      className="flex flex-col items-stretch self-center w-full xs:w-11/12 mb-5 mt-2 bg-formBgColor-firstChild rounded-2xl"
     >
 
-      <h1 className="mt-4 text-sm font-bold pl-5 text-black text-nowrap cursor-default">Thời gian lấy hàng</h1>
+      <h1 className="mt-4 text-sm font-bold pl-5 text-black text-nowrap cursor-default truncate pr-2"><FormattedMessage id="OrderForm.MoreDetailsForm.pickupTime"/></h1>
 
       <DatePickerOrder />
 
-      <Dropdown name="Loại hàng hóa" options={typesOfGoods} selectedOption={selectedOption3} setSelectedOption={setSelectedOption3}/>
+      <Dropdown name={intl.formatMessage({ id: 'OrderForm.MoreDetailsForm.typesOfGoods' })} options={typesOfGoods} selectedOption={selectedOption3} setSelectedOption={setSelectedOption3}/>
 
-      <Dropdown name="Tổng trọng lượng" options={weightOptions} selectedOption={selectedOption4} setSelectedOption={setSelectedOption4}/>
+      <Dropdown name={intl.formatMessage({ id: 'OrderForm.MoreDetailsForm.totalMass' })} options={massOptions} selectedOption={selectedOption4} setSelectedOption={setSelectedOption4}/>
 
-      <h1 className="text-sm font-bold pl-5 text-black text-nowrap cursor-default">Kích thước (không bắt buộc)</h1>
+      <h1 className="text-sm font-bold pl-5 text-black text-nowrap cursor-default"><FormattedMessage id="OrderForm.MoreDetailsForm.dimensions"/></h1>
 
       <div className="flex flex-col sm:flex-row justify-center self-center w-11/12 rounded-2xl my-4">
 
@@ -88,12 +93,13 @@ const MoreDetailsForm = ({selectedOption3, setSelectedOption3, selectedOption4, 
           <input
             id="orderLength1"
             name="orderLength1"
+            type="text"
             value={value}
+            onChange={(e)=>setValue(parseFloat(e.target.value)? (parseFloat(e.target.value) > 50 ? 50 : (parseFloat(e.target.value) < 0 ? 0 : parseFloat(e.target.value))) : 0)}
             className="h-12 self-center w-full border border-gray-300 
                           rounded focus:outline-none focus:ring-2 cursor-default
                           placeholder-gray focus:ring-red-500 text-center text-black"
             placeholder="Value"
-            readOnly
           />
           <label
             htmlFor="orderLength1"
@@ -101,7 +107,7 @@ const MoreDetailsForm = ({selectedOption3, setSelectedOption3, selectedOption4, 
                       peer-placeholder-shown:text-sm peer-placeholder-shown:text-gray-700 peer-placeholder-shown:top-3.5 
                       peer-focus:-top-0 peer-focus:leading-5 peer-focus:text-red-500 peer-focus:text-xxs rounded-3xl"
           >
-            Dài (m)
+            <FormattedMessage id="OrderForm.MoreDetailsForm.length"/>
           </label>
           <button
             className="absolute top-1/2 h-12 w-10 right-0 flex items-center pointer-event-stroke
@@ -127,11 +133,11 @@ const MoreDetailsForm = ({selectedOption3, setSelectedOption3, selectedOption4, 
             name="orderLength2"
             type="text"
             value={value1}
+            onChange={(e)=>setValue1(parseFloat(e.target.value)? (parseFloat(e.target.value) > 50 ? 50 : (parseFloat(e.target.value) < 0 ? 0 : parseFloat(e.target.value))) : 0)}
             className="h-12 self-center w-full border border-gray-300 
                           rounded focus:outline-none focus:ring-2 cursor-default
                           placeholder-gray focus:ring-red-500 text-center text-black"
             placeholder="Value"
-            readOnly
           />
           <label
             htmlFor="orderLength2"
@@ -139,7 +145,7 @@ const MoreDetailsForm = ({selectedOption3, setSelectedOption3, selectedOption4, 
                       peer-placeholder-shown:text-sm peer-placeholder-shown:text-gray-700 peer-placeholder-shown:top-3.5 
                       peer-focus:-top-0 peer-focus:leading-5 peer-focus:text-red-500 peer-focus:text-xxs rounded-3xl"
           >
-            Rộng (m)
+            <FormattedMessage id="OrderForm.MoreDetailsForm.width"/>
           </label>
           <button
             className="absolute top-1/2 h-12 w-10 right-0 flex items-center pointer-event-stroke
@@ -165,11 +171,11 @@ const MoreDetailsForm = ({selectedOption3, setSelectedOption3, selectedOption4, 
             name="orderLength3"
             type="text"
             value={value2}
+            onChange={(e)=>setValue2(parseFloat(e.target.value)? (parseFloat(e.target.value) > 50 ? 50 : (parseFloat(e.target.value) < 0 ? 0 : parseFloat(e.target.value))) : 0)}
             className="h-12 self-center w-full border border-gray-300 
                           rounded focus:outline-none focus:ring-2 cursor-default
                           placeholder-gray focus:ring-red-500 text-center text-black"
             placeholder="Value"
-            readOnly
           />
           <label
             htmlFor="orderLength3"
@@ -177,7 +183,7 @@ const MoreDetailsForm = ({selectedOption3, setSelectedOption3, selectedOption4, 
                       peer-placeholder-shown:text-sm peer-placeholder-shown:text-gray-700 peer-placeholder-shown:top-3.5 
                       peer-focus:-top-0 peer-focus:leading-5 peer-focus:text-red-500 peer-focus:text-xxs rounded-3xl"
           >
-            Cao (m)
+            <FormattedMessage id="OrderForm.MoreDetailsForm.height"/>
           </label>
           <button
             className="absolute top-1/2 h-12 w-10 right-0 flex items-center pointer-event-stroke

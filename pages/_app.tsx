@@ -9,6 +9,7 @@ import { useState, useEffect } from "react";
 import { Libraries, LoadScript, LoadScriptProps } from "@react-google-maps/api";
 import { Spinner } from "@material-tailwind/react";
 function Loading() {
+  
   const router = useRouter();
   const [loading, setLoading] = useState(false);
   useEffect(() => {
@@ -81,9 +82,11 @@ function MyApp({ Component, pageProps }: AppProps) {
 
   return (
     <>
-      <Loading />
+      {/* <Loading /> */}
       <IntlProvider locale={locale} messages={messages[locale]}>
         <LoadScript
+          language={locale}
+          region="VN"
           libraries={googleMapsLibraries}
           googleMapsApiKey={"AIzaSyDQ0pDRDKSyAO4lm10ttEXa2_uoZmWQzHc"}
         >

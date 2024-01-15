@@ -56,15 +56,17 @@ const MapExport = ({ toggleCollapse }) => {
       };
       
       if (destination && !source) {
+        map.setZoom(12);
         map.panTo({ lat: destination.lat, lng: getNewLng(destination, !toggleCollapse ? 250 : 0) });
       } else if (source && !destination) {
-        map.panTo({ lat: source.lat, lng: getNewLng(source, !toggleCollapse ? 300 : 0) });
+        map.setZoom(12);
+        map.panTo({ lat: source.lat, lng: getNewLng(source, !toggleCollapse ? 250 : 0) });
       } else if (source && destination) {
         const midLat = (source.lat + destination.lat) / 2;
         const midLng = (source.lng + destination.lng) / 2;
         const distance = calculateDistance(source, destination);
         setMidPoint({ lat: midLat, lng: midLng });
-        map.setZoom(distance > 2000 ? (distance > 3000 ? (distance > 4000 ? 3 : 4) : 5) : 6);
+        map.setZoom(distance > 500 ? (distance > 1000 ? (distance > 2000 ? (distance > 3000 ? (distance > 4000 ? 3 : 4) : 5) : 6) : 10) : 12);
         const newLng = getNewLng({ lat: midLat, lng: midLng }, !toggleCollapse ? 250 : 0);
         map.panTo({ lat: midLat, lng: newLng });
       } else {

@@ -22,23 +22,24 @@ import {
   HelpIcon
 } from "./Icons";
 import { log } from "console";
+import { FormattedMessage, useIntl } from "react-intl";
 
-const menuItems = [
-  { id: 1, label: "Thêm mới", icon: AddIcon, link: "/dashboard/order" },
-  // { id: 2, label: "Định vị", icon: CompassIcon, link: "/dashboard/posts" },
-  { id: 2, label: "Số dư", icon: WalletIcon, link: "/dashboard/balance" },
-  { id: 3, label: "Lịch sử", icon: HistoryIcon, link: "/dashboard/orderhistory" },
-  { id: 4, label: "Thống kê", icon: GraphIcon, link: "/dashboard/reportpage"},
-  { id: 5, label: "Trợ giúp", icon: HelpIcon, link: "/dashboard/helpcenter"}
-];
 interface MyComponentProps {
   toggleCollapseMobile: boolean;
 }
 const Sidebar: React.FC<MyComponentProps> = ({ toggleCollapseMobile })  => {
   const [toggleCollapse, setToggleCollapse] = useState(false);
   const [isCollapsible, setIsCollapsible] = useState(false);
-
   const router = useRouter();
+  const intl = useIntl();
+  const menuItems = [
+    { id: 1, label: intl.formatMessage({ id: 'Sidebar.option1' }), icon: AddIcon, link: "/dashboard/order" },
+    // { id: 2, label: "Định vị", icon: CompassIcon, link: "/dashboard/posts" },
+    { id: 2, label: intl.formatMessage({ id: 'Sidebar.option2' }), icon: WalletIcon, link: "/dashboard/balance" },
+    { id: 3, label: intl.formatMessage({ id: 'Sidebar.option3' }), icon: HistoryIcon, link: "/dashboard/orderhistory" },
+    { id: 4, label: intl.formatMessage({ id: 'Sidebar.option4' }), icon: GraphIcon, link: "/dashboard/reportpage"},
+    { id: 5, label: intl.formatMessage({ id: 'Sidebar.option5' }), icon: HelpIcon, link: "/dashboard/helpcenter"}
+  ];
 
   const activeMenu = useMemo(
     () => menuItems.find((menu) => menu.link === router.pathname),
@@ -145,7 +146,7 @@ const Sidebar: React.FC<MyComponentProps> = ({ toggleCollapseMobile })  => {
             <motion.span 
             variants={leftSideVariant} initial="initial" animate="enter" exit="exit"
             transition={{ duration: .7 }}
-            className="text-xs text-white">Thành viên</motion.span>
+            className="text-xs text-white"><FormattedMessage id="Sidebar.member"/></motion.span>
           </div>
           )}
         </div>
@@ -188,7 +189,7 @@ const Sidebar: React.FC<MyComponentProps> = ({ toggleCollapseMobile })  => {
                 "text-md font-medium text-black"
               )}
             >
-              Đăng xuất
+              <FormattedMessage id="Sidebar.option6"/>
             </span>
           )}
         </div>
@@ -245,7 +246,7 @@ const Sidebar: React.FC<MyComponentProps> = ({ toggleCollapseMobile })  => {
             <motion.span 
               variants={leftSideVariant} initial="initial" animate="enter" exit="exit"
               transition={{ duration: .7 }}
-              className="text-xs text-white whitespace-nowrap">Thành viên</motion.span>
+              className="text-xs text-white whitespace-nowrap"><FormattedMessage id="Sidebar.member"/></motion.span>
           </div>
           )}
         </div>

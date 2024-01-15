@@ -1,26 +1,30 @@
-import React, { useState , useRef } from 'react';
-import { motion, Variants, useAnimation } from "framer-motion";
-import { HiDotsHorizontal , HiOutlineChevronDown } from 'react-icons/hi';
-import RechargeNotification from './RechargeNotification';
-import CreditCardNotification from './CreditCardNotification';
-import { MdOutlineAddCircle } from "react-icons/md";
-import { GiPayMoney } from "react-icons/gi";
+// components/BalancePage.js
+import React, { useState, useRef } from 'react';
+import { motion, Variants, useAnimation } from 'framer-motion';
+import { HiDotsHorizontal, HiOutlineChevronDown } from 'react-icons/hi';
+import { MdOutlineAddCircle } from 'react-icons/md';
+import { GiPayMoney } from 'react-icons/gi';
 import Link from 'next/link';
-import { BsCashCoin, BsBank2, BsCashStack  } from "react-icons/bs";
-import { RiPieChart2Fill } from "react-icons/ri";
-import { IoIosArrowBack } from "react-icons/io";
-import { SiZalo } from "react-icons/si";
-import { FaCreditCard } from "react-icons/fa";
+import { BsCashCoin, BsBank2, BsCashStack } from 'react-icons/bs';
+import { RiPieChart2Fill } from 'react-icons/ri';
+import { IoIosArrowBack } from 'react-icons/io';
+import { SiZalo } from 'react-icons/si';
+import { FaCreditCard } from 'react-icons/fa';
+import dynamic from 'next/dynamic';
+import RechargeNotification from './RechargeNotification';
 import TradeHistory from './TradeHistory';
 import WithdrawNotification from './WithdrawNotification';
+import { FormattedMessage } from 'react-intl';
+
+const CreditCardNotification = dynamic(() => import('./CreditCardNotification'));
 
 interface CustomerInfo {
   accountBalance: number;
   promotionalBalance: number;
-  CODBalance:number;
+  CODBalance: number;
 }
 
-const BalancePage = () => {
+const BalancePage = ({ }) => {
   const [showNotification, setShowNotification] = useState(false);
   const [showNotification2, setShowNotification2] = useState(false);
   const [showNotification3, setShowNotification3] = useState(false);
@@ -102,14 +106,14 @@ const BalancePage = () => {
             'boxShadow': '8px 8px 6px -1px rgba(0, 0, 0, 0.2)',
           }}>
             <div className="relative flex flex-col p-4 h-32 rounded-t-2xl">
-              <span className="text-sm text-white font-bold">Tài khoản chính</span>
+              <span className="text-sm text-white font-bold"><FormattedMessage id='BalancePage.card1.text1'/></span>
               <span className="text-2xl text-white font-extrabold">{new Intl.NumberFormat('vi-VN', { currency: 'VND' }).format(customerInfo.accountBalance)}₫</span>
-              <span className="absolute bottom-2 text-sm grow text-white whitespace-nowrap">Tài khoản khuyến mãi <b>₫{customerInfo.promotionalBalance}</b></span>
+              <span className="absolute bottom-2 text-sm grow text-white whitespace-nowrap"><FormattedMessage id='BalancePage.card1.text2'/> <b>₫{customerInfo.promotionalBalance}</b></span>
               <button className="absolute top-3 right-3 bg-red-600 rounded-full w-10 h-5 text-white hover:animate-hoverScale outline-2 outline-double outline-white" onClick={() => {setShowNotification2(true)}}><HiDotsHorizontal className="h-full w-full"/></button>
             </div>
             <button className="relative mx-[0.15rem] mt-0 mb-[0.15rem] bg-white grow rounded-b-[0.9rem]" onClick={() => {setShowNotification(true)}}>
               <MdOutlineAddCircle className="absolute text-red-500 w-10 h-5 top-1/2 -translate-y-1/2"/>
-              <span className="absolute left-10 text-red-500 font-bold top-1/2 -translate-y-1/2 pb-0.5">Nạp tiền</span>
+              <span className="absolute left-10 text-red-500 font-bold top-1/2 -translate-y-1/2 pb-0.5"><FormattedMessage id='BalancePage.card1.text3'/></span>
               <HiOutlineChevronDown className="absolute text-red-500 right-4 top-1/2 text-xl -translate-y-1/2 -rotate-90"/>
             </button>
           </motion.div>
@@ -123,14 +127,14 @@ const BalancePage = () => {
           >
             <div className="h-10 w-full rounded-t px-4">
               <div className="h-full w-full text-base font-semibold pt-3 border-b-2 border-gray-500">
-                <p>Tài khoản COD</p>
+                <FormattedMessage id='BalancePage.card2.text1'/>
               </div>
             </div>
             <div className="h-[6.5rem] px-4 flex items-center">
               <div className="relative flex flex-col h-full w-full py-3 pl-2">
-                <span className="text-xs text-black font-bold whitespace-nowrap">Số dư hiện tại</span>
+                <span className="text-xs text-black font-bold whitespace-nowrap"><FormattedMessage id='BalancePage.card2.text2'/></span>
                 <span className="text-xl text-black font-bold">{new Intl.NumberFormat('vi-VN', { currency: 'VND' }).format(customerInfo.CODBalance)}₫</span>
-                <Link href="" className="absolute bottom-2 text-xs grow text-gray-700 whitespace-nowrap underline">Xem cách sử dụng</Link>
+                <Link href="" className="absolute bottom-2 text-xs grow text-gray-700 whitespace-nowrap underline"><FormattedMessage id='BalancePage.card2.text3'/></Link>
               </div>
               <div className="rounded-tl-full h-full pt-5 border-l-4 border-gray-500 pl-6"><GiPayMoney className="w-20 h-20 text-gray-500"/></div>
             </div>
@@ -143,7 +147,7 @@ const BalancePage = () => {
                   className="w-full h-full flex items-center justify-center"
               >
                 <BsCashCoin className="mt-1 text-base"/>
-                <p className="ml-2 font-bold text-sm ">Rút tiền</p>
+                <p className="ml-2 font-bold text-sm "><FormattedMessage id='BalancePage.card2.text4'/></p>
               </motion.button></div>
 
               <div className="mr-2 w-1/2 pl-2"><motion.button
@@ -154,7 +158,7 @@ const BalancePage = () => {
                   className="w-full h-full flex items-center justify-center"
               >
                 <RiPieChart2Fill className="text-lg text-gray-600"/>
-                <p className="ml-1.5 font-bold text-sm">Thống kê</p>
+                <p className="ml-1.5 font-bold text-sm"><FormattedMessage id='BalancePage.card2.text5'/></p>
               </motion.button></div>
             </div>
           </motion.div>
@@ -163,13 +167,13 @@ const BalancePage = () => {
             transition={{ duration: .5, delay: .4}}
             className="my-1 bg-white rounded flex flex-col sm:mr-1 lg:mr-0">
               <div className="h-10 w-full rounded-t px-4">
-                <div className="h-full w-full text-base font-semibold pt-3 border-b-2 border-gray-500"><p>Tài khoản khác</p></div>
+                <div className="h-full w-full text-base font-semibold pt-3 border-b-2 border-gray-500"><FormattedMessage id='BalancePage.card3.text1'/></div>
               </div>
               <div className="w-full rounded-b">
                 <div className="relative w-full h-16 flex justify-start items-center">
                   <div className="absolute w-1/2 h-full border-b border-gray-300 left-1/2 -translate-x-1/2"></div>
                   <BsBank2 className="w-10 text-lg ml-2 text-blue-500"/>
-                  <span className="text-sm font-semibold pr-16 xl:pr-0 text-blue-500">Tài khoản ngân hàng</span>
+                  <span className="text-sm font-semibold pr-16 xl:pr-0 text-blue-500"><FormattedMessage id='BalancePage.card3.text2'/></span>
                   <div className="relative">
                     <button
                       onMouseEnter={showPopover}
@@ -205,7 +209,7 @@ const BalancePage = () => {
                     >
                       <div className="px-2 py-1 bg-gray-100 border-b border-gray-200 rounded-lg dark:border-gray-600 dark:bg-gray-700">
                         <h3 className="font-medium text-xs text-gray-900 dark:text-white whitespace-nowrap">
-                          Nhận tiền về tài khoản ngân hàng vào thứ ba hằng tuần
+                          <FormattedMessage id='BalancePage.card3.text6'/>
                         </h3>
                       </div>
                     </motion.div>
@@ -216,12 +220,12 @@ const BalancePage = () => {
                       transition={{ duration: 0.3 }}
                       className="absolute h-6 right-4 px-1.5 bg-white hover:bg-gray-300 border-2 border-gray-300 text-gray-500 text-xs font-bold rounded"
                   >
-                    Thêm
+                    <FormattedMessage id='BalancePage.card3.text3'/>
                   </motion.button>
                 </div>
                 <div className="relative w-full h-16 flex justify-start items-center">
                 <BsCashStack className="w-10 text-lg ml-2 text-green-500"/>
-                  <span className="text-sm font-semibold pr-14 lg:pr-0 text-green-500">Ví tiền mặt</span>
+                  <span className="text-sm font-semibold pr-14 lg:pr-0 text-green-500"><FormattedMessage id='BalancePage.card3.text4'/></span>
                   <div className="relative">
                     <button
                       onMouseEnter={showPopover2}
@@ -257,7 +261,7 @@ const BalancePage = () => {
                     >
                       <div className="px-2 py-1 bg-gray-100 border-b border-gray-200 rounded-lg dark:border-gray-600 dark:bg-gray-700">
                         <h3 className="font-medium text-xs text-gray-900 dark:text-white whitespace-nowrap">
-                          Tiền sẽ được giao tới trong vòng 24h từ lúc tạo yêu cầu
+                          <FormattedMessage id='BalancePage.card3.text7'/>
                         </h3>
                       </div>
                     </motion.div>
@@ -268,7 +272,7 @@ const BalancePage = () => {
                       transition={{ duration: 0.3 }}
                       className="absolute h-6 right-4 px-1.5 bg-white hover:bg-gray-300 border-2 border-gray-300 text-gray-500 text-xs font-bold rounded z-20"
                   >
-                    Kích hoạt
+                    <FormattedMessage id='BalancePage.card3.text5'/>
                   </motion.button>
                 </div>
               </div>
@@ -278,7 +282,7 @@ const BalancePage = () => {
             transition={{ duration: .5, delay: .6}}
             className="mt-1 mb-1 bg-white rounded ml-0 sm:ml-1 lg:ml-0">
               <div className="h-10 w-full rounded-t pl-4 pr-4">
-                <div className="h-full w-full text-base font-semibold pt-3 border-b-2 border-gray-500"><p>Phương thức thanh toán</p></div>
+                <div className="h-full w-full text-base font-semibold pt-3 border-b-2 border-gray-500"><FormattedMessage id='BalancePage.card4.text1'/></div>
               </div>
               <div className="w-full rounded-b">
               <div className="relative w-full h-16 flex justify-start items-center">
@@ -291,7 +295,7 @@ const BalancePage = () => {
                       transition={{ duration: 0.3 }}
                       className="absolute h-6 right-4 px-1.5 bg-white hover:bg-gray-300 border-2 border-gray-300 text-gray-500 text-xs font-bold rounded"
                   >
-                    Liên kết
+                    <FormattedMessage id='BalancePage.card4.text2'/>
                   </motion.button>
                 </div>
                 <div className="relative w-full h-16 flex justify-start items-center">
@@ -307,19 +311,19 @@ const BalancePage = () => {
                       transition={{ duration: 0.3 }}
                       className="absolute h-6 right-4 px-1.5 bg-white hover:bg-gray-300 border-2 border-gray-300 text-gray-500 text-xs font-bold rounded"
                   >
-                    Liên kết
+                    <FormattedMessage id='BalancePage.card4.text3'/>
                   </motion.button>
                 </div>
                 <div className="relative w-full h-16 flex justify-start items-center">
                 <FaCreditCard className="w-10 text-lg ml-2 text-green-600"/>
-                  <span className="text-sm font-bold pr-14 lg:pr-0 text-green-600">Thêm thẻ mới</span>
+                  <span className="text-sm font-bold pr-14 lg:pr-0 text-green-600"><FormattedMessage id='BalancePage.card4.text4'/></span>
                   <motion.button
                       whileHover={{ scale: 1.2 }}
                       whileTap={{ scale: 0.9 }}
                       transition={{ duration: 0.3 }}
                       className="absolute h-6 right-4 px-1.5 bg-white hover:bg-gray-300 border-2 border-gray-300 text-gray-500 text-xs font-bold rounded"
                   >
-                    Thêm
+                    <FormattedMessage id='BalancePage.card4.text5'/>
                   </motion.button>
                 </div>
               </div>
@@ -331,7 +335,7 @@ const BalancePage = () => {
             initial="initial" animate="enter" transition={{ duration: .8 }}
             className="bg-white h-full lg:rounded-xl flex flex-col max-h-96 lg:max-h-full">
             <div className="h-14 w-full rounded-t-xl pl-4 pr-4">
-              <div className="h-14 w-full text-black text-xl font-semibold pt-4 border-b-2 border-gray-500"><p>Lịch sử giao dịch</p></div>
+              <div className="h-14 w-full text-black text-xl font-semibold pt-4 border-b-2 border-gray-500"><FormattedMessage id='BalancePage.tradeHistory.text1'/></div>
             </div>
             <TradeHistory/>
           </motion.div>}
@@ -350,10 +354,10 @@ const BalancePage = () => {
                 >
                   <IoIosArrowBack className="text-2xl text-gray-600"/>
                 </motion.button>
-                <p className="mt-1.5 ml-4">Thống kê COD</p>
+                <p className="mt-1.5 ml-4"><FormattedMessage id='BalancePage.CODHistory.text1'/></p>
               </div>
             </div>
-            <TradeHistory/>
+            <div className='text-center pt-4 pb-44'><FormattedMessage id='BalancePage.CODHistory.text2'/></div>
           </motion.div>}
         </div>
         {showNotification && (

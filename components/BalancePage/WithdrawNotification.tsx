@@ -1,6 +1,7 @@
 import React, { useRef, useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import { IoMdClose } from "react-icons/io";
+import { FormattedMessage, useIntl } from "react-intl";
 
 interface RechargeNotificationProps {
   onClose: () => void;
@@ -13,14 +14,15 @@ const WithdrawNotification: React.FC<RechargeNotificationProps> = ({ onClose }) 
   const [selectedTopUpIndex, setSelectedTopUpIndex] = useState<number | null>(null);
   const notificationRef = useRef<HTMLDivElement>(null);
   const [isVisible, setIsVisible] = useState(true);
+  const intl = useIntl();
 
   const validate = (values: number): string => {
     var errors: string = "";
     if (values < 10000) {
-      errors = "Số tiền cần lớn hơn 10,000đ";
+      errors = intl.formatMessage({ id: 'BalancePage.withdrawNotification.text3' });
     }
     if (!values) {
-      errors = "Vui lòng nhập số tiền";
+      errors = intl.formatMessage({ id: 'BalancePage.withdrawNotification.text6' });
     }
     return errors;
   };
@@ -96,7 +98,7 @@ const WithdrawNotification: React.FC<RechargeNotificationProps> = ({ onClose }) 
         transition={{ duration: 0.5 }}
       >
         <div className="relative items-center flex-col flex h-10 w-full border-b-2 border-gray-300">
-          <div className="font-bold text-xl">Rút tiền</div>
+          <div className="font-bold text-xl"><FormattedMessage id="BalancePage.withdrawNotification.text1"/></div>
           <button className="absolute right-0 w-8 h-8 rounded-full mb-2 hover:bg-gray-300" onClick={handleClose}>
             <IoMdClose className="text-gray-500 w-5/6 h-5/6 ml-[0.2rem]"/>
           </button>
@@ -121,12 +123,12 @@ const WithdrawNotification: React.FC<RechargeNotificationProps> = ({ onClose }) 
               peer-focus:-top-0 peer-focus:leading-5 peer-focus:text-xxs
               ${formErrors ? 'peer-focus:text-red-500' : 'peer-focus:text-blue-600'} `}
           >
-            Nhập số tiền
+            <FormattedMessage id="BalancePage.withdrawNotification.text2"/>
           </label>
           <p className="text-red-500 absolute text-sm overflow-hidden pt-1">{formErrors}</p>
         </div>
         <div className="mt-2 pb-4 border-b-2 border-gray-300">
-          <p className="pl-1">Hoặc chọn giá trị top-up:</p>
+          <p className="pl-1"><FormattedMessage id="BalancePage.withdrawNotification.text4"/></p>
           <div className="grid grid-cols-2 xs:grid-cols-3  gap-2 mt-2">
             {topUpValues.map((value, index) => (
               <motion.button
@@ -149,7 +151,7 @@ const WithdrawNotification: React.FC<RechargeNotificationProps> = ({ onClose }) 
             whileTap={{ scale: 0.9 }}
             transition={{ duration: 0.3 }}
             className="w-full rounded-lg mt-5 mb-1 py-3 bg-buttonColorForm-default hover:bg-buttonColorForm-hover text-buttonColorForm-text">
-          Tiếp tục
+          <FormattedMessage id="BalancePage.withdrawNotification.text5"/>
         </motion.button>
       </motion.div>
     </motion.div>
