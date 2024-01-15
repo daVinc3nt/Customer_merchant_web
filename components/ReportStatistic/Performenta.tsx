@@ -1,9 +1,7 @@
-import React from 'react'
+import React from "react";
 
 const Performent = () => {
-  return (
-    <div>Performent</div>
-  )
-}
+  return <div>This feature is currently not available</div>;
+};
 
-export default Performent
+export default Performent;

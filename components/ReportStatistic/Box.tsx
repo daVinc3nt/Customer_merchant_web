@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-
+import { FormattedMessage } from "react-intl";
 const Box = ({
   data,
 }: {
@@ -27,7 +27,8 @@ const Box = ({
       </div>
       <div className="text-2xl">{data.num}</div>
       <div className="text-xs text-gray-400">
-        So với 7 ngày trước {data.percent}%
+        <FormattedMessage id="ReportStatistics.overview.compare" />{" "}
+        {data.percent}%
       </div>
     </div>
   );
