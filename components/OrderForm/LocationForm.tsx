@@ -322,7 +322,7 @@ const LocationForm = ({ value, setValue, value2, setValue2,
               className={`peer h-12 self-center w-full border border-gray-300 rounded focus:outline-none truncate bg-formBgColor-secondChild
                     ${formErrors.name ? 'ring-2 ring-red-500 focus:ring-2 focus:ring-red-500' : 'focus:ring-2 focus:ring-blue-500'} 
                     text-left placeholder-transparent pl-3 pt-2 text-headlineText-default pr-12`}
-              placeholder="hhahahaaa"
+              placeholder=""
               onChange={handleName}
               value={formValues.name}
             />
