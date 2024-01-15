@@ -30,6 +30,9 @@ const OrderForm = ({toggleCollapse, setToggleCollapse}) => {
   //State for MoreDetailsForm
   const [selectedOption3, setSelectedOption3] = useState<string>('');
   const [selectedOption4, setSelectedOption4] = useState<string>('');
+  const [height, setHeight] = useState(0);
+  const [width, setWidth] = useState(0);
+  const [length, setLength] = useState(0);
 
   const wrapperClasses = classNames(
     "relative bottom-0 px-4 pt-10 pb-4 ml-2 lg:ml-4  mt-2 lg:mt-4 bg-formBgColor-parent flex flex-col justify-between rounded-2xl z-20",
@@ -132,20 +135,26 @@ const OrderForm = ({toggleCollapse, setToggleCollapse}) => {
             <MoreDetailsForm selectedOption3={selectedOption3}
                              setSelectedOption3={setSelectedOption3}
                              selectedOption4={selectedOption4}
-                             setSelectedOption4={setSelectedOption4}/>
+                             setSelectedOption4={setSelectedOption4}
+                             value={height}
+                             setValue={setHeight}
+                             value1={width}
+                             setValue1={setWidth}
+                             value2={length}
+                             setValue2={setLength}/>
           )}
           {!toggleCollapse && !toggleCollapse2 && currentForm < 2 && (
             <div className="flex flex-col justify-start self-center w-full rounded-2xl">
               <div className="flex flex-col justify-start self-center w-full rounded-2xl">
 
-                <h1 className="mt-4 text-xs pb-1 text-black cursor-default"><FormattedMessage id="OrderForm.Compensation"/></h1>
+                <h1 className="mt-2 xs:mt-4 text-xs pb-1 text-black cursor-default"><FormattedMessage id="OrderForm.Compensation"/></h1>
                 <Link href="/order" className="text-xs underline  text-link-text text-nowrap">
                   <FormattedMessage id="OrderForm.Policy"/>
                 </Link>
 
               </div>
 
-              <button className="self-center w-full rounded-xl my-3 py-3 bg-buttonColorForm-default hover:bg-buttonColorForm-hover text-buttonColorForm-text" onClick={handleSubmitButton}>
+              <button className="self-center w-full rounded-lg mt-3 py-3 bg-buttonColorForm-default hover:bg-buttonColorForm-hover text-buttonColorForm-text" onClick={handleSubmitButton}>
                 <FormattedMessage id="OrderForm.Continue"/>
               </button>
             </div>
