@@ -98,7 +98,7 @@ const MultichoiceDropdown: React.FC<DropdownProps> = ({ name, options , selected
                   <li key={index}>
                     <button
                       type="button"
-                      className={`block h-9 text-sm border-b-[1px] z-20 text-left pl-2
+                      className={`block h-9 text-sm border-b-[1px] z-20 text-left pl-2 truncate pr-3
                                 ${index === options.length - 1
                           ? 'border-transparent hover:bg-gray-100 hover:rounded-b w-full'
                           : index === 0

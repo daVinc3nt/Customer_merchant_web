@@ -14,6 +14,7 @@ import {
   getDaysInMonth,
   getDay
 } from "date-fns";
+import { FormattedMessage } from "react-intl";
 
 type DatepickerType = "date" | "month" | "year";
 
@@ -314,7 +315,7 @@ const DatePickerOrder = () => {
 
               <div className="relative flex self-center items-center content-center sm:ml-3 flex-col pt-5 sm:pt-0">
                 <h1 className="sm:top-10 text-center text-md">
-                  Chọn giờ lấy hàng
+                  <FormattedMessage id="OrderForm.MoreDetailsForm.pickupTime2"/>
                 </h1>
 
                 <div className="flex flex-row my-5">
@@ -344,7 +345,7 @@ const DatePickerOrder = () => {
                   transition={{ duration: 0.3 }}
                   className="sm:bottom-8 px-5 py-1.5 w-11/12 bg-red-500 hover:bg-red-600 text-white rounded"
                 >
-                  Xác nhận
+                  <FormattedMessage id="OrderForm.MoreDetailsForm.pickupTime3"/>
                 </motion.button>
 
               </div>

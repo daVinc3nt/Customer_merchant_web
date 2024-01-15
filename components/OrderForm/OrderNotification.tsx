@@ -46,7 +46,7 @@ const OrderNotification: React.FC<OrderNotificationProps> = ({ onClose }) => {
     >
       <motion.div
         ref={notificationRef}
-        className="relative max-w-80 h-40 bg-white rounded-xl p-4 border-2 border-red-500"
+        className="relative max-w-80 h-44 xs:h-40 bg-white rounded-xl p-4 border-2 border-red-500"
         initial={{ scale: 0 }}
         animate={{ scale: isVisible ? 1 : 0 }}
         exit={{ scale: 0 }}

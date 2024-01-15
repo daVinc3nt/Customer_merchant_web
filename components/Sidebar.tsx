@@ -22,7 +22,7 @@ import {
   HelpIcon,
 } from "./Icons";
 import { log } from "console";
-import { useIntl, FormattedMessage } from "react-intl";
+import { FormattedMessage, useIntl } from "react-intl";
 
 interface MyComponentProps {
   toggleCollapseMobile: boolean;
@@ -75,8 +75,16 @@ const Sidebar: React.FC<MyComponentProps> = ({ toggleCollapseMobile }) => {
   ];
   const [toggleCollapse, setToggleCollapse] = useState(false);
   const [isCollapsible, setIsCollapsible] = useState(false);
-
   const router = useRouter();
+  const intl = useIntl();
+  const menuItems = [
+    { id: 1, label: intl.formatMessage({ id: 'Sidebar.option1' }), icon: AddIcon, link: "/dashboard/order" },
+    // { id: 2, label: "Định vị", icon: CompassIcon, link: "/dashboard/posts" },
+    { id: 2, label: intl.formatMessage({ id: 'Sidebar.option2' }), icon: WalletIcon, link: "/dashboard/balance" },
+    { id: 3, label: intl.formatMessage({ id: 'Sidebar.option3' }), icon: HistoryIcon, link: "/dashboard/orderhistory" },
+    { id: 4, label: intl.formatMessage({ id: 'Sidebar.option4' }), icon: GraphIcon, link: "/dashboard/reportpage"},
+    { id: 5, label: intl.formatMessage({ id: 'Sidebar.option5' }), icon: HelpIcon, link: "/dashboard/helpcenter"}
+  ];
 
   const activeMenu = useMemo(
     () => menuItems.find((menu) => menu.link === router.pathname),
@@ -162,22 +170,6 @@ const Sidebar: React.FC<MyComponentProps> = ({ toggleCollapseMobile }) => {
           </div>
 
           {!toggleCollapse && (
-            <div className="flex rounded-lg overflow-hidden items-center mt-10 p-3 w-full h-24 bg-LitghRedGradient">
-              <div
-                style={!toggleCollapse ? { width: "5rem" } : { width: "0rem" }}
-              >
-                <motion.img
-                  variants={leftSideVariant}
-                  initial="initial"
-                  animate="enter"
-                  exit="exit"
-                  transition={{ duration: 0.7 }}
-                  className="rounded-full object-cover"
-                  src={"/SunGlass.jpg"}
-                  alt=""
-                  width="70"
-                  height="70"
-                />
               </div>
               {!toggleCollapse && (
                 <div className="flex flex-col">
@@ -203,7 +195,6 @@ const Sidebar: React.FC<MyComponentProps> = ({ toggleCollapseMobile }) => {
                   </motion.span>
                 </div>
               )}
-            </div>
           )}
 
           <div
@@ -286,52 +277,7 @@ const Sidebar: React.FC<MyComponentProps> = ({ toggleCollapseMobile }) => {
             )}
           </div>
 
-          {!toggleCollapseMobile && (
-            <div className="flex rounded-lg items-center mt-10 p-2 w-full h-24 bg-LitghRedGradient">
-              <div
-                style={
-                  !toggleCollapseMobile ? { width: "5rem" } : { width: "0rem" }
-                }
-              >
-                <motion.img
-                  variants={leftSideVariant}
-                  initial="initial"
-                  animate="enter"
-                  exit="exit"
-                  transition={{ duration: 0.7 }}
-                  className="rounded-full object-cover"
-                  src={"/SunGlass.jpg"}
-                  alt=""
-                  width="60"
-                  height="60"
-                />
-              </div>
-              {!toggleCollapseMobile && (
-                <div className="flex flex-col">
-                  <motion.span
-                    variants={leftSideVariant}
-                    initial="initial"
-                    animate="enter"
-                    exit="exit"
-                    transition={{ duration: 0.7 }}
-                    className="font-bold text-md text-white whitespace-nowrap"
-                  >
-                    Trần Vĩ Quang
-                  </motion.span>
-                  <motion.span
-                    variants={leftSideVariant}
-                    initial="initial"
-                    animate="enter"
-                    exit="exit"
-                    transition={{ duration: 0.7 }}
-                    className="text-xs text-white whitespace-nowrap"
-                  >
-                    Thành viên
-                  </motion.span>
-                </div>
-              )}
-            </div>
-          )}
+
 
           <div
             className={`flex flex-col items-start ${
