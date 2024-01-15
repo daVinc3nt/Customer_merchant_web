@@ -1,5 +1,6 @@
 import React, { useRef, useEffect, useState } from "react";
 import { motion } from "framer-motion";
+import { FormattedMessage } from "react-intl";
 interface OrderNotificationProps {
   onClose: () => void; // Callback function to close the notification window
   select: string;
@@ -56,7 +57,9 @@ const ProblemExport: React.FC<OrderNotificationProps> = ({
         exit={{ scale: 0 }}
         transition={{ duration: 0.2 }}
       >
-        <div className="font-bold">Trợ giúp</div>
+        <div className="font-bold">
+          <FormattedMessage id="Helpcenter.help.more" />
+        </div>
         <motion.button
           transition={{ duration: 0.3 }}
           className="absolute top-0 right-0  px-4 py-2 bg-white text-stone-500 rounded-full"

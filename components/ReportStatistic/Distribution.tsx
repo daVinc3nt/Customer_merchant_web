@@ -1,9 +1,7 @@
-import React from 'react'
+import React from "react";
 
 const Distribution = () => {
-  return (
-    <div>Distribution</div>
-  )
-}
+  return <div>This feature is currently not available</div>;
+};
 
-export default Distribution
+export default Distribution;
