@@ -1,17 +1,23 @@
 import classNames from "classnames";
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { CollapsIcon } from "../Icons";
 import Link from "next/link";
 import LocationForm from "./LocationForm";
 import MoreDetailsForm from "./MoreDetailsForm";
 import OrderNotification from "./OrderNotification";
 import { motion } from "framer-motion";
-import { FormattedMessage } from "react-intl";
+import { FormattedMessage, useIntl } from "react-intl";
+import { DestinationContext } from "@/context/DestinationContext";
+import { SourceContext } from "@/context/SourceContext";
 
 const OrderForm = ({toggleCollapse, setToggleCollapse}) => {
   const [toggleCollapse2, setToggleCollapse2] = useState(false);
   const [currentForm, setCurrentForm] = useState<number>(0);
   const [showNotification, setShowNotification] = useState(false);
+  const intl = useIntl();
+  const [shake, setshake] = useState(false);
+  const { source, setSource } = useContext(SourceContext);
+  const { destination, setDestination } = useContext(DestinationContext);
 
   //State for LocationForm
   interface FormValues { name: string; phoneNum: string; address: string; }
@@ -56,8 +62,106 @@ const OrderForm = ({toggleCollapse, setToggleCollapse}) => {
     setToggleCollapse(!toggleCollapse);
   };
 
+  
+  const validate = (values: FormValues, type: number) => {
+    const PhoneRegex = /^\d+$/;
+    console.log(`1111 ${values}`)
+    if (type == 1 && !values.name) {
+      formErrors.name = intl.formatMessage({ id: 'OrderForm.LocationForm.error1' });
+    }
+    if (type == 2 && !values.address) {
+      formErrors.address = intl.formatMessage({ id: 'OrderForm.LocationForm.error2' });
+      console.log(formErrors.address)
+    } 
+    else if (type == 2 && values.address) {formErrors.address = ""}
+    if (type == 3) {
+      if (values.phoneNum === "") {
+        formErrors.phoneNum = intl.formatMessage({ id: 'OrderForm.LocationForm.error3' });
+      } else if (values.phoneNum[0] != "0" || !PhoneRegex.test(values.phoneNum)) {
+        formErrors.phoneNum = intl.formatMessage({ id: 'OrderForm.LocationForm.error4' });
+      } else if (values.phoneNum.length < 10) {
+        formErrors.phoneNum = intl.formatMessage({ id: 'OrderForm.LocationForm.error5' });
+      } else if (values.phoneNum.length > 10) {
+        formErrors.phoneNum = intl.formatMessage({ id: 'OrderForm.LocationForm.error6' });
+      }
+    }
+  };
+
+  const validate2 = (values: FormValues, type: number) => {
+    const PhoneRegex = /^\d+$/;
+    console.log(values)
+    if (type == 1 && !values.name) {
+      formErrors2.name = intl.formatMessage({ id: 'OrderForm.LocationForm.error1' });
+    }
+    if (type == 2 && !values.address) {
+      formErrors2.address = intl.formatMessage({ id: 'OrderForm.LocationForm.error2' });
+    } else if (type == 2 && values.address) {formErrors2.address = ""}
+    if (type == 3) {
+      if (values.phoneNum === "") {
+        formErrors2.phoneNum = intl.formatMessage({ id: 'OrderForm.LocationForm.error3' });
+      } else if (values.phoneNum[0] != "0" || !PhoneRegex.test(values.phoneNum)) {
+        formErrors2.phoneNum = intl.formatMessage({ id: 'OrderForm.LocationForm.error4' });
+      } else if (values.phoneNum.length < 10) {
+        formErrors2.phoneNum = intl.formatMessage({ id: 'OrderForm.LocationForm.error5' });
+      } else if (values.phoneNum.length > 10) {
+        formErrors2.phoneNum = intl.formatMessage({ id: 'OrderForm.LocationForm.error6' });
+      }
+    }
+  };
+
+  const handleAddress = async () => {
+    const value = valueSourceSearchBox && valueSourceSearchBox.label ? valueSourceSearchBox.label : "";
+    const updatedFormValues = { ...formValues, address: value };
+    setFormValues(updatedFormValues);
+    validate(formValues, 2);
+  };
+  
+  const handleAddress2 = async () => {
+    const value = valueDestinationSearchBox && valueDestinationSearchBox.label ? valueDestinationSearchBox.label : "";
+    const updatedFormValues = { ...formValues2, address: value };
+    setFormValues2(updatedFormValues);
+    validate2(formValues2, 2);
+  };
+  
+  const handleName = async () => {
+    validate(formValues, 1);
+  };
+  
+  const handleNum = async () => {
+    validate(formValues, 3);
+  };
+
+  const handleName2 = async () => {
+    validate2(formValues2, 1);
+  };
+  
+  const handleNum2 = async () => {
+    validate2(formValues2, 3);
+  };
+
   const handleSubmitButton = () => {
-    (currentForm < 1) ? setCurrentForm(currentForm + 1) : setShowNotification(true);
+    handleAddress();
+    handleName();
+    handleNum();
+    handleAddress2();
+    handleName2();
+    handleNum2();
+  
+    let { name, phoneNum, address } = formErrors;
+    if (name !== "" || phoneNum !== "" || address !== "") {
+      setshake(true);
+      return;
+    } else {
+      let { name: name2, phoneNum: phoneNum2, address: address2 } = formErrors2;
+      if (name2 !== "" || phoneNum2 !== "" || address2 !== "") {
+        setshake(true);
+        return;
+      }
+      else {
+        setshake(false);
+        currentForm < 1 ? setCurrentForm(currentForm + 1) : setShowNotification(true);
+      }
+    }
   };
 
   const handleGoBackButton = () => {
@@ -147,14 +251,14 @@ const OrderForm = ({toggleCollapse, setToggleCollapse}) => {
             <div className="flex flex-col justify-start self-center w-full rounded-2xl">
               <div className="flex flex-col justify-start self-center w-full rounded-2xl">
 
-                <h1 className="mt-2 xs:mt-4 text-xs pb-1 text-black cursor-default"><FormattedMessage id="OrderForm.Compensation"/></h1>
-                <Link href="/order" className="text-xs underline  text-link-text text-nowrap">
+                <h1 className="mt-2 xs:mt-2 text-xs text-black cursor-default hidden sm:block"><FormattedMessage id="OrderForm.Compensation"/></h1>
+                <Link href="/order" className="text-xs underline pt-2 sm:pt-1 text-link-text text-nowrap">
                   <FormattedMessage id="OrderForm.Policy"/>
                 </Link>
 
               </div>
 
-              <button className="self-center w-full rounded-lg mt-3 py-3 bg-buttonColorForm-default hover:bg-buttonColorForm-hover text-buttonColorForm-text" onClick={handleSubmitButton}>
+              <button className={`self-center w-full rounded-lg mt-3 py-3 bg-buttonColorForm-default hover:bg-buttonColorForm-hover text-buttonColorForm-text ${shake? 'animate-shake bg-gray-500 hover:bg-gray-500':''}`} onClick={handleSubmitButton}>
                 <FormattedMessage id="OrderForm.Continue"/>
               </button>
             </div>

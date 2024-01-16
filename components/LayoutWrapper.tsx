@@ -21,14 +21,14 @@ const Wrapper = ({ children }: LayoutProps) => {
   return (
     <div className="flex ">
       <Sidebar toggleCollapseMobile={toggleCollapseMobile}/>
-      <div className="flex-1 flex flex-col h-screen bg-red-800">
+      <div className="flex-1 flex flex-col h-screen bg-red-600">
         <div className="flex flex-col">
-          <header className="h-12 flex justify-end w-full items-center px-4 xl:px-2">
+          <header className="h-12 flex justify-end w-full items-center px-3 xl:px-2">
             <div className="flex items-center">
                 <div className="flex items-center">
-                  <div className="flex md:flex-row-reverse flex-row gap-2">
+                  <div className="flex flex-row gap-2">
                     <LangSelector/>
-                    <NotifyIcon/>
+                    <NotifyIcon />
                   </div>
                     <MobileMenu toggle ={handleSidebarToggleMobile}/>
                 </div>

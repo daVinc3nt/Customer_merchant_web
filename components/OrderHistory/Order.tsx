@@ -59,7 +59,7 @@ const App = () => {
   };
 
   return (
-    <div className="h-[calc(100vh-3rem)] w-full bg-gradient-to-b from-gray-100 to-gray-300 content-center overflow-y-scroll">
+    <div className="h-[calc(100vh-3rem)] w-full bg-gradient-to-b from-gray-100 to-gray-300 content-center overflow-y-scroll no-scrollbar">
       <motion.div
         variants={leftSideVariant}
         initial="initial"
@@ -68,8 +68,8 @@ const App = () => {
         transition={{ duration: 0.5 }}
         className="font-sans text-black antialiased rounded-xl"
       >
-        <nav className="justify-between flex-wrap bg-white p-6 rounded-xl">
-          <div className="flex justify-between flex-shrink-0 text-black mr-6">
+        <nav className="justify-between flex-wrap bg-white p-6 rounded-xl m-2">
+          <div className="flex justify-between flex-shrink-0 text-black sm:pb-2">
             <span className="font-semibold text-2xl tracking-tight">
               <FormattedMessage id="OrderHistory.title" />
             </span>
