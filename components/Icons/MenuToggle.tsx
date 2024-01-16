@@ -9,9 +9,9 @@ const MenuToggle = ({ toggle1, toggle2 }: { toggle1: any, toggle2: any }) => {
   return (
     <button
       onClick={handleClick}
-      className="pointer-events-auto z-50 pl-3 pt-1"
+      className="pointer-events-auto z-50 pl-3 pt-2.5"
     >
-      <svg width="30" height="30" viewBox="0 0 23 23">
+      <svg width="28" height="28" viewBox="0 0 24 24">
         <Path
           variants={{
             closed: { d: 'M 2 2.5 L 20 2.5' },

@@ -37,7 +37,7 @@ const App = () => {
   };
 
   return (
-    <div className="w-full ">
+    <div className="w-full">
       <motion.div
         variants={leftSideVariant}
         initial="initial"
@@ -46,8 +46,8 @@ const App = () => {
         transition={{ duration: 0.5 }}
         className="font-sans text-black antialiased rounded-xl"
       >
-        <nav className="justify-between flex-wrap bg-white p-6 rounded-xl ">
-          <div className="flex justify-between  flex-shrink-0 text-black mr-6">
+        <nav className="justify-between flex-wrap bg-white p-6 rounded-xl m-2">
+          <div className="flex justify-between  flex-shrink-0 text-black sm:pb-2">
             <span className="font-semibold text-2xl tracking-tight">
               <FormattedMessage id="ReportStatistics.title" />
             </span>
@@ -104,8 +104,8 @@ const App = () => {
         exit="exit"
         transition={{ duration: 0.5 }}
       >
-        <div className="text-black font-semibold text-sm ml-6 border-d border mr-6  ">
-          <div className="mt-5">
+        <div className="text-black font-semibold text-sm mx-2 bg-white p-4 rounded-lg">
+          <div>
             <p>
               <FormattedMessage id="ReportStatistics.time" />
             </p>

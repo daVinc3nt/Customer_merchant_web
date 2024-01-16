@@ -52,6 +52,12 @@ const Sidebar: React.FC<MyComponentProps> = ({ toggleCollapseMobile })  => {
     exit: { x: -20, opacity: 0 }
   }
 
+  const leftSideVariantMobile: Variants = {
+    initial: { x: 5, opacity: 0 },
+    enter: { x: 0, opacity: 1 },
+    exit: { x: -5, opacity: 0 }
+  }
+
   const wrapperClasses = classNames(
     "h-screen hidden lg:px-4 lg:flex pt-8 pb-4 bg-ligth justify-between flex-col",
     {
@@ -106,13 +112,13 @@ const Sidebar: React.FC<MyComponentProps> = ({ toggleCollapseMobile })  => {
         <div className="flex  items-center justify-between relative">
           <div className="flex items-center pl-1 gap-4">
             <LogoIcon />
-            <span
-              className={classNames("mt-2 text-2xl font-bold text-text", {
-              hidden: toggleCollapse,
-              })}
+            {!toggleCollapse && <motion.span
+              variants={leftSideVariant} initial="initial" animate="enter"
+              transition={{ duration: 0.5, delay: 0.2 }}
+              className={classNames("mt-2 text-2xl font-bold text-text")}
             >
               TDLogistics
-            </span>
+            </motion.span>}
           </div>
           {isCollapsible && (
             <button
@@ -206,13 +212,15 @@ const Sidebar: React.FC<MyComponentProps> = ({ toggleCollapseMobile })  => {
         <div className="flex items-center justify-between relative">
           <div className="flex items-center pl-1 gap-2">
             <LogoIcon />
-            <span
+            {!toggleCollapseMobile && <motion.span
+              variants={leftSideVariantMobile} initial="initial" animate="enter"
+              transition={{ duration: 0.5, delay: 0.2 }}
               className={classNames("mt-2 text-xl font-bold text-text", {
               hidden: toggleCollapseMobile,
               })}
             >
               TDLogistics
-            </span>
+            </motion.span>}
           </div>
           {isCollapsible && (
             <button
@@ -228,7 +236,7 @@ const Sidebar: React.FC<MyComponentProps> = ({ toggleCollapseMobile })  => {
         <div className="flex rounded-lg items-center mt-10 p-2 w-full h-24 bg-LitghRedGradient">
           <div style={!toggleCollapseMobile? { width: "5rem" }: { width: "0rem" }}>
             <motion.img
-              variants={leftSideVariant} initial="initial" animate="enter" exit="exit"
+              variants={leftSideVariantMobile} initial="initial" animate="enter" exit="exit"
               transition={{ duration: .7 }}
               className="rounded-full object-cover"
               src={"/SunGlass.jpg"}

@@ -36,7 +36,6 @@ const SignupForm = () => {
     const updatedFormValues = { ...formValues, name: value };
     setFormValues(updatedFormValues);
     validate(updatedFormValues, 1);
-    console.log(formErrors);
   };
   const handleEmail = async (change: string) => {
     const value = change;
