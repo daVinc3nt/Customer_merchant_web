@@ -11,7 +11,7 @@ const MobileMenu = ({ toggle }: { toggle: any }) => {
         <motion.nav
         initial={false}
         animate={isOpen ? 'open' : 'closed'}
-        className={`w-full z-50 lg:hidden ${
+        className={`w-full z-50 xl:hidden ${
             isOpen ? '' : 'pointer-events-none'
             }`}
         ref={containerRef}

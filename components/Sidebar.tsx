@@ -66,9 +66,9 @@ const Sidebar: React.FC<MyComponentProps> = ({ toggleCollapseMobile })  => {
     }
   );
   const wrapperClassesMobile = classNames(
-    "h-screen flex z-50 fixed lg:hidden px-4 pt-8 pb-4 bg-light justify-between flex-col",
+    "h-screen flex z-50 fixed overflow-y-scroll lg:hidden px-4 pt-8 pb-4 bg-light justify-between flex-col",
     {
-      ["w-48"]: !toggleCollapseMobile,
+      ["w-52"]: !toggleCollapseMobile,
       ["w-0 px-0"]: toggleCollapseMobile,
     }
   );
