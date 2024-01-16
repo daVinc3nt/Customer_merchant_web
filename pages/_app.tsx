@@ -84,7 +84,7 @@ function MyApp({ Component, pageProps }: AppProps) {
 
   return (
     <>
-      {/* <Loading /> */}
+      
       <IntlProvider locale={locale} messages={messages[locale]}>
         <LoadScript
           language={locale}
@@ -92,7 +92,7 @@ function MyApp({ Component, pageProps }: AppProps) {
           libraries={googleMapsLibraries}
           googleMapsApiKey={"AIzaSyDQ0pDRDKSyAO4lm10ttEXa2_uoZmWQzHc"}
         >
-          <Wrapper>
+          <Wrapper><Loading />
             <Component {...pageProps} />
           </Wrapper>
         </LoadScript>

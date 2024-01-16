@@ -16,7 +16,7 @@ const OverView = () => {
         <div className="mr-0">
           <button
             className="bg-red-500 hover:bg-red-600 text-white font-bold py-2 px-2
-                                        w-24 h-8 
+                                        w-24 h-10 
                                         sm:w-32 sm:h-10 
                                         rounded-full
                                         flex items-center justify-center"

@@ -55,6 +55,7 @@ const LocationForm = ({ value, setValue, value2, setValue2,
               };
               type == "source" ? setSource(currentLocation) : setDestination(currentLocation);
               type == "source" ? setValue({ label: name, value: currentLocation }) : setValue2({ label: name, value: currentLocation });
+              type == "source" ? setFormValues({...formValues, address: name}) : setFormValues2({...formValues2, address: name});
             })
             .catch((error) => {
               console.error("Error getting geocode:", error);
@@ -109,6 +110,7 @@ const LocationForm = ({ value, setValue, value2, setValue2,
               name: place.formatted_address,
               label: place.name
             })
+            setFormValues({...formValues, address:place.name})
           }
           else {
             setDestination({
@@ -117,12 +119,19 @@ const LocationForm = ({ value, setValue, value2, setValue2,
               name: place.formatted_address,
               label: place.name
             })
+            setFormValues2({...formValues2, address:place.name})
           }
         }
       })
     }
     else {
-      (type == "source") ? setSource(null) : setDestination(null);
+      if (type == "source"){
+        setSource(null);
+        setFormValues({...formValues, address: ""})
+      } else {
+        setDestination(null);
+        setFormValues2({...formValues2, address: ""})
+      }
     }
   }
 
@@ -234,7 +243,8 @@ const LocationForm = ({ value, setValue, value2, setValue2,
               value: value,
               placeholder: languageText[0],
               isClearable: true,
-              className: `peer h-12 self-center w-full border border-gray-300 focus:border-blue-300 rounded text-left pt-1 pr-10`,
+              className: `peer h-12 self-center w-full border border-gray-300 focus:border-blue-300 rounded text-left pt-1 pr-10
+              ${formErrors.address ? 'ring-2 ring-red-500 focus:ring-2 focus:ring-red-500' : 'focus:ring-2 focus:ring-blue-500'}`,
               components: {
                 DropdownIndicator: null,
                 LoadingIndicator: null,
@@ -261,11 +271,12 @@ const LocationForm = ({ value, setValue, value2, setValue2,
             }}
           />
           <label
-            className="absolute left-3 -top-2.5 bg-formBgColor-secondChild px-1 text-xxs leading-5 text-gray-600 transition-all rounded-3xl"
+            className={`absolute left-3 -top-2.5 bg-formBgColor-secondChild px-1 text-xxs leading-5 transition-all rounded-3xl
+            ${formErrors.address ? 'text-red-500' : 'text-gray-600'}`}
           >
             <FormattedMessage id="OrderForm.LocationForm.pickupAddress"/>
           </label>
-          <p className="text-red-500 absolute text-sm overflow-hidden pt-1">{formErrors.address}</p>
+          <p className="text-red-500 absolute text-sm overflow-hidden pt-1 truncate">{formErrors.address}</p>
           <button id="orderAddress" className="absolute top-1/2 h-12 w-10 right-0 flex items-center pointer-event-stroke
                   -translate-y-1/2
                   rounded-r-xl"
@@ -335,7 +346,7 @@ const LocationForm = ({ value, setValue, value2, setValue2,
             >
               <FormattedMessage id="OrderForm.LocationForm.sendersName"/>
             </label>
-            <p className="text-red-500 absolute text-sm overflow-hidden pt-1">{formErrors.name}</p>
+            <p className="text-red-500 absolute text-sm overflow-hidden pt-1 truncate">{formErrors.name}</p>
             <button className="absolute top-1/2 h-12 w-10 right-0 flex items-center pointer-event-stroke
                     -translate-y-1/2
                     rounded-r-xl">
@@ -369,7 +380,7 @@ const LocationForm = ({ value, setValue, value2, setValue2,
             >
               <FormattedMessage id="OrderForm.LocationForm.sendersNum"/>
             </label>
-            <p className="text-red-500 absolute text-sm overflow-hidden pt-1">{formErrors.phoneNum}</p>
+            <p className="text-red-500 absolute text-sm overflow-hidden pt-1 truncate">{formErrors.phoneNum}</p>
           </div>
 
         </div>
@@ -396,7 +407,8 @@ const LocationForm = ({ value, setValue, value2, setValue2,
               },
               placeholder: languageText[2],
               isClearable: true,
-              className: `peer h-12 self-center w-full border border-gray-300 focus:border-blue-300 rounded text-left pt-1 pr-10`,
+              className: `peer h-12 self-center w-full border border-gray-300 focus:border-blue-300 rounded text-left pt-1 pr-10
+              ${formErrors2.address ? 'ring-2 ring-red-500 focus:ring-2 focus:ring-red-500' : 'focus:ring-2 focus:ring-blue-500'}`,
               components: {
                 DropdownIndicator: null,
                 LoadingIndicator: null,
@@ -423,11 +435,12 @@ const LocationForm = ({ value, setValue, value2, setValue2,
             }}
           />
           <label
-            className="absolute left-3 -top-2.5 bg-formBgColor-secondChild px-1 text-xxs leading-5 text-gray-600 transition-all rounded-3xl"
+            className={`absolute left-3 -top-2.5 bg-formBgColor-secondChild px-1 text-xxs leading-5 transition-all rounded-3xl
+            ${formErrors2.address ? 'text-red-500' : 'text-gray-600'}`}
           >
             <FormattedMessage id="OrderForm.LocationForm.deliveryAddress"/>
           </label>
-          <p className="text-red-500 absolute text-sm overflow-hidden pt-1">{formErrors2.address}</p>
+          <p className="text-red-500 absolute text-sm overflow-hidden pt-1 truncate">{formErrors2.address}</p>
           <button className="absolute top-1/2 h-12 w-10 right-0 flex items-center pointer-event-stroke
                   -translate-y-1/2
                   rounded-r-xl"
@@ -458,7 +471,7 @@ const LocationForm = ({ value, setValue, value2, setValue2,
                         getCurrentLocation("destination");
                       }}
                     >
-                      Chọn vị trí hiện tại
+                      <FormattedMessage id="OrderForm.LocationForm.currentLocation"/>
                     </button>
                   </li>
                 </ul>
@@ -497,7 +510,7 @@ const LocationForm = ({ value, setValue, value2, setValue2,
             >
               <FormattedMessage id="OrderForm.LocationForm.recipientsName"/>
             </label>
-            <p className="text-red-500 absolute text-sm overflow-hidden text-ellipsis pt-1">{formErrors2.name}</p>
+            <p className="text-red-500 absolute text-sm overflow-hidden truncate pt-1">{formErrors2.name}</p>
             <button className="absolute top-1/2 h-12 w-10 right-0 flex items-center pointer-event-stroke
                     -translate-y-1/2
                     rounded-r-xl">
@@ -531,7 +544,7 @@ const LocationForm = ({ value, setValue, value2, setValue2,
             >
               <FormattedMessage id="OrderForm.LocationForm.recipientsNum"/>
             </label>
-            <p className="text-red-500 absolute text-sm overflow-hidden pt-1 text-clip">{formErrors2.phoneNum}</p>
+            <p className="text-red-500 absolute text-sm overflow-hidden pt-1 truncate">{formErrors2.phoneNum}</p>
           </div>
 
         </div>
