@@ -143,7 +143,7 @@ const OrderForm = ({toggleCollapse, setToggleCollapse}) => {
     handleAddress();
     handleName();
     handleNum();
-    // handleAddress2();
+    handleAddress2();
     handleName2();
     handleNum2();
   
@@ -251,8 +251,8 @@ const OrderForm = ({toggleCollapse, setToggleCollapse}) => {
             <div className="flex flex-col justify-start self-center w-full rounded-2xl">
               <div className="flex flex-col justify-start self-center w-full rounded-2xl">
 
-                <h1 className="mt-2 xs:mt-4 text-xs pb-1 text-black cursor-default"><FormattedMessage id="OrderForm.Compensation"/></h1>
-                <Link href="/order" className="text-xs underline  text-link-text text-nowrap">
+                <h1 className="mt-2 xs:mt-2 text-xs text-black cursor-default hidden sm:block"><FormattedMessage id="OrderForm.Compensation"/></h1>
+                <Link href="/order" className="text-xs underline pt-2 sm:pt-1 text-link-text text-nowrap">
                   <FormattedMessage id="OrderForm.Policy"/>
                 </Link>
 
