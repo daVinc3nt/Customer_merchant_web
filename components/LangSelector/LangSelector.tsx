@@ -41,7 +41,7 @@ const LangSelector = () => {
           initial={wrapperVariants.closed}
           variants={wrapperVariants}
           style={{ originY: "top", translateX: "-50%" }}
-          className="flex flex-col gap-2 p-2  z-50  rounded-lg bg-white shadow-xl absolute top-[120%] left-[50%] w-full overflow-hidden"
+          className="flex flex-col gap-2 p-1 z-50  rounded-lg bg-white shadow-xl absolute top-[120%] left-[50%] w-full overflow-hidden"
         >
           <Option handle={handleOnClick} Icon={FiEdit} text="English" />
           <Option handle={handleOnClick} Icon={FiPlusSquare} text="Tiếng Việt" />

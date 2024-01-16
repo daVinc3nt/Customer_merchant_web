@@ -1,8 +1,10 @@
 import React from "react";
 import Box from "./Box";
 import { info } from "console";
-import { FormattedMessage } from "react-intl";
+import { FormattedMessage, useIntl } from "react-intl";
+
 const OverView = () => {
+  const intl = useIntl();
   return (
     <div className="text-black ml-4 text-l mr-4 my-4">
       <div className="flex justify-between">
@@ -33,8 +35,12 @@ const OverView = () => {
           <div className="m-4">
             <Box
               data={{
-                text: "Đơn hàng",
-                info: "Đơn hàng hoàn thành",
+                text: intl.formatMessage({
+                  id: "ReportStatistics.overview.orderindex.option1",
+                }),
+                info: intl.formatMessage({
+                  id: "ReportStatistics.overview.orderindex.option1info",
+                }),
                 num: 0,
                 percent: 0,
               }}
@@ -43,8 +49,12 @@ const OverView = () => {
           <div className="m-4">
             <Box
               data={{
-                text: "Điểm giao",
-                info: "Tổng điểm giao hoàn thành",
+                text: intl.formatMessage({
+                  id: "ReportStatistics.overview.orderindex.option2",
+                }),
+                info: intl.formatMessage({
+                  id: "ReportStatistics.overview.orderindex.option2info",
+                }),
                 num: 0,
                 percent: 0,
               }}
@@ -53,8 +63,12 @@ const OverView = () => {
           <div className="m-4">
             <Box
               data={{
-                text: "Điểm giao thành công",
-                info: "Tỷ lệ tổng điểm giao thành công trên tổng đơn hàng",
+                text: intl.formatMessage({
+                  id: "ReportStatistics.overview.orderindex.option3",
+                }),
+                info: intl.formatMessage({
+                  id: "ReportStatistics.overview.orderindex.option3info",
+                }),
                 num: 0,
                 percent: 0,
               }}
@@ -63,8 +77,12 @@ const OverView = () => {
           <div className="m-4">
             <Box
               data={{
-                text: "Điểm giao thất bại",
-                info: "Tỷ lệ tổng điểm giao thất bại trên tổng đơn hàng",
+                text: intl.formatMessage({
+                  id: "ReportStatistics.overview.orderindex.option4",
+                }),
+                info: intl.formatMessage({
+                  id: "ReportStatistics.overview.orderindex.option4info",
+                }),
                 num: 0,
                 percent: 0,
               }}
@@ -80,8 +98,12 @@ const OverView = () => {
           <div className="m-4">
             <Box
               data={{
-                text: "Tổng phí",
-                info: "Tổng phí đơn hoàn thành",
+                text: intl.formatMessage({
+                  id: "ReportStatistics.overview.finindex.option1",
+                }),
+                info: intl.formatMessage({
+                  id: "ReportStatistics.overview.finindex.option1info",
+                }),
                 num: 0,
                 percent: 0,
               }}
@@ -90,8 +112,12 @@ const OverView = () => {
           <div className="m-4">
             <Box
               data={{
-                text: "Chiết khấu",
-                info: "Tổng chiết khấu theo mã giảm giá",
+                text: intl.formatMessage({
+                  id: "ReportStatistics.overview.finindex.option2",
+                }),
+                info: intl.formatMessage({
+                  id: "ReportStatistics.overview.finindex.option2info",
+                }),
                 num: 0,
                 percent: 0,
               }}
@@ -100,8 +126,12 @@ const OverView = () => {
           <div className="m-4">
             <Box
               data={{
-                text: "Thanh toán tiền mặt",
-                info: "Tổng phí thanh toán bằng tiền mặt",
+                text: intl.formatMessage({
+                  id: "ReportStatistics.overview.finindex.option3",
+                }),
+                info: intl.formatMessage({
+                  id: "ReportStatistics.overview.finindex.option3info",
+                }),
                 num: 0,
                 percent: 0,
               }}
@@ -110,8 +140,12 @@ const OverView = () => {
           <div className="m-4">
             <Box
               data={{
-                text: "Thanh toán tài khoản",
-                info: "Tổng phí thanh toán bằng tài khoản",
+                text: intl.formatMessage({
+                  id: "ReportStatistics.overview.finindex.option4",
+                }),
+                info: intl.formatMessage({
+                  id: "ReportStatistics.overview.finindex.option4info",
+                }),
                 num: 0,
                 percent: 0,
               }}
@@ -120,8 +154,12 @@ const OverView = () => {
           <div className="m-4">
             <Box
               data={{
-                text: "Hình thức thanh toán khác",
-                info: "Bao gồm khác hình thức thanh toán không phải tiền mặt và tài khoản",
+                text: intl.formatMessage({
+                  id: "ReportStatistics.overview.finindex.option5",
+                }),
+                info: intl.formatMessage({
+                  id: "ReportStatistics.overview.finindex.option5info",
+                }),
                 num: 0,
                 percent: 0,
               }}

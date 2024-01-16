@@ -3,16 +3,16 @@ import { HiDotsHorizontal, HiOutlineChevronDown } from 'react-icons/hi';
 import { FaUserCircle, FaMobile } from "react-icons/fa";
 import Dropdown from "./ListBox";
 import { AnimatePresence, motion, Variants } from "framer-motion";
-import { useIntl } from "react-intl";
+import { FormattedMessage, useIntl } from "react-intl";
 import GooglePlacesAutocomplete from "react-google-places-autocomplete";
 import { SourceContext } from "@/context/SourceContext";
 import { DestinationContext } from "@/context/DestinationContext";
 import { getGeocode } from "../MapRender/GetLocationAdress";
 
-const LocationForm = ({value, setValue, value2, setValue2,
-                      formValues, setFormValues, formErrors, setFormErrors,
-                      formValues2, setFormValues2, formErrors2, setFormErrors2,
-                      selectedOption1, setSelectedOption1, selectedOption2, setSelectedOption2}) => {
+const LocationForm = ({ value, setValue, value2, setValue2,
+  formValues, setFormValues, formErrors, setFormErrors,
+  formValues2, setFormValues2, formErrors2, setFormErrors2,
+  selectedOption1, setSelectedOption1, selectedOption2, setSelectedOption2 }) => {
   const intl = useIntl();
   const locationOptions = [
     intl.formatMessage({ id: 'OrderForm.LocationForm.locationOption1' }),
@@ -20,6 +20,12 @@ const LocationForm = ({value, setValue, value2, setValue2,
     intl.formatMessage({ id: 'OrderForm.LocationForm.locationOption3' }),
     intl.formatMessage({ id: 'OrderForm.LocationForm.locationOption4' }),
     intl.formatMessage({ id: 'OrderForm.LocationForm.locationOption5' }),
+  ];
+  const languageText = [
+    intl.formatMessage({ id: 'OrderForm.LocationForm.enterPickupAddress' }),
+    intl.formatMessage({ id: 'OrderForm.LocationForm.detailsPickupLocation' }),
+    intl.formatMessage({ id: 'OrderForm.LocationForm.enterDeliveryAddress' }),
+    intl.formatMessage({ id: 'OrderForm.LocationForm.detailsDeliveryLocation' }),
   ];
 
   //Context
@@ -30,6 +36,8 @@ const LocationForm = ({value, setValue, value2, setValue2,
   const containerRef1 = useRef<HTMLDivElement>(null);
   const dropdownRef1 = useRef<HTMLDivElement>(null);
   const [isOpen1, setIsOpen1] = useState(false);
+  const dropdownRef2 = useRef<HTMLDivElement>(null);
+  const [isOpen2, setIsOpen2] = useState(false);
 
   const getCurrentLocation = (type) => {
     if (navigator.geolocation) {
@@ -45,8 +53,8 @@ const LocationForm = ({value, setValue, value2, setValue2,
                 name: name,
                 label: name,
               };
-              type == "source" ? setSource(currentLocation): setDestination(currentLocation);
-              setValue({ label: name, value: currentLocation });
+              type == "source" ? setSource(currentLocation) : setDestination(currentLocation);
+              type == "source" ? setValue({ label: name, value: currentLocation }) : setValue2({ label: name, value: currentLocation });
             })
             .catch((error) => {
               console.error("Error getting geocode:", error);
@@ -59,17 +67,19 @@ const LocationForm = ({value, setValue, value2, setValue2,
     } else {
       console.error("Geolocation is not supported by this browser.");
     }
-  };  
+  };
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
-      if (
-        dropdownRef1.current &&
-        event.target &&
-        !dropdownRef1.current.contains(event.target as HTMLElement) &&
+      if (dropdownRef1.current && event.target && !dropdownRef1.current.contains(event.target as HTMLElement) &&
         ((event.target as HTMLElement).id !== `orderAddress`)
       ) {
         setIsOpen1(false);
+      }
+      if (dropdownRef2.current && event.target && !dropdownRef2.current.contains(event.target as HTMLElement) &&
+        ((event.target as HTMLElement).id !== `orderAddress2`)
+      ) {
+        setIsOpen2(false);
       }
     };
 
@@ -86,30 +96,31 @@ const LocationForm = ({value, setValue, value2, setValue2,
     exit: { x: -20, opacity: 0 }
   }
 
-  const getLatandLng = (place, type) =>{
-    if (place){
+  const getLatandLng = (place, type) => {
+    if (place) {
       const placeId = place.value.place_id;
       const service = new google.maps.places.PlacesService(document.createElement('div'));
-      service.getDetails({placeId},(place,status)=>{
-        if(status === "OK" && place.geometry && place.geometry.location){
-          if(type == "source"){
+      service.getDetails({ placeId }, (place, status) => {
+        if (status === "OK" && place.geometry && place.geometry.location) {
+          if (type == "source") {
             setSource({
-              lat:place.geometry.location.lat(),
-              lng:place.geometry.location.lng(),
-              name:place.formatted_address,
-              label:place.name
+              lat: place.geometry.location.lat(),
+              lng: place.geometry.location.lng(),
+              name: place.formatted_address,
+              label: place.name
             })
           }
           else {
             setDestination({
-              lat:place.geometry.location.lat(),
-              lng:place.geometry.location.lng(),
-              name:place.formatted_address,
-              label:place.name
+              lat: place.geometry.location.lat(),
+              lng: place.geometry.location.lng(),
+              name: place.formatted_address,
+              label: place.name
             })
           }
         }
-    })}
+      })
+    }
     else {
       (type == "source") ? setSource(null) : setDestination(null);
     }
@@ -147,22 +158,20 @@ const LocationForm = ({value, setValue, value2, setValue2,
     var errors: string = "";
     const PhoneRegex = /^\d+$/;
     if (type == 1 && !values.name) {
-      errors = "Thiếu tên mất rồi.";
+      errors = intl.formatMessage({ id: 'OrderForm.LocationForm.error1' });
     }
     if (type == 2 && !values.address) {
-      errors = "Thiếu địa chỉ mất rồi.";
+      errors = intl.formatMessage({ id: 'OrderForm.LocationForm.error2' });
     }
     if (type == 3) {
       if (values.phoneNum === "") {
-        errors = "Nhập số điện thoại vào nè!";
-      } else if (values.phoneNum[0] != "0") {
-        errors = "Số này không hợp lệ rồi!";
-      } else if (!PhoneRegex.test(values.phoneNum)) {
-        errors = "Số này không hợp lệ rồi!";
+        errors = intl.formatMessage({ id: 'OrderForm.LocationForm.error3' });
+      } else if (values.phoneNum[0] != "0" || !PhoneRegex.test(values.phoneNum)) {
+        errors = intl.formatMessage({ id: 'OrderForm.LocationForm.error4' });
       } else if (values.phoneNum.length < 10) {
-        errors = "Bạn nhập thiếu số rồi!";
+        errors = intl.formatMessage({ id: 'OrderForm.LocationForm.error5' });
       } else if (values.phoneNum.length > 10) {
-        errors = "Bạn mình ơi, dư số nào rồi!";
+        errors = intl.formatMessage({ id: 'OrderForm.LocationForm.error6' });
       }
     }
     return errors;
@@ -170,9 +179,8 @@ const LocationForm = ({value, setValue, value2, setValue2,
 
   return <div className="relative h-5/6 w-full mt-4 lg:mt-8 border-2 border-formBorder-parent rounded-md">
     {!isAtBottom && (<motion.button
-      variants={{initial: { opacity: 0 }, enter: { opacity: 1 }}}
-      initial="initial"
-      animate="enter"
+      variants={{ initial: { opacity: 0 }, enter: { opacity: 1 } }}
+      initial="initial" animate="enter"
       whileTap={{ opacity: 0, transition: { duration: 0 } }}
       transition={{ duration: 1, delay: 1 }}
       className="absolute bg-scrollBottomBt-default p-1 rounded-3xl bottom-3 hover:bg-scrollBottomBt-hover
@@ -200,35 +208,31 @@ const LocationForm = ({value, setValue, value2, setValue2,
 
       <motion.h1
         variants={tabContentVariants}
-        initial="initial"
-        animate="enter"
-        exit="exit"
+        initial="initial" animate="enter" exit="exit"
         transition={{ duration: .5 }}
-        className="mt-2 text-2xl pl-6 text-headlineText-default font-bold text-nowrap cursor-default">
-        Địa điểm
+        className="mt-2 text-2xl pl-4 xs:pl-6 text-headlineText-default font-bold text-nowrap cursor-default">
+        <FormattedMessage id="OrderForm.LocationForm.location"/>
       </motion.h1>
-      
+
       <motion.div
         variants={tabContentVariants}
-        initial="initial"
-        animate="enter"
-        exit="exit"
+        initial="initial" animate="enter" exit="exit"
         transition={{ duration: .5 }}
-        className="bg-formBgColor-secondChild flex flex-col items-stretch self-center w-11/12 mb-5 mt-2 bg-transparent rounded-2xl border-2 border-formBorder-children"
+        className="bg-formBgColor-secondChild flex flex-col items-stretch self-center w-full xs:w-11/12 mb-5 mt-2 bg-transparent xs:rounded-2xl border-y-2 xs:border-2 border-formBorder-children pb-6"
       >
 
-        <h1 className="mt-4 text-sm font-bold pl-5 text-headlineText-default text-nowrap cursor-default">Địa điểm lấy hàng</h1>
+        <h1 className="mt-4 text-sm font-bold pl-5 text-headlineText-default text-nowrap cursor-default"><FormattedMessage id="OrderForm.LocationForm.pickupLocation"/></h1>
 
         <div className={`relative self-center w-11/12 ${formErrors.address ? 'mb-5' : 'mb-2'} mt-3`} onClick={() => setIsOpen1(!isOpen1)} >
           <GooglePlacesAutocomplete
             selectProps={{
               id: "orderAddress",
-              onChange:(place)=>{
-                          getLatandLng(place, "source");
-                          setValue(place)
-                        },
+              onChange: (place) => {
+                getLatandLng(place, "source");
+                setValue(place);
+              },
               value: value,
-              placeholder: "Nhập địa chỉ lấy hàng",
+              placeholder: languageText[0],
               isClearable: true,
               className: `peer h-12 self-center w-full border border-gray-300 focus:border-blue-300 rounded text-left pt-1 pr-10`,
               components: {
@@ -242,68 +246,69 @@ const LocationForm = ({value, setValue, value2, setValue2,
                   border: "none",
                   boxShadow: state.isFocused ? "none" : provided.boxShadow,
                   "&:hover": {
-                    border: "none"
-                  }
+                    border: "none",
+                  },
                 }),
                 placeholder: (provided) => ({
                   ...provided,
                   color: "#4a5568",
                   fontSize: "0.875rem",
+                  whiteSpace: "nowrap",
+                  overflow: "hidden",
+                  textOverflow: "ellipsis",
                 }),
               },
             }}
           />
           <label
-            className="absolute left-3 -top-2.5 bg-white px-1 text-xxs leading-5 text-gray-600 transition-all rounded-3xl"
+            className="absolute left-3 -top-2.5 bg-formBgColor-secondChild px-1 text-xxs leading-5 text-gray-600 transition-all rounded-3xl"
           >
-            Địa chỉ lấy hàng
+            <FormattedMessage id="OrderForm.LocationForm.pickupAddress"/>
           </label>
           <p className="text-red-500 absolute text-sm overflow-hidden pt-1">{formErrors.address}</p>
           <button id="orderAddress" className="absolute top-1/2 h-12 w-10 right-0 flex items-center pointer-event-stroke
                   -translate-y-1/2
                   rounded-r-xl"
-                  onClick={()=>{setIsOpen1(!isOpen1)}}>
+            onClick={() => { setIsOpen1(!isOpen1) }}>
             <HiDotsHorizontal id="orderAddress" className={`text-gray-400 w-full border-l-2 ${formErrors.address ? 'border-red-500' : ''}`} />
           </button>
           <AnimatePresence>
-          {isOpen1 && (
-            <motion.div
-              ref={dropdownRef1}
-              initial="initial"
-              animate="animate"
-              exit="exit"
-              variants={{ initial: { opacity: 0, scale: 0.9 }, animate: { opacity: 1, scale: 1 }, exit: { opacity: 0, scale: 0.9 } }}
-              transition={{ duration: 0.3 }}
-              className={`right-0 -top-10 absolute w-full xs:w-1/2 rounded bg-white border-[1px] border-gray-300`}
-            >
-              <ul
-                role="menu"
-                aria-orientation="vertical"
-                aria-labelledby="options-menu"
-                className={`rounded z-30`}
+            {isOpen1 && (
+              <motion.div
+                ref={dropdownRef1}
+                initial="initial" animate="animate" exit="exit"
+                variants={{ initial: { opacity: 0, scale: 0.9 }, animate: { opacity: 1, scale: 1 }, exit: { opacity: 0, scale: 0.9 } }}
+                transition={{ duration: 0.3 }}
+                className={`right-0 -top-10 absolute w-full xs:w-1/2 rounded bg-white border-[1px] border-gray-300`}
               >
-                <li key={1}>
-                <button
-                    type="button"
-                    className={`block h-9 w-full text-sm z-20 text-center pl-2 rounded border-gray-300 hover:bg-gray-100 hover:rounded-t text-gray-700}`}
+                <ul
+                  role="menu"
+                  aria-orientation="vertical"
+                  aria-labelledby="options-menu"
+                  className={`rounded z-30`}
+                >
+                  <li key={1}>
+                    <button
+                      type="button"
+                      className={`block h-9 w-full text-sm z-20 text-center rounded border-gray-300 hover:bg-gray-100 hover:rounded-t text-gray-700}`}
                       onClick={() => {
-                          setIsOpen1(false);
-                          getCurrentLocation("source");
-                        }}
-                  >
-                    Chọn vị trí hiện tại
-                  </button>
-                </li>
-              </ul>
-            </motion.div>
-          )}
-        </AnimatePresence>
+                        setIsOpen1(false);
+                        getCurrentLocation("source");
+                      }}
+                    >
+                      <FormattedMessage id="OrderForm.LocationForm.currentLocation"/>
+                    </button>
+                  </li>
+                </ul>
+              </motion.div>
+            )}
+          </AnimatePresence>
         </div>
 
-        <Dropdown name="Chi tiết địa điểm" options={locationOptions} selectedOption={selectedOption1} setSelectedOption={setSelectedOption1}/>
+        <Dropdown name={languageText[1]} options={locationOptions} selectedOption={selectedOption1} setSelectedOption={setSelectedOption1} />
 
         <div className="flex flex-col self-center items-left h-6 w-11/12 mb-4">
-          <button className="h-6 w-2/6 bg-light pointer-event-stroke text-xs text-left text-headlineText-default hover:text-orange-600" style={{ whiteSpace: 'nowrap' }}>+ Chi tiết địa chỉ
+          <button className="h-6 w-2/6 bg-formBgColor-secondChild pointer-event-stroke text-xs text-left text-headlineText-default hover:text-orange-600" style={{ whiteSpace: 'nowrap' }}>+ <FormattedMessage id="OrderForm.LocationForm.detailsPickupAddress"/>
           </button>
         </div>
 
@@ -314,10 +319,10 @@ const LocationForm = ({value, setValue, value2, setValue2,
               id="orderName"
               name="orderName"
               type="text"
-              className={`peer h-12 self-center w-full border border-gray-300 rounded focus:outline-none  truncate
+              className={`peer h-12 self-center w-full border border-gray-300 rounded focus:outline-none truncate bg-formBgColor-secondChild
                     ${formErrors.name ? 'ring-2 ring-red-500 focus:ring-2 focus:ring-red-500' : 'focus:ring-2 focus:ring-blue-500'} 
                     text-left placeholder-transparent pl-3 pt-2 text-headlineText-default pr-12`}
-              placeholder="Tên người gửi"
+              placeholder=""
               onChange={handleName}
               value={formValues.name}
             />
@@ -328,7 +333,7 @@ const LocationForm = ({value, setValue, value2, setValue2,
                     peer-focus:-top-0 peer-focus:leading-5 peer-focus:text-xxs
                     ${formErrors.name ? 'peer-focus:text-red-500' : 'peer-focus:text-blue-600'}`}
             >
-              Tên người gửi
+              <FormattedMessage id="OrderForm.LocationForm.sendersName"/>
             </label>
             <p className="text-red-500 absolute text-sm overflow-hidden pt-1">{formErrors.name}</p>
             <button className="absolute top-1/2 h-12 w-10 right-0 flex items-center pointer-event-stroke
@@ -343,10 +348,10 @@ const LocationForm = ({value, setValue, value2, setValue2,
               id="orderPhoneNum"
               name="orderPhoneNum"
               type="text"
-              className={`peer h-12 self-center w-full border border-gray-300 rounded focus:outline-none truncate
+              className={`peer h-12 self-center w-full border border-gray-300 rounded focus:outline-none truncate bg-formBgColor-secondChild
                     ${formErrors.phoneNum ? 'ring-2 ring-red-500 focus:ring-2 focus:ring-red-500' : 'focus:ring-2 focus:ring-blue-500'} 
                     text-left placeholder-transparent pl-3 pt-2 text-headlineText-default pr-12`}
-              placeholder="Số điện thoại"
+              placeholder=""
               onChange={handleNum}
               value={formValues.phoneNum}
             />
@@ -362,40 +367,34 @@ const LocationForm = ({value, setValue, value2, setValue2,
                     peer-focus:-top-0 peer-focus:leading-5 peer-focus:text-xxs 
                     ${formErrors.phoneNum ? 'peer-focus:text-red-500' : 'peer-focus:text-blue-600'}`}
             >
-              Số điện thoại
+              <FormattedMessage id="OrderForm.LocationForm.sendersNum"/>
             </label>
             <p className="text-red-500 absolute text-sm overflow-hidden pt-1">{formErrors.phoneNum}</p>
           </div>
 
         </div>
 
-        <button className="self-center w-11/12 rounded-xl mb-4 mt-7 py-3 bg-buttonColorForm-default hover:bg-buttonColorForm-hover text-buttonColorForm-text">
-          Xác nhận
-        </button>
-
       </motion.div>
 
       <motion.div
         variants={tabContentVariants}
-        initial="initial"
-        animate="enter"
-        exit="exit"
+        initial="initial" animate="enter" exit="exit"
         transition={{ duration: .5 }}
-        className="bg-formBgColor-secondChild flex flex-col items-stretch self-center w-11/12 mb-5 mt-2 rounded-2xl border-2 border-formBorder-children"
+        className="bg-formBgColor-secondChild flex flex-col items-stretch self-center w-full xs:w-11/12 mb-5 mt-2 xs:rounded-2xl border-y-2 xs:border-2 border-formBorder-children"
       >
 
-        <h1 className="mt-4 text-sm font-bold pl-5 text-headlineText-default text-nowrap cursor-default">Địa điểm giao hàng</h1>
+        <h1 className="mt-4 text-sm font-bold pl-5 text-headlineText-default text-nowrap cursor-default"><FormattedMessage id="OrderForm.LocationForm.deliveryLocation"/></h1>
 
-        <div className={`relative self-center w-11/12 ${formErrors2.address ? 'mb-5' : 'mb-2'} mt-3`}>
-        <GooglePlacesAutocomplete
+        <div className={`relative self-center w-11/12 ${formErrors2.address ? 'mb-5' : 'mb-2'} mt-3`} onClick={() => { setIsOpen2(!isOpen2) }}>
+          <GooglePlacesAutocomplete
             selectProps={{
               id: "orderAddress2",
               value: value2,
-              onChange:(place)=>{
-                                getLatandLng(place, "destination");
-                                setValue2(place)
-                              },
-              placeholder: "Nhập địa chỉ giao hàng",
+              onChange: (place) => {
+                getLatandLng(place, "destination");
+                setValue2(place)
+              },
+              placeholder: languageText[2],
               isClearable: true,
               className: `peer h-12 self-center w-full border border-gray-300 focus:border-blue-300 rounded text-left pt-1 pr-10`,
               components: {
@@ -416,41 +415,76 @@ const LocationForm = ({value, setValue, value2, setValue2,
                   ...provided,
                   color: "#4a5568",
                   fontSize: "0.875rem",
+                  whiteSpace: "nowrap",
+                  overflow: "hidden",
+                  textOverflow: "ellipsis",
                 }),
               },
             }}
           />
           <label
-            className="absolute left-3 -top-2.5 bg-white px-1 text-xxs leading-5 text-gray-600 transition-all rounded-3xl"
+            className="absolute left-3 -top-2.5 bg-formBgColor-secondChild px-1 text-xxs leading-5 text-gray-600 transition-all rounded-3xl"
           >
-            Địa chỉ giao hàng
+            <FormattedMessage id="OrderForm.LocationForm.deliveryAddress"/>
           </label>
           <p className="text-red-500 absolute text-sm overflow-hidden pt-1">{formErrors2.address}</p>
           <button className="absolute top-1/2 h-12 w-10 right-0 flex items-center pointer-event-stroke
                   -translate-y-1/2
-                  rounded-r-xl">
+                  rounded-r-xl"
+            onClick={() => {setIsOpen2(!isOpen2)}}>
             <HiDotsHorizontal className={`text-gray-400 w-full border-l-2 ${formErrors2.address ? 'border-red-500' : ''}`} />
           </button>
+          <AnimatePresence>
+            {isOpen2 && (
+              <motion.div
+                ref={dropdownRef2}
+                initial="initial" animate="animate" exit="exit"
+                variants={{ initial: { opacity: 0, scale: 0.9 }, animate: { opacity: 1, scale: 1 }, exit: { opacity: 0, scale: 0.9 } }}
+                transition={{ duration: 0.3 }}
+                className={`right-0 -top-10 absolute w-full xs:w-1/2 rounded bg-white border-[1px] border-gray-300`}
+              >
+                <ul
+                  role="menu"
+                  aria-orientation="vertical"
+                  aria-labelledby="options-menu"
+                  className={`rounded z-30`}
+                >
+                  <li key={1}>
+                    <button
+                      type="button"
+                      className={`block h-9 w-full text-sm z-20 text-center rounded border-gray-300 hover:bg-gray-100 hover:rounded-t text-gray-700}`}
+                      onClick={() => {
+                        setIsOpen2(false);
+                        getCurrentLocation("destination");
+                      }}
+                    >
+                      Chọn vị trí hiện tại
+                    </button>
+                  </li>
+                </ul>
+              </motion.div>
+            )}
+          </AnimatePresence>
         </div>
 
-        <Dropdown name="Chi tiết địa điểm" options={locationOptions} selectedOption={selectedOption2} setSelectedOption={setSelectedOption2}/>
+        <Dropdown name={languageText[3]} options={locationOptions} selectedOption={selectedOption2} setSelectedOption={setSelectedOption2} />
 
         <div className="flex flex-col self-center items-left h-6 w-11/12 mb-4">
-          <button className="h-6 w-2/6 bg-light pointer-event-stroke text-xs text-left text-headlineText-default hover:text-orange-600" style={{ whiteSpace: 'nowrap' }}>+ Chi tiết địa chỉ
+          <button className="h-6 w-2/6 bg-formBgColor-secondChild pointer-event-stroke text-xs text-left text-headlineText-default hover:text-orange-600" style={{ whiteSpace: 'nowrap' }}>+ <FormattedMessage id="OrderForm.LocationForm.detailsDeliveryAddress"/>
           </button>
         </div>
 
-        <div className="flex flex-col sm:flex-row justify-center self-center w-11/12 rounded-2xl">
+        <div className="flex flex-col sm:flex-row justify-center self-center w-11/12 rounded-2xl pb-6">
 
           <div className="relative self-center sm:grow w-full">
             <input
               id="receiverName"
               name="receiverName"
               type="text"
-              className={`peer h-12 self-center w-full border border-gray-300 rounded focus:outline-none truncate
+              className={`peer h-12 self-center w-full border border-gray-300 rounded focus:outline-none truncate bg-formBgColor-secondChild
                     ${formErrors2.name ? 'ring-2 ring-red-500 focus:ring-2 focus:ring-red-500' : 'focus:ring-2 focus:ring-blue-500'}  
                     text-left placeholder-transparent pl-3 pt-2 text-headlineText-default pr-12`}
-              placeholder="Tên người nhận"
+              placeholder=""
               onChange={handleName2}
               value={formValues2.name}
             />
@@ -461,7 +495,7 @@ const LocationForm = ({value, setValue, value2, setValue2,
                     peer-focus:-top-0 peer-focus:leading-5 peer-focus:text-xxs 
                     ${formErrors2.name ? 'peer-focus:text-red-500' : 'peer-focus:text-blue-600'}`}
             >
-              Tên người nhận
+              <FormattedMessage id="OrderForm.LocationForm.recipientsName"/>
             </label>
             <p className="text-red-500 absolute text-sm overflow-hidden text-ellipsis pt-1">{formErrors2.name}</p>
             <button className="absolute top-1/2 h-12 w-10 right-0 flex items-center pointer-event-stroke
@@ -476,10 +510,10 @@ const LocationForm = ({value, setValue, value2, setValue2,
               id="receiverPhoneNum"
               name="receiverPhoneNum"
               type="text"
-              className={`peer h-12 self-center w-full border border-gray-300 rounded focus:outline-none truncate
+              className={`peer h-12 self-center w-full border border-gray-300 rounded focus:outline-none bg-formBgColor-secondChild truncate
                     ${formErrors2.phoneNum ? 'ring-2 ring-red-500 focus:ring-2 focus:ring-red-500' : 'focus:ring-2 ring-blue-500'} 
                     text-left placeholder-transparent pl-3 pt-2 text-headlineText-default pr-12`}
-              placeholder="Số điện thoại"
+              placeholder=""
               onChange={handleNum2}
               value={formValues2.phoneNum}
             />
@@ -495,16 +529,12 @@ const LocationForm = ({value, setValue, value2, setValue2,
                     peer-focus:-top-0 peer-focus:leading-5 peer-focus:text-xxs 
                     ${formErrors2.phoneNum ? 'peer-focus:text-red-500' : 'peer-focus:text-blue-600'}`}
             >
-              Số điện thoại
+              <FormattedMessage id="OrderForm.LocationForm.recipientsNum"/>
             </label>
             <p className="text-red-500 absolute text-sm overflow-hidden pt-1 text-clip">{formErrors2.phoneNum}</p>
           </div>
 
         </div>
-
-        <button className="self-center w-11/12 rounded-xl mb-4 mt-7 py-3 bg-buttonColorForm-default hover:bg-buttonColorForm-hover text-buttonColorForm-text">
-          Xác nhận
-        </button>
 
       </motion.div>
 
