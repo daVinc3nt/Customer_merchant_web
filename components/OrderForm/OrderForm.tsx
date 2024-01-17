@@ -185,6 +185,7 @@ const OrderForm = ({toggleCollapse, setToggleCollapse}) => {
 
   const handleGoBackButton = () => {
     setCurrentForm(currentForm - 1);
+    setshake(false);
   }
 
   const handleNotificationClose = () => {
