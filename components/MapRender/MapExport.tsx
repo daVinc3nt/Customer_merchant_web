@@ -12,7 +12,6 @@ const MapExport = ({ toggleCollapse }) => {
     lat: 10.816360162758764,
     lng: 106.62860159222816,
   });
-  const [distanceInfo, setDistanceInfo] = useState<string | null>(null);
   const [midPoint, setMidPoint] = useState<google.maps.LatLngLiteral | null>(null);
 
   const mapRef = useRef(null);
