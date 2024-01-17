@@ -8,11 +8,13 @@ import GooglePlacesAutocomplete from "react-google-places-autocomplete";
 import { SourceContext } from "@/context/SourceContext";
 import { DestinationContext } from "@/context/DestinationContext";
 import { getGeocode } from "../MapRender/GetLocationAdress";
+import Notification2 from "./Notification2";
 
 const LocationForm = ({ value, setValue, value2, setValue2,
   formValues, setFormValues, formErrors, setFormErrors,
   formValues2, setFormValues2, formErrors2, setFormErrors2,
   selectedOption1, setSelectedOption1, selectedOption2, setSelectedOption2 }) => {
+  const [showNotification, setShowNotification] = useState(false);
   const intl = useIntl();
   const locationOptions = [
     intl.formatMessage({ id: 'OrderForm.LocationForm.locationOption1' }),
@@ -55,7 +57,13 @@ const LocationForm = ({ value, setValue, value2, setValue2,
               };
               type == "source" ? setSource(currentLocation) : setDestination(currentLocation);
               type == "source" ? setValue({ label: name, value: currentLocation }) : setValue2({ label: name, value: currentLocation });
-              type == "source" ? setFormValues({...formValues, address: name}) : setFormValues2({...formValues2, address: name});
+              if (type == "source") {
+                setFormValues({...formValues, address: name});
+                setFormErrors({...formErrors, address:validate(formValues,2)});
+              }  else {
+                setFormValues2({...formValues2, address: name});
+                setFormErrors2({...formErrors2, address:validate(formValues2,2)});
+              }
             })
             .catch((error) => {
               console.error("Error getting geocode:", error);
@@ -111,6 +119,7 @@ const LocationForm = ({ value, setValue, value2, setValue2,
               label: place.name
             })
             setFormValues({...formValues, address:place.name})
+            setFormErrors({...formErrors, address:validate(formValues,2)})
           }
           else {
             setDestination({
@@ -120,6 +129,7 @@ const LocationForm = ({ value, setValue, value2, setValue2,
               label: place.name
             })
             setFormValues2({...formValues2, address:place.name})
+            setFormErrors2({...formErrors2, address:validate(formValues2,2)})
           }
         }
       })
@@ -128,9 +138,11 @@ const LocationForm = ({ value, setValue, value2, setValue2,
       if (type == "source"){
         setSource(null);
         setFormValues({...formValues, address: ""})
+        setFormErrors({...formErrors, address:validate(formValues,2)})
       } else {
         setDestination(null);
         setFormValues2({...formValues2, address: ""})
+        setFormErrors2({...formErrors2, address:validate(formValues2,2)})
       }
     }
   }
@@ -169,7 +181,7 @@ const LocationForm = ({ value, setValue, value2, setValue2,
     if (type == 1 && !values.name) {
       errors = intl.formatMessage({ id: 'OrderForm.LocationForm.error1' });
     }
-    if (type == 2 && !values.address) {
+    if (type == 2 && values.address != "") {
       errors = intl.formatMessage({ id: 'OrderForm.LocationForm.error2' });
     }
     if (type == 3) {
@@ -214,7 +226,9 @@ const LocationForm = ({ value, setValue, value2, setValue2,
       }}
       className="bg-formBgColor-firstChild absolute flex flex-col h-full w-full overflow-y-scroll rounded no-scrollbar"
     >
-
+      {showNotification && (
+          <Notification2 onClose={()=>{setShowNotification(false)}} />
+        )}
       <motion.h1
         variants={tabContentVariants}
         initial="initial" animate="enter" exit="exit"
@@ -319,7 +333,10 @@ const LocationForm = ({ value, setValue, value2, setValue2,
         <Dropdown name={languageText[1]} options={locationOptions} selectedOption={selectedOption1} setSelectedOption={setSelectedOption1} />
 
         <div className="flex flex-col self-center items-left h-6 w-11/12 mb-4">
-          <button className="h-6 w-2/6 bg-formBgColor-secondChild pointer-event-stroke text-xs text-left text-headlineText-default hover:text-orange-600" style={{ whiteSpace: 'nowrap' }}>+ <FormattedMessage id="OrderForm.LocationForm.detailsPickupAddress"/>
+          <button className="h-6 w-2/6 bg-formBgColor-secondChild pointer-event-stroke text-xs text-left text-headlineText-default hover:text-orange-600" 
+          onClick={() => setShowNotification(true)}
+          style={{ whiteSpace: 'nowrap' }}>
+            + <FormattedMessage id="OrderForm.LocationForm.detailsPickupAddress"/>
           </button>
         </div>
 
@@ -483,7 +500,10 @@ const LocationForm = ({ value, setValue, value2, setValue2,
         <Dropdown name={languageText[3]} options={locationOptions} selectedOption={selectedOption2} setSelectedOption={setSelectedOption2} />
 
         <div className="flex flex-col self-center items-left h-6 w-11/12 mb-4">
-          <button className="h-6 w-2/6 bg-formBgColor-secondChild pointer-event-stroke text-xs text-left text-headlineText-default hover:text-orange-600" style={{ whiteSpace: 'nowrap' }}>+ <FormattedMessage id="OrderForm.LocationForm.detailsDeliveryAddress"/>
+          <button className="h-6 w-2/6 bg-formBgColor-secondChild pointer-event-stroke text-xs text-left text-headlineText-default hover:text-orange-600" 
+            onClick={() => setShowNotification(true)}
+            style={{ whiteSpace: 'nowrap' }}>
+              + <FormattedMessage id="OrderForm.LocationForm.detailsDeliveryAddress"/>
           </button>
         </div>
 

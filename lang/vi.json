@@ -160,6 +160,10 @@
     "OrderForm.OrderNotification.closeBtn":"Đóng",
     "OrderForm.OrderNotification.backHome":"Quay về trang chủ",
 
+    "OrderForm.Notification2.noti": "Thông báo",
+    "OrderForm.Notification2.detail": "Tính năng này chưa được hoàn thiện",
+    "OrderForm.Notification2.closeBtn":"Đóng",
+
     "OrderForm.LocationForm.locationOption1":"Mặt tiền/Mặt phố",
     "OrderForm.LocationForm.locationOption2":"Bãi xe",
     "OrderForm.LocationForm.locationOption3":"Hẻm/Ngõ 2m",
@@ -210,6 +214,9 @@
     "OrderForm.MoreDetailsForm.massOption2": "500 - 1000kg",
     "OrderForm.MoreDetailsForm.massOption3": "1001 - 1500kg",
     "OrderForm.MoreDetailsForm.massOption4": "Trên 1500kg",
+    "OrderForm.MoreDetailsForm.error1":"Vui lòng chọn loại sản phẩm",
+    "OrderForm.MoreDetailsForm.error2":"Vui lòng chọn khối lượng sản phẩm",
+    "OrderForm.MoreDetailsForm.error3":"Vui lòng nhập đầy đủ kích thước sản phẩm",
 
     "BalancePage.card1.text1": "Tài khoản chính",
     "BalancePage.card1.text2": "Tài khoản khuyến mãi",

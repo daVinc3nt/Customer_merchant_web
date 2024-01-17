@@ -7,8 +7,6 @@ import MoreDetailsForm from "./MoreDetailsForm";
 import OrderNotification from "./OrderNotification";
 import { motion } from "framer-motion";
 import { FormattedMessage, useIntl } from "react-intl";
-import { DestinationContext } from "@/context/DestinationContext";
-import { SourceContext } from "@/context/SourceContext";
 
 const OrderForm = ({toggleCollapse, setToggleCollapse}) => {
   const [toggleCollapse2, setToggleCollapse2] = useState(false);
@@ -16,17 +14,15 @@ const OrderForm = ({toggleCollapse, setToggleCollapse}) => {
   const [showNotification, setShowNotification] = useState(false);
   const intl = useIntl();
   const [shake, setshake] = useState(false);
-  const { source, setSource } = useContext(SourceContext);
-  const { destination, setDestination } = useContext(DestinationContext);
 
   //State for LocationForm
   interface FormValues { name: string; phoneNum: string; address: string; }
   interface ErrorValues { name: string; phoneNum: string; address: string; }
   const initialValues: FormValues = { name: "", phoneNum: "", address: "" };
-  const initialValues2: ErrorValues = { name: "", phoneNum: "", address: "" };
+  const initialValues2: FormValues = { name: "", phoneNum: "", address: "" };
   const [formValues, setFormValues] = useState<FormValues>(initialValues);
-  const [formErrors, setFormErrors] = useState<ErrorValues>(initialValues2);
-  const [formValues2, setFormValues2] = useState<FormValues>(initialValues);
+  const [formErrors, setFormErrors] = useState<ErrorValues>(initialValues);
+  const [formValues2, setFormValues2] = useState<FormValues>(initialValues2);
   const [formErrors2, setFormErrors2] = useState<ErrorValues>(initialValues2);
   const [valueSourceSearchBox, setValueSourceSearchBox] = useState(null);
   const [valueDestinationSearchBox, setValueDestinationSearchBox] = useState(null);
@@ -39,6 +35,7 @@ const OrderForm = ({toggleCollapse, setToggleCollapse}) => {
   const [height, setHeight] = useState(0);
   const [width, setWidth] = useState(0);
   const [length, setLength] = useState(0);
+  const [formErrors3, setFormErrors3] = useState({ goods: '', mass: '', dimensions: '' })
 
   const wrapperClasses = classNames(
     "relative bottom-0 px-4 pt-10 pb-4 ml-2 lg:ml-4  mt-2 lg:mt-4 bg-formBgColor-parent flex flex-col justify-between rounded-2xl z-20",
@@ -65,13 +62,11 @@ const OrderForm = ({toggleCollapse, setToggleCollapse}) => {
   
   const validate = (values: FormValues, type: number) => {
     const PhoneRegex = /^\d+$/;
-    console.log(`1111 ${values}`)
     if (type == 1 && !values.name) {
       formErrors.name = intl.formatMessage({ id: 'OrderForm.LocationForm.error1' });
     }
     if (type == 2 && !values.address) {
       formErrors.address = intl.formatMessage({ id: 'OrderForm.LocationForm.error2' });
-      console.log(formErrors.address)
     } 
     else if (type == 2 && values.address) {formErrors.address = ""}
     if (type == 3) {
@@ -89,7 +84,6 @@ const OrderForm = ({toggleCollapse, setToggleCollapse}) => {
 
   const validate2 = (values: FormValues, type: number) => {
     const PhoneRegex = /^\d+$/;
-    console.log(values)
     if (type == 1 && !values.name) {
       formErrors2.name = intl.formatMessage({ id: 'OrderForm.LocationForm.error1' });
     }
@@ -107,6 +101,18 @@ const OrderForm = ({toggleCollapse, setToggleCollapse}) => {
         formErrors2.phoneNum = intl.formatMessage({ id: 'OrderForm.LocationForm.error6' });
       }
     }
+  };
+
+  const validate3 = () => {
+    if (selectedOption3 == '') {
+      formErrors3.goods = intl.formatMessage({ id: 'OrderForm.MoreDetailsForm.error1' });
+    } else formErrors3.goods = ''
+    if (selectedOption4 == '') {
+      formErrors3.mass = intl.formatMessage({ id: 'OrderForm.MoreDetailsForm.error2' });
+    } else formErrors3.mass = ''
+    if (height == 0 || length == 0 || width == 0) {
+      formErrors3.dimensions = intl.formatMessage({ id: 'OrderForm.MoreDetailsForm.error3' });
+    } else formErrors3.dimensions = ''
   };
 
   const handleAddress = async () => {
@@ -140,26 +146,39 @@ const OrderForm = ({toggleCollapse, setToggleCollapse}) => {
   };
 
   const handleSubmitButton = () => {
-    handleAddress();
-    handleName();
-    handleNum();
-    handleAddress2();
-    handleName2();
-    handleNum2();
-  
-    let { name, phoneNum, address } = formErrors;
-    if (name !== "" || phoneNum !== "" || address !== "") {
-      setshake(true);
-      return;
-    } else {
-      let { name: name2, phoneNum: phoneNum2, address: address2 } = formErrors2;
-      if (name2 !== "" || phoneNum2 !== "" || address2 !== "") {
+    if(currentForm == 0){
+      handleAddress();
+      handleName();
+      handleNum();
+      handleAddress2();
+      handleName2();
+      handleNum2();
+    
+      let { name, phoneNum, address } = formErrors;
+      if (name !== "" || phoneNum !== "" || address !== "") {
+        setshake(true);
+        return;
+      } else {
+        let { name: name2, phoneNum: phoneNum2, address: address2 } = formErrors2;
+        if (name2 !== "" || phoneNum2 !== "" || address2 !== "") {
+          setshake(true);
+          return;
+        }
+        else {
+          setshake(false);
+          setCurrentForm(currentForm + 1);
+        }
+      }
+    }
+    else if (currentForm == 1){
+      validate3();
+      if(formErrors3.mass != '' || formErrors3.goods != '' || formErrors3.dimensions != ''){
         setshake(true);
         return;
       }
-      else {
+      else{
         setshake(false);
-        currentForm < 1 ? setCurrentForm(currentForm + 1) : setShowNotification(true);
+        setShowNotification(true);
       }
     }
   };
@@ -183,6 +202,15 @@ const OrderForm = ({toggleCollapse, setToggleCollapse}) => {
       clearTimeout(timer);
     };
   }, [toggleCollapse]);
+
+  useEffect(() => {
+    if(currentForm == 0){
+      if (formErrors.name == "" && formErrors.phoneNum == "" && formErrors.address == ""
+      && formErrors2.name == "" && formErrors2.phoneNum == "" && formErrors2.address == ""){
+        setshake(false);
+      }
+    }
+  }, [formErrors, formErrors2]);
 
   return (
     <div className="absolute top-0 h-[calc(100%)] w-full">
@@ -240,12 +268,16 @@ const OrderForm = ({toggleCollapse, setToggleCollapse}) => {
                              setSelectedOption3={setSelectedOption3}
                              selectedOption4={selectedOption4}
                              setSelectedOption4={setSelectedOption4}
-                             value={height}
-                             setValue={setHeight}
-                             value1={width}
-                             setValue1={setWidth}
-                             value2={length}
-                             setValue2={setLength}/>
+                             height={height}
+                             setHeight={setHeight}
+                             width={width}
+                             setWidth={setWidth}
+                             length={length}
+                             setLength={setLength}
+                             formErrors3={formErrors3}
+                             setFormErrors3={setFormErrors3}
+                             currentForm={currentForm}
+                             setshake={setshake}/>
           )}
           {!toggleCollapse && !toggleCollapse2 && currentForm < 2 && (
             <div className="flex flex-col justify-start self-center w-full rounded-2xl">
@@ -258,7 +290,8 @@ const OrderForm = ({toggleCollapse, setToggleCollapse}) => {
 
               </div>
 
-              <button className={`self-center w-full rounded-lg mt-3 py-3 bg-buttonColorForm-default hover:bg-buttonColorForm-hover text-buttonColorForm-text ${shake? 'animate-shake bg-gray-500 hover:bg-gray-500':''}`} onClick={handleSubmitButton}>
+              <button className={`self-center w-full rounded-lg mt-3 py-3 bg-buttonColorForm-default hover:bg-buttonColorForm-hover text-buttonColorForm-text ${shake? 'animate-shake bg-gray-500 hover:bg-gray-500':''}`} 
+                onClick={handleSubmitButton}>
                 <FormattedMessage id="OrderForm.Continue"/>
               </button>
             </div>
