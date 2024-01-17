@@ -158,6 +158,10 @@
     "OrderForm.OrderNotification.closeBtn":"Close",
     "OrderForm.OrderNotification.backHome":"Back home",
 
+    "OrderForm.Notification2.noti": "Notification",
+    "OrderForm.Notification2.detail": "This feature is not yet completed",
+    "OrderForm.Notification2.closeBtn":"Close",
+
     "OrderForm.LocationForm.locationOption1":"Facade",
     "OrderForm.LocationForm.locationOption2":"Parking lot",
     "OrderForm.LocationForm.locationOption3":"Alley 2m",
@@ -208,6 +212,9 @@
     "OrderForm.MoreDetailsForm.massOption2": "500 - 1000kg",
     "OrderForm.MoreDetailsForm.massOption3": "1001 - 1500kg",
     "OrderForm.MoreDetailsForm.massOption4": "Above 1500kg",
+    "OrderForm.MoreDetailsForm.error1": "Please select the product type.",
+    "OrderForm.MoreDetailsForm.error2": "Please select the product mass.",
+    "OrderForm.MoreDetailsForm.error3": "Please enter the complete product dimensions.",
 
     "BalancePage.card1.text1": "Main Account",
     "BalancePage.card1.text2": "Promotional Account",
