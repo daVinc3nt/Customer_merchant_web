@@ -214,7 +214,7 @@ const OrderForm = ({toggleCollapse, setToggleCollapse}) => {
   }, [formErrors, formErrors2]);
 
   return (
-    <div className="absolute top-0 h-dvh w-full">
+    <div className="absolute top-0 h-svh w-full">
       <div
         className={wrapperClasses}
         style={{ transition: "width 500ms cubic-bezier(0.2, 0, 0, 1) 0s, height 500ms cubic-bezier(0.2, 0, 0, 1) 0s" }}
