@@ -18,7 +18,7 @@ const Order: NextPage = () => {
   return (
     <SourceContext.Provider value={{source, setSource}}>
       <DestinationContext.Provider value={{destination, setDestination}}>
-          <div className="relative h-full w-full">
+          <div className="relative h-dvh w-full">
             <OrderForm toggleCollapse={toggleCollapse} setToggleCollapse={setToggleCollapse}/>
             <MapExport toggleCollapse={toggleCollapse}/>
           </div>
