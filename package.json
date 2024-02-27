@@ -13,7 +13,7 @@
     "@next/bundle-analyzer": "^12.1.4",
     "@nextui-org/react": "^2.2.9",
     "@react-google-maps/api": "^2.19.2",
-    "axios": "^1.6.4",
+    "axios": "^1.6.7",
     "date-fns": "^3.0.6",
     "framer-motion": "^10.16.16",
     "js-cookie": "^3.0.5",

@@ -7,7 +7,6 @@ import * as en from "@/lang/en.json";
 import * as vi from "@/lang/vi.json";
 import { useState, useEffect } from "react";
 import { Libraries, LoadScript, LoadScriptProps } from "@react-google-maps/api";
-import { Spinner } from "@material-tailwind/react";
 
 
 const googleMapsLibraries: Libraries = ["places"];
