@@ -4,6 +4,7 @@ import { motion } from "framer-motion";
 import { FiZoomOut, FiZoomIn } from "react-icons/fi";
 import { SourceContext } from "@/context/SourceContext";
 import { DestinationContext } from "@/context/DestinationContext";
+import { Button } from "@nextui-org/react";
 
 const MapExport = ({ toggleCollapse }) => {
   const { source, setSource } = useContext(SourceContext);
@@ -34,9 +35,9 @@ const MapExport = ({ toggleCollapse }) => {
     const a =
       Math.sin(dLat / 2) * Math.sin(dLat / 2) +
       Math.cos(point1.lat * (Math.PI / 180)) *
-        Math.cos(point2.lat * (Math.PI / 180)) *
-        Math.sin(dLng / 2) *
-        Math.sin(dLng / 2);
+      Math.cos(point2.lat * (Math.PI / 180)) *
+      Math.sin(dLng / 2) *
+      Math.sin(dLng / 2);
     const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
     return R * c;
   };
@@ -45,7 +46,7 @@ const MapExport = ({ toggleCollapse }) => {
     const map = mapRef.current?.state.map;
     if (map) {
       const projection = map.getProjection();
-      
+
       const getNewLng = (point, offsetX) => {
         const sourcePixel = projection.fromLatLngToPoint(point);
         return projection.fromPointToLatLng({
@@ -53,7 +54,7 @@ const MapExport = ({ toggleCollapse }) => {
           y: sourcePixel.y,
         }).lng();
       };
-      
+
       if (destination && !source) {
         map.setZoom(12);
         map.panTo({ lat: destination.lat, lng: getNewLng(destination, !toggleCollapse ? 250 : 0) });
@@ -73,7 +74,7 @@ const MapExport = ({ toggleCollapse }) => {
       }
     }
   }, [source, destination, toggleCollapse]);
-  
+
 
   const handleZoomIn = () => {
     const currentZoom = mapRef.current.state.map.getZoom();
@@ -107,7 +108,11 @@ const MapExport = ({ toggleCollapse }) => {
             }}
           >
             <OverlayViewF position={source} mapPaneName={OverlayView.OVERLAY_MOUSE_TARGET}>
-              <div className="p-1 bg-white whitespace-nowrap border-2 border-red-500 rounded font-semibold text-xs truncate max-w-10">{source.label}</div>
+              <div className="p-2 bg-white whitespace-nowrap border-2 border-red-500 rounded-xl font-semibold text-xs truncate max-w-10">
+                <p>{source.label}</p>
+                <div className="text-center mt-2">Sai vị trí?</div>
+                <div className="w-full flex justify-center"><Button className="p-2 mt-1 rounded text-white bg-red-500 hover:bg-red-600">Chọn lại</Button></div>
+              </div>
             </OverlayViewF>
           </MarkerF>
         )}
@@ -120,7 +125,11 @@ const MapExport = ({ toggleCollapse }) => {
             }}
           >
             <OverlayViewF position={destination} mapPaneName={OverlayView.OVERLAY_MOUSE_TARGET}>
-              <div className="p-1 px-1 bg-white whitespace-nowrap border-2 border-red-500 rounded font-semibold text-xs">{destination.label}</div>
+              <div className="p-2 bg-white whitespace-nowrap border-2 border-red-500 rounded-xl font-semibold text-xs truncate max-w-10">
+                <p>{destination.label}</p>
+                <div className="text-center mt-2">Sai vị trí?</div>
+                <div className="w-full flex justify-center"><Button className="p-2 mt-1 rounded text-white bg-red-500 hover:bg-red-600">Chọn lại</Button></div>
+              </div>
             </OverlayViewF>
           </MarkerF>
         )}
