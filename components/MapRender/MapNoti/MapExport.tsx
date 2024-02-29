@@ -11,8 +11,9 @@ import { SourceContext } from "@/context/SourceContext";
 import { DestinationContext } from "@/context/DestinationContext";
 import { MdOutlineMyLocation } from "react-icons/md";
 import GooglePlacesAutocomplete from "react-google-places-autocomplete";
-
+import { getCoordinates } from "../GetCoordinates";
 const MapExport = ({ type }) => {
+  const [valueSearchBox, setValueSearchBox] = useState();
   const { source, setSource } = useContext(SourceContext);
   const { destination, setDestination } = useContext(DestinationContext);
   const [center, setCenter] = useState({
@@ -63,6 +64,33 @@ const MapExport = ({ type }) => {
           console.error("Error getting current position:", error);
         }
       );
+    }
+  };
+
+  const handleSearch = (place: any) => {
+    if (place && place?.label) {
+      getCoordinates(place.label)
+        .then((coordinates: any) => {
+          if (coordinates) {
+            if (type === "source") {
+              setSource((rest) => ({
+                ...rest,
+                lat: coordinates.lat,
+                lng: coordinates.lng,
+              }));
+            } else if (type === "destination") {
+              setDestination((rest) => ({
+                ...rest,
+                lat: coordinates.lat,
+                lng: coordinates.lng,
+              }));
+            }
+          } else {
+          }
+        })
+        .catch((error) => {
+          console.error("Đã xảy ra lỗi khi tìm kiếm tọa độ:", error);
+        });
     }
   };
 
@@ -157,39 +185,40 @@ const MapExport = ({ type }) => {
         )}
       </GoogleMap>
 
-      {/* <GooglePlacesAutocomplete
-        selectProps={{
-          id: "orderAddress",
-          onChange:(place)=>{
-                      getLatandLng(place, "source");
-                      setValue(place)
-                    },
-          value: value,
-          placeholder: "Nhập địa chỉ lấy hàng",
-          isClearable: true,
-          className: `peer h-12 self-center w-full border border-gray-300 focus:border-blue-300 rounded text-left pt-1 pr-10`,
-          components: {
-            DropdownIndicator: null,
-            LoadingIndicator: null,
-          },
-          styles: {
-            control: (provided, state) => ({
-              ...provided,
-              backgroundColor: "transparent",
-              border: "none",
-              boxShadow: state.isFocused ? "none" : provided.boxShadow,
-              "&:hover": {
-                border: "none"
-              }
-            }),
-            placeholder: (provided) => ({
-              ...provided,
-              color: "#4a5568",
-              fontSize: "0.875rem",
-            }),
-          },
-        }}
-      /> */}
+      <div className="absolute top-5 left-5 w-[calc(100%-80px)] sm:w-1/2 self-start">
+        <GooglePlacesAutocomplete
+          selectProps={{
+            id: "searchOnMap",
+            onChange: (place: any) => {
+              setValueSearchBox(place);
+              handleSearch(place);
+            },
+            value: valueSearchBox,
+            placeholder: "Search...",
+            isClearable: true,
+            className: `h-12 w-full border border-gray-300 focus:border-blue-300 rounded text-left pt-1 bg-white`,
+            components: {
+              DropdownIndicator: null,
+              LoadingIndicator: null,
+            },
+            styles: {
+              control: (provided, state) => ({
+                ...provided,
+                border: "none",
+                boxShadow: state.isFocused ? "none" : provided.boxShadow,
+                "&:hover": {
+                  border: "none",
+                },
+              }),
+              placeholder: (provided) => ({
+                ...provided,
+                color: "#4a5568",
+                fontSize: "0.875rem",
+              }),
+            },
+          }}
+        />
+      </div>
 
       <div className="absolute bottom-1/2 translate-y-1/2 right-5 flex flex-col invisible xs:visible items-center">
         <motion.button

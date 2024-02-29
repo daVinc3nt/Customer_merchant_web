@@ -11,28 +11,8 @@ interface MapNotificationProps {
 }
 
 const MapNotification: React.FC<MapNotificationProps> = ({ onClose, type }) => {
-  const [isShaking, setIsShaking] = useState(false);
   const notificationRef = useRef<HTMLDivElement>(null);
   const [isVisible, setIsVisible] = useState(true);
-  const handleClickOutside = (event: MouseEvent) => {
-    if (
-      notificationRef.current &&
-      !notificationRef.current.contains(event.target as Node)
-    ) {
-      setIsShaking(true);
-      setTimeout(() => {
-        setIsShaking(false);
-      }, 300);
-    }
-  };
-
-  useEffect(() => {
-    document.addEventListener("mousedown", handleClickOutside);
-
-    return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
-    };
-  }, [onClose]);
 
   const handleClose = () => {
     setIsVisible(false);
@@ -56,9 +36,7 @@ const MapNotification: React.FC<MapNotificationProps> = ({ onClose, type }) => {
     >
       <motion.div
         ref={notificationRef}
-        className={`relative w-full h-full bg-gray-300 rounded-xl overflow-y-auto ${
-          isShaking ? "animate-shake" : ""
-        }`}
+        className={`relative w-full h-full bg-gray-300 rounded-xl overflow-y-auto`}
         initial={{ scale: 0 }}
         animate={{ scale: isVisible ? 1 : 0 }}
         exit={{ scale: 0 }}
@@ -67,7 +45,7 @@ const MapNotification: React.FC<MapNotificationProps> = ({ onClose, type }) => {
         <MapExport type={type} />
 
         <Button
-          className="absolute right-4 top-4 w-8 h-8 rounded-full bg-red-500 outline outline-white hover:bg-red-600"
+          className="absolute right-4 top-7 sm:top-4 w-8 h-8 rounded-full bg-red-500 outline outline-white hover:bg-red-600"
           onClick={handleClose}
         >
           <IoMdClose className="w-5 h-5 text-white" />
