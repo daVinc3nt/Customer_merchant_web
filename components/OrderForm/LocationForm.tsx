@@ -4,8 +4,6 @@ import { FaUserCircle, FaMobile } from "react-icons/fa";
 import CommonDropdown from "./ListBox";
 import { motion, Variants } from "framer-motion";
 import { FormattedMessage, useIntl } from "react-intl";
-import { SourceContext } from "@/context/SourceContext";
-import { DestinationContext } from "@/context/DestinationContext";
 import Notification2 from "./Notification2";
 
 const LocationForm = ({
@@ -21,6 +19,16 @@ const LocationForm = ({
   setSelectedOption1,
   selectedOption2,
   setSelectedOption2,
+  selectedCity,
+  setSelectedCity,
+  selectedDistrict,
+  setSelectedDistrict,
+  selectedCity2,
+  setSelectedCity2,
+  selectedDistrict2,
+  setSelectedDistrict2,
+  cities,
+  cities2,
 }) => {
   const [showNotification, setShowNotification] = useState(false);
   const intl = useIntl();
@@ -41,8 +49,7 @@ const LocationForm = ({
   ];
 
   //Context
-  const { source, setSource } = useContext(SourceContext);
-  const { destination, setDestination } = useContext(DestinationContext);
+
   const [isAtBottom, setIsAtBottom] = useState(false);
   const containerRef1 = useRef<HTMLDivElement>(null);
 
@@ -51,6 +58,74 @@ const LocationForm = ({
     enter: { x: 0, opacity: 1 },
     exit: { x: -20, opacity: 0 },
   };
+
+  const handleInputChange = (key: string, value: string) => {
+    setFormValues((prevState) => ({
+      ...prevState,
+      [key]: value,
+    }));
+  };
+
+  const handleCityChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
+    setSelectedCity(event.target.value);
+    setSelectedDistrict("");
+    handleInputChange(
+      "province",
+      cities.find((city) => city.Id === event.target.value)?.Name
+    );
+  };
+
+  const handleDistrictChange = (
+    event: React.ChangeEvent<HTMLSelectElement>
+  ) => {
+    setSelectedDistrict(event.target.value);
+    handleInputChange(
+      "district",
+      districts.find((district) => district.Id === event.target.value)?.Name
+    );
+  };
+
+  const handleInputChange2 = (key: string, value: string) => {
+    setFormValues2((prevState) => ({
+      ...prevState,
+      [key]: value,
+    }));
+  };
+
+  const handleCityChange2 = (event: React.ChangeEvent<HTMLSelectElement>) => {
+    setSelectedCity2(event.target.value);
+    setSelectedDistrict2("");
+    handleInputChange2(
+      "province",
+      cities2.find((city) => city.Id === event.target.value)?.Name
+    );
+  };
+
+  const handleDistrictChange2 = (
+    event: React.ChangeEvent<HTMLSelectElement>
+  ) => {
+    setSelectedDistrict2(event.target.value);
+    handleInputChange2(
+      "district",
+      districts2.find((district) => district.Id === event.target.value)?.Name
+    );
+  };
+
+  const selectedCityObj = cities.find((city) => city.Id === selectedCity);
+  const districts = selectedCityObj ? selectedCityObj.Districts : [];
+
+  const selectedDistrictObj = districts.find(
+    (district) => district.Id === selectedDistrict
+  );
+  const wards = selectedDistrictObj ? selectedDistrictObj.Wards : [];
+
+  const selectedCityObj2 = cities2.find((city) => city.Id === selectedCity2);
+  const districts2 = selectedCityObj2 ? selectedCityObj2.Districts : [];
+
+  const selectedDistrictObj2 = districts2.find(
+    (district) => district.Id === selectedDistrict2
+  );
+  const wards2 = selectedDistrictObj2 ? selectedDistrictObj2.Wards : [];
 
   const handleAddress = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
@@ -229,6 +304,75 @@ const LocationForm = ({
             </div>
           </div>
 
+          <div className="flex flex-col lg:flex-row gap-2 lg:gap-3 w-11/12 self-center mb-2">
+            <select
+              className={`text-xs md:text-sm border border-gray-300 focus:outline-none rounded-xl h-12 w-full pl-1 ${
+                formErrors.address
+                  ? "ring-2 ring-red-500 focus:ring-2 focus:ring-red-500"
+                  : "focus:ring-2 focus:ring-blue-500"
+              } `}
+              id="city"
+              aria-label=".form-select-sm"
+              value={selectedCity}
+              onChange={handleCityChange}
+            >
+              <option value="">
+                <FormattedMessage id="OrderForm.LocationForm.SelectProvince" />
+              </option>
+              {cities.map((city, index) => (
+                <option key={index} value={city.Id}>
+                  {city.Name}
+                </option>
+              ))}
+            </select>
+
+            <select
+              className={`text-xs md:text-sm border border-gray-300 focus:outline-none rounded-xl h-12 w-full pl-1 ${
+                formErrors.address
+                  ? "ring-2 ring-red-500 focus:ring-2 focus:ring-red-500"
+                  : "focus:ring-2 focus:ring-blue-500"
+              } `}
+              id="district"
+              aria-label=".form-select-sm"
+              value={selectedDistrict}
+              onChange={handleDistrictChange}
+            >
+              <option value="">
+                <FormattedMessage id="OrderForm.LocationForm.SelectDistrict" />
+              </option>
+              {districts.map((district, index) => (
+                <option key={index} value={district.Id}>
+                  {district.Name}
+                </option>
+              ))}
+            </select>
+
+            <select
+              className={`text-xs md:text-sm border border-gray-300 focus:outline-none rounded-xl h-12 w-full pl-1 ${
+                formErrors.address
+                  ? "ring-2 ring-red-500 focus:ring-2 focus:ring-red-500"
+                  : "focus:ring-2 focus:ring-blue-500"
+              } `}
+              id="ward"
+              aria-label=".form-select-sm"
+              onChange={(e) =>
+                handleInputChange(
+                  "town",
+                  wards.find((ward) => ward.Id === e.target.value)?.Name
+                )
+              }
+            >
+              <option value="">
+                <FormattedMessage id="OrderForm.LocationForm.SelectWard" />
+              </option>
+              {wards.map((ward, index) => (
+                <option key={index} value={ward.Id}>
+                  {ward.Name}
+                </option>
+              ))}
+            </select>
+          </div>
+
           <CommonDropdown
             name={languageText[1]}
             options={locationOptions}
@@ -380,6 +524,75 @@ const LocationForm = ({
             <p className="text-red-500 absolute text-sm overflow-hidden pt-1 truncate">
               {formErrors2.address}
             </p>
+          </div>
+
+          <div className="flex flex-col lg:flex-row gap-2 lg:gap-3 w-11/12 self-center mb-2">
+            <select
+              className={`text-xs md:text-sm border border-gray-300 focus:outline-none rounded-xl h-12 w-full pl-1 ${
+                formErrors2.address
+                  ? "ring-2 ring-red-500 focus:ring-2 focus:ring-red-500"
+                  : "focus:ring-2 focus:ring-blue-500"
+              } `}
+              id="city2"
+              aria-label=".form-select-sm"
+              value={selectedCity2}
+              onChange={handleCityChange2}
+            >
+              <option value="">
+                <FormattedMessage id="OrderForm.LocationForm.SelectProvince" />
+              </option>
+              {cities2.map((city) => (
+                <option key={city.Id} value={city.Id}>
+                  {city.Name}
+                </option>
+              ))}
+            </select>
+
+            <select
+              className={`text-xs md:text-sm border border-gray-300 focus:outline-none rounded-xl h-12 w-full pl-1 ${
+                formErrors2.address
+                  ? "ring-2 ring-red-500 focus:ring-2 focus:ring-red-500"
+                  : "focus:ring-2 focus:ring-blue-500"
+              } `}
+              id="district2"
+              aria-label=".form-select-sm"
+              value={selectedDistrict2}
+              onChange={handleDistrictChange2}
+            >
+              <option value="">
+                <FormattedMessage id="OrderForm.LocationForm.SelectDistrict" />
+              </option>
+              {districts2.map((district, index) => (
+                <option key={index} value={district.Id}>
+                  {district.Name}
+                </option>
+              ))}
+            </select>
+
+            <select
+              className={`text-xs md:text-sm border border-gray-300 focus:outline-none rounded-xl h-12 w-full pl-1 ${
+                formErrors2.address
+                  ? "ring-2 ring-red-500 focus:ring-2 focus:ring-red-500"
+                  : "focus:ring-2 focus:ring-blue-500"
+              } `}
+              id="ward2"
+              aria-label=".form-select-sm"
+              onChange={(e) =>
+                handleInputChange2(
+                  "town",
+                  wards2.find((ward) => ward.Id === e.target.value)?.Name
+                )
+              }
+            >
+              <option value="">
+                <FormattedMessage id="OrderForm.LocationForm.SelectWard" />
+              </option>
+              {wards2.map((ward, index) => (
+                <option key={index} value={ward.Id}>
+                  {ward.Name}
+                </option>
+              ))}
+            </select>
           </div>
 
           <CommonDropdown

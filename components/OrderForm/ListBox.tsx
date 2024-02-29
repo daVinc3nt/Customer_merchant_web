@@ -26,7 +26,7 @@ const CommonDropdown = ({
         </Button>
       </DropdownTrigger>
       <DropdownMenu
-        className="bg-white border border-gray-300 no-scrollbar rounded w-full max-h-80 overflow-y-auto"
+        className="bg-white border border-gray-300 no-scrollbar rounded w-full overflow-y-auto -mt-1"
         aria-labelledby="dropdownMenuButton"
       >
         {options.map((option, index) => (

@@ -7,6 +7,29 @@ import MoreDetailsForm from "./MoreDetailsForm";
 import OrderNotification from "./OrderNotification";
 import { motion } from "framer-motion";
 import { FormattedMessage, useIntl } from "react-intl";
+import { Button } from "@nextui-org/react";
+import { getCoordinates } from "../MapRender/GetCoordinates";
+import axios from "axios";
+import { DestinationContext } from "@/context/DestinationContext";
+import { SourceContext } from "@/context/SourceContext";
+import { debounce } from "lodash";
+
+interface City {
+  Id: string;
+  Name: string;
+  Districts: District[];
+}
+
+interface District {
+  Id: string;
+  Name: string;
+  Wards: Ward[];
+}
+
+interface Ward {
+  Id: string;
+  Name: string;
+}
 
 const OrderForm = ({ toggleCollapse, setToggleCollapse }) => {
   const [toggleCollapse2, setToggleCollapse2] = useState(false);
@@ -14,26 +37,81 @@ const OrderForm = ({ toggleCollapse, setToggleCollapse }) => {
   const [showNotification, setShowNotification] = useState(false);
   const intl = useIntl();
   const [shake, setshake] = useState(false);
+  const { source, setSource } = useContext(SourceContext);
+  const { destination, setDestination } = useContext(DestinationContext);
 
   //State for LocationForm
   interface FormValues {
     name: string;
     phoneNum: string;
     address: string;
+    province: string;
+    district: string;
+    town: string;
   }
   interface ErrorValues {
     name: string;
     phoneNum: string;
     address: string;
+    province: string;
+    district: string;
+    town: string;
   }
-  const initialValues: FormValues = { name: "", phoneNum: "", address: "" };
-  const initialValues2: FormValues = { name: "", phoneNum: "", address: "" };
+  const initialValues: FormValues = {
+    name: "",
+    phoneNum: "",
+    address: "",
+    province: "",
+    district: "",
+    town: "",
+  };
+  const initialValues2: FormValues = {
+    name: "",
+    phoneNum: "",
+    address: "",
+    province: "",
+    district: "",
+    town: "",
+  };
+  const initialErrors: ErrorValues = {
+    name: "",
+    phoneNum: "",
+    address: "",
+    province: "",
+    district: "",
+    town: "",
+  };
+  const initialErrors2: ErrorValues = {
+    name: "",
+    phoneNum: "",
+    address: "",
+    province: "",
+    district: "",
+    town: "",
+  };
   const [formValues, setFormValues] = useState<FormValues>(initialValues);
-  const [formErrors, setFormErrors] = useState<ErrorValues>(initialValues);
+  const [formErrors, setFormErrors] = useState<ErrorValues>(initialErrors);
   const [formValues2, setFormValues2] = useState<FormValues>(initialValues2);
-  const [formErrors2, setFormErrors2] = useState<ErrorValues>(initialValues2);
+  const [formErrors2, setFormErrors2] = useState<ErrorValues>(initialErrors2);
   const [selectedOption1, setSelectedOption1] = useState<string>("");
   const [selectedOption2, setSelectedOption2] = useState<string>("");
+  const [cities, setCities] = useState<City[]>([]);
+  const [selectedCity, setSelectedCity] = useState("");
+  const [selectedDistrict, setSelectedDistrict] = useState("");
+  const [cities2, setCities2] = useState<City[]>([]);
+  const [selectedCity2, setSelectedCity2] = useState("");
+  const [selectedDistrict2, setSelectedDistrict2] = useState("");
+  useEffect(() => {
+    const fetchCities = async () => {
+      const response = await axios.get(
+        "https://raw.githubusercontent.com/kenzouno1/DiaGioiHanhChinhVN/master/data.json"
+      );
+      setCities(response.data);
+      setCities2(response.data);
+    };
+
+    fetchCities();
+  }, []);
 
   //State for MoreDetailsForm
   const [selectedOption3, setSelectedOption3] = useState<string>("");
@@ -77,7 +155,10 @@ const OrderForm = ({ toggleCollapse, setToggleCollapse }) => {
         id: "OrderForm.LocationForm.error1",
       });
     }
-    if (type == 2 && !values.address) {
+    if (
+      type == 2 &&
+      (!values.address || !values.district || !values.province || !values.town)
+    ) {
       formErrors.address = intl.formatMessage({
         id: "OrderForm.LocationForm.error2",
       });
@@ -113,7 +194,10 @@ const OrderForm = ({ toggleCollapse, setToggleCollapse }) => {
         id: "OrderForm.LocationForm.error1",
       });
     }
-    if (type == 2 && !values.address) {
+    if (
+      type == 2 &&
+      (!values.address || !values.district || !values.province || !values.town)
+    ) {
       formErrors2.address = intl.formatMessage({
         id: "OrderForm.LocationForm.error2",
       });
@@ -249,14 +333,106 @@ const OrderForm = ({ toggleCollapse, setToggleCollapse }) => {
   }, [toggleCollapse]);
 
   useEffect(() => {
+    const fetchCoordinates = debounce(() => {
+      if (
+        formValues.address &&
+        formValues.province &&
+        formValues.town &&
+        formValues.district
+      ) {
+        getCoordinates(
+          `${formValues.address}, ${formValues.town}, ${formValues.district}, ${formValues.province}`
+        )
+          .then((coordinates: any) => {
+            if (coordinates) {
+              setSource({
+                lat: coordinates.lat,
+                lng: coordinates.lng,
+                name: `${formValues.address}, ${formValues.town}, ${formValues.district}, ${formValues.province}`,
+                label: `${formValues.address}, ${formValues.town}`,
+              });
+            } else {
+              setSource(null);
+            }
+          })
+          .catch((error) => {
+            console.error("Đã xảy ra lỗi khi tìm kiếm tọa độ:", error);
+          });
+      } else {
+        setSource(null);
+      }
+    }, 1000);
+
+    fetchCoordinates();
+
+    return () => {
+      fetchCoordinates.cancel();
+    };
+  }, [
+    formValues.address,
+    formValues.province,
+    formValues.town,
+    formValues.district,
+  ]);
+
+  useEffect(() => {
+    const fetchCoordinates = debounce(() => {
+      if (
+        formValues2.address &&
+        formValues2.province &&
+        formValues2.town &&
+        formValues2.district
+      ) {
+        getCoordinates(
+          `${formValues2.address}, ${formValues2.town}, ${formValues2.district}, ${formValues2.province}`
+        )
+          .then((coordinates: any) => {
+            if (coordinates) {
+              setDestination({
+                lat: coordinates.lat,
+                lng: coordinates.lng,
+                name: `${formValues2.address}, ${formValues2.town}, ${formValues2.district}, ${formValues2.province}`,
+                label: `${formValues2.address}, ${formValues2.town}`,
+              });
+            } else {
+              setDestination(null);
+            }
+          })
+          .catch((error) => {
+            console.error("Đã xảy ra lỗi khi tìm kiếm tọa độ:", error);
+          });
+      } else {
+        setDestination(null);
+      }
+    }, 1000);
+
+    fetchCoordinates();
+
+    return () => {
+      fetchCoordinates.cancel();
+    };
+  }, [
+    formValues2.address,
+    formValues2.province,
+    formValues2.town,
+    formValues2.district,
+  ]);
+
+  useEffect(() => {
     if (currentForm == 0) {
       if (
         formErrors.name == "" &&
         formErrors.phoneNum == "" &&
         formErrors.address == "" &&
+        formErrors.district == "" &&
+        formErrors.province == "" &&
+        formErrors.town == "" &&
         formErrors2.name == "" &&
         formErrors2.phoneNum == "" &&
-        formErrors2.address == ""
+        formErrors2.address == "" &&
+        formErrors2.district == "" &&
+        formErrors2.province == "" &&
+        formErrors2.town == ""
       ) {
         setshake(false);
       }
@@ -309,6 +485,16 @@ const OrderForm = ({ toggleCollapse, setToggleCollapse }) => {
               setSelectedOption1={setSelectedOption1}
               selectedOption2={selectedOption2}
               setSelectedOption2={setSelectedOption2}
+              selectedCity={selectedCity}
+              setSelectedCity={setSelectedCity}
+              selectedDistrict={selectedDistrict}
+              setSelectedDistrict={setSelectedDistrict}
+              selectedCity2={selectedCity2}
+              setSelectedCity2={setSelectedCity2}
+              selectedDistrict2={selectedDistrict2}
+              setSelectedDistrict2={setSelectedDistrict2}
+              cities={cities}
+              cities2={cities2}
             />
           )}
           {!toggleCollapse && !toggleCollapse2 && currentForm == 1 && (
@@ -343,14 +529,14 @@ const OrderForm = ({ toggleCollapse, setToggleCollapse }) => {
                 </Link>
               </div>
 
-              <button
+              <Button
                 className={`self-center w-full rounded-lg mt-3 py-3 bg-buttonColorForm-default hover:bg-buttonColorForm-hover text-buttonColorForm-text ${
                   shake ? "animate-shake bg-gray-500 hover:bg-gray-500" : ""
                 }`}
                 onClick={handleSubmitButton}
               >
                 <FormattedMessage id="OrderForm.Continue" />
-              </button>
+              </Button>
             </div>
           )}
         </div>
