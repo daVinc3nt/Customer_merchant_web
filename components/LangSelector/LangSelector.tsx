@@ -46,7 +46,7 @@ const LangSelector = () => {
       <motion.div animate={open ? "open" : "closed"} className="relative z-10">
         <button
           id="langRefButton" ref={langRef} onClick={() => setOpen((pv) => !pv)}
-          className="flex items-center h-5/6 mt-[0.23rem] z-50 gap-4 px-3 rounded-lg w-20 text-indigo-50 bg-red-600 hover:bg-red-700 transition-colors relative border-2 border-white"
+          className="flex items-center h-5/6 mt-[0.23rem] z-50 gap-4 px-3 rounded-lg w-20 text-indigo-50 bg-indigo-600 hover:bg-indigo-700 transition-colors relative"
         >
           <div id="langRefButton" className="absolute bg-transparent w-full h-full"></div>
           <FiGlobe size={30} />

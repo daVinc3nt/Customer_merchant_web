@@ -7,19 +7,10 @@ import * as en from "@/lang/en.json";
 import * as vi from "@/lang/vi.json";
 import { useState, useEffect } from "react";
 import { Libraries, LoadScript, LoadScriptProps } from "@react-google-maps/api";
+import { Spinner } from "@material-tailwind/react";
 
 
 const googleMapsLibraries: Libraries = ["places"];
-
-interface UserLocation {
-  lat: number;
-  lng: number;
-}
-
-interface UserLocationContextProps {
-  userLocation: UserLocation;
-  updateUserLocation: (newLocation: UserLocation) => void;
-}
 
 function MyApp({ Component, pageProps }: AppProps) {
   function Loading() {
@@ -63,23 +54,6 @@ function MyApp({ Component, pageProps }: AppProps) {
     vi,
     en,
   };
-  const [userLocation, setUserLocation] = useState<UserLocation>({
-    lat: 10.816360162758764,
-    lng: 106.62860159222816,
-  });
-
-  const getUserLocation = () => {
-    navigator.geolocation.getCurrentPosition((position) => {
-      setUserLocation({
-        lat: position.coords.latitude,
-        lng: position.coords.longitude,
-      });
-    });
-  };
-
-  useEffect(() => {
-    getUserLocation();
-  }, []);
 
   return (
     <>
