@@ -12,6 +12,7 @@ import { DestinationContext } from "@/context/DestinationContext";
 import { MdOutlineMyLocation } from "react-icons/md";
 import GooglePlacesAutocomplete from "react-google-places-autocomplete";
 import { getCoordinates } from "../GetCoordinates";
+import { getGeocode } from "../GetLocationAdress";
 const MapExport = ({ type }) => {
   const [valueSearchBox, setValueSearchBox] = useState();
   const { source, setSource } = useContext(SourceContext);
@@ -20,6 +21,29 @@ const MapExport = ({ type }) => {
     lat: type === "source" ? source.lat : destination.lat,
     lng: type === "source" ? source.lng : destination.lng,
   });
+
+  const [sour, setSour] = useState<any>();
+  const [des, setDes] = useState<any>();
+
+  useEffect(() => {
+    if (type === "source") {
+      getGeocode(source.lat, source.lng)
+        .then((address: any) => {
+          setSour(address ? address : "");
+        })
+        .catch((error) => {
+          console.error("Đã xảy ra lỗi khi tìm kiếm tọa độ:", error);
+        });
+    } else if (type === "destination") {
+      getGeocode(destination.lat, destination.lng)
+        .then((address: any) => {
+          setDes(address ? address : "");
+        })
+        .catch((error) => {
+          console.error("Đã xảy ra lỗi khi tìm kiếm tọa độ:", error);
+        });
+    }
+  }, [source, destination]);
 
   const mapRef = useRef(null);
 
@@ -160,7 +184,7 @@ const MapExport = ({ type }) => {
               mapPaneName={OverlayView.OVERLAY_MOUSE_TARGET}
             >
               <div className="p-1 bg-white whitespace-nowrap border-2 border-[#14141a] rounded font-semibold text-xs truncate max-w-10">
-                {source.label}
+                {sour}
               </div>
             </OverlayViewF>
           </MarkerF>
@@ -178,7 +202,7 @@ const MapExport = ({ type }) => {
               mapPaneName={OverlayView.OVERLAY_MOUSE_TARGET}
             >
               <div className="p-1 px-1 bg-white whitespace-nowrap border-2 border-[#14141a] rounded font-semibold text-xs">
-                {destination.label}
+                {des}
               </div>
             </OverlayViewF>
           </MarkerF>
