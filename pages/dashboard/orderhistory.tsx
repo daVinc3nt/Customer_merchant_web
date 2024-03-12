@@ -1,10 +1,9 @@
-import React from 'react';
-import { NextPage } from 'next';
-import Order from '@/components/OrderHistory/Order';
+import React from "react";
+import { NextPage } from "next";
+
+import HistoryMenu from "@/components/OrderHistory/OrderHistory";
 const OrderHistory: NextPage = () => {
-  return (
-        <Order/>
-  );
+  return <HistoryMenu />;
 };
 
 export default OrderHistory;
