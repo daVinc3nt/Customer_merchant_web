@@ -5,14 +5,16 @@ import { useRouter } from "next/router";
 import { IntlProvider } from "react-intl";
 import * as en from "@/lang/en.json";
 import * as vi from "@/lang/vi.json";
-import { useState, useEffect } from "react";
+import { useState, useEffect, createContext } from "react";
 import { Libraries, LoadScript, LoadScriptProps } from "@react-google-maps/api";
 import { Spinner } from "@material-tailwind/react";
+import { Socket, io } from "socket.io-client";
 
-
+export const SocketContext = createContext<Socket | null>(null);
 const googleMapsLibraries: Libraries = ["places"];
 
 function MyApp({ Component, pageProps }: AppProps) {
+  const socket = io('http://localhost:5000', { transports: ['websocket'] });
   function Loading() {
     const router = useRouter();
     const [loading, setLoading] = useState(false);
@@ -57,19 +59,20 @@ function MyApp({ Component, pageProps }: AppProps) {
 
   return (
     <>
-      
-      <IntlProvider locale={locale} messages={messages[locale]}>
-        <LoadScript
-          language={locale}
-          region="VN"
-          libraries={googleMapsLibraries}
-          googleMapsApiKey={"AIzaSyDQ0pDRDKSyAO4lm10ttEXa2_uoZmWQzHc"}
-        >
-          <Wrapper><Loading />
-            <Component {...pageProps} />
-          </Wrapper>
-        </LoadScript>
-      </IntlProvider>
+      <SocketContext.Provider value={socket}>
+        <IntlProvider locale={locale} messages={messages[locale]}>
+          <LoadScript
+            language={locale}
+            region="VN"
+            libraries={googleMapsLibraries}
+            googleMapsApiKey={"AIzaSyDQ0pDRDKSyAO4lm10ttEXa2_uoZmWQzHc"}
+          >
+            <Wrapper><Loading />
+              <Component {...pageProps} />
+            </Wrapper>
+          </LoadScript>
+        </IntlProvider>
+      </SocketContext.Provider>
     </>
   );
 }

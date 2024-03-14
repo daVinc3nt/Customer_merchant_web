@@ -2,17 +2,22 @@ import classNames from "classnames";
 import React, { useState, useEffect, useContext } from "react";
 import { CollapsIcon } from "../Icons";
 import Link from "next/link";
-import LocationForm from "./LocationForm";
-import MoreDetailsForm from "./MoreDetailsForm";
-import OrderNotification from "./OrderNotification";
+import LocationForm from "./component/LocationForm";
+import MoreDetailsForm from "./component/MoreDetailsForm";
+import OrderNotification from "./component/OrderNotification";
 import { motion } from "framer-motion";
 import { FormattedMessage, useIntl } from "react-intl";
-import { Button } from "@nextui-org/react";
+import { button } from "@nextui-org/react";
 import { getCoordinates } from "../MapRender/GetCoordinates";
 import axios from "axios";
 import { DestinationContext } from "@/context/DestinationContext";
 import { SourceContext } from "@/context/SourceContext";
 import { debounce } from "lodash";
+import { AdministrativeOperation, CalculatingFeeInfo, CreatingOrderByUserInformation, OrdersOperation, UsersAuthenticate } from "@/TDLib/tdlogistics";
+import { io } from "socket.io-client";
+import Loading from "./component/LoadingForm";
+import FeeForm from "./component/FeeForm";
+import { SocketContext } from "@/pages/_app";
 
 interface City {
   Id: string;
@@ -31,6 +36,8 @@ interface Ward {
   Name: string;
 }
 
+
+
 const OrderForm = ({ toggleCollapse, setToggleCollapse }) => {
   const [toggleCollapse2, setToggleCollapse2] = useState(false);
   const [currentForm, setCurrentForm] = useState<number>(0);
@@ -39,7 +46,6 @@ const OrderForm = ({ toggleCollapse, setToggleCollapse }) => {
   const [shake, setshake] = useState(false);
   const { source, setSource } = useContext(SourceContext);
   const { destination, setDestination } = useContext(DestinationContext);
-
   //State for LocationForm
   interface FormValues {
     name: string;
@@ -95,35 +101,41 @@ const OrderForm = ({ toggleCollapse, setToggleCollapse }) => {
   const [formErrors2, setFormErrors2] = useState<ErrorValues>(initialErrors2);
   const [selectedOption1, setSelectedOption1] = useState<string>("");
   const [selectedOption2, setSelectedOption2] = useState<string>("");
-  const [cities, setCities] = useState<City[]>([]);
-  const [selectedCity, setSelectedCity] = useState("");
-  const [selectedDistrict, setSelectedDistrict] = useState("");
-  const [cities2, setCities2] = useState<City[]>([]);
-  const [selectedCity2, setSelectedCity2] = useState("");
-  const [selectedDistrict2, setSelectedDistrict2] = useState("");
-  useEffect(() => {
-    const fetchCities = async () => {
-      const response = await axios.get(
-        "https://raw.githubusercontent.com/kenzouno1/DiaGioiHanhChinhVN/master/data.json"
-      );
-      setCities(response.data);
-      setCities2(response.data);
-    };
+  const adminOperation = new AdministrativeOperation();
+  const [provinces, setProvinces] = useState([]);
+  const [districts, setDistricts] = useState([]);
+  const [wards, setWards] = useState([]);
 
-    fetchCities();
+  const [selectedProvince, setSelectedProvince] = useState("");
+  const [selectedDistrict, setSelectedDistrict] = useState("");
+  const [selectedWard, setSelectedWard] = useState("");
+
+  const [districts2, setDistricts2] = useState([]);
+  const [wards2, setWards2] = useState([]);
+  const [selectedProvince2, setSelectedProvince2] = useState("");
+  const [selectedDistrict2, setSelectedDistrict2] = useState("");
+  const [selectedWard2, setSelectedWard2] = useState("");
+  useEffect(() => {
+    const fetchData = async () => {
+      const response = await adminOperation.get({});
+      setProvinces(response.data);
+    };
+    fetchData();
   }, []);
 
   //State for MoreDetailsForm
   const [selectedOption3, setSelectedOption3] = useState<string>("");
-  const [selectedOption4, setSelectedOption4] = useState<string>("");
   const [height, setHeight] = useState(0);
   const [width, setWidth] = useState(0);
   const [length, setLength] = useState(0);
+  const [mass, setMass] = useState(0);
   const [formErrors3, setFormErrors3] = useState({
     goods: "",
     mass: "",
     dimensions: "",
   });
+  const [useT60Service, setUseT60Service] = useState(false);
+  const [COD, setCOD] = useState(0);
 
   const wrapperClasses = classNames(
     "relative bottom-0 px-4 pt-10 pb-4 ml-2 lg:ml-4  mt-2 lg:mt-4 bg-formBgColor-parent flex flex-col justify-between rounded-2xl z-20",
@@ -232,7 +244,7 @@ const OrderForm = ({ toggleCollapse, setToggleCollapse }) => {
         id: "OrderForm.MoreDetailsForm.error1",
       });
     } else formErrors3.goods = "";
-    if (selectedOption4 == "") {
+    if (mass == 0) {
       formErrors3.mass = intl.formatMessage({
         id: "OrderForm.MoreDetailsForm.error2",
       });
@@ -306,13 +318,18 @@ const OrderForm = ({ toggleCollapse, setToggleCollapse }) => {
         return;
       } else {
         setshake(false);
-        setShowNotification(true);
+        setCurrentForm(2)
+        handleCalculateFee();
       }
+    }
+    else if (currentForm == 3) {
+      setCurrentForm(4)
+      handleCreateOrder()
     }
   };
 
   const handleGoBackButton = () => {
-    setCurrentForm(currentForm - 1);
+    currentForm == 3 ? setCurrentForm(1) : setCurrentForm(currentForm - 1);
     setshake(false);
   };
 
@@ -320,6 +337,94 @@ const OrderForm = ({ toggleCollapse, setToggleCollapse }) => {
     setShowNotification(false);
     setCurrentForm(0);
   };
+
+  const [message, setMessage] = useState("")
+
+  const [fee, setFee] = useState(0)
+  const handleConnect = () => {
+  };
+
+  const handleNotifyError = (message) => {
+    setMessage("Error: " + message);
+    setShowNotification(true);
+  };
+
+  const handleNotifySuccessCreatedNewOrder = (message) => {
+    setMessage(intl.formatMessage({ id: "OrderForm.OrderNotification.detail" }));
+    setShowNotification(true);
+  };
+
+  const handleNotifyFailCreatedNewOrder = (message) => {
+    setMessage("Failed to create new order: " + message);
+    setShowNotification(true);
+  };
+
+  const socket = useContext(SocketContext)
+  useEffect(() => {
+    socket.on("connect", handleConnect);
+    socket.on("notifyError", handleNotifyError);
+    socket.on("notifySuccessCreatedNewOrder", handleNotifySuccessCreatedNewOrder);
+    socket.on("notifyFailCreatedNewOrder", handleNotifyFailCreatedNewOrder);
+
+    // Dọn dẹp khi component bị hủy
+    return () => {
+      socket.off("connect", handleConnect);
+      socket.off("notifyError", handleNotifyError);
+      socket.off("notifySuccessCreatedNewOrder", handleNotifySuccessCreatedNewOrder);
+      socket.off("notifyFailCreatedNewOrder", handleNotifyFailCreatedNewOrder);
+    };
+  }, []);
+
+  const handleCalculateFee = async () => {
+    const ordersOperation = new OrdersOperation();
+    const calculateFeeInfo: CalculatingFeeInfo = {
+      province_source: formValues.province,
+      district_source: formValues.district,
+      ward_source: formValues.town,
+      detail_source: formValues.address,
+      province_dest: formValues2.province,
+      district_dest: formValues2.district,
+      ward_dest: formValues2.town,
+      detail_dest: formValues2.address,
+      service_type: useT60Service == true ? "T60" : selectedOption3,
+      length: length,
+      width: width,
+      height: height,
+    }
+    const data = await ordersOperation.calculateFee(calculateFeeInfo)
+    if (!data.error) {
+      setFee(data.data)
+      setCurrentForm(3)
+    }
+    else console.log(data)
+  }
+
+  const handleCreateOrder = async () => {
+    const ordersOperation = new OrdersOperation();
+    const orderInfo: CreatingOrderByUserInformation = {
+      name_receiver: formValues2.name,
+      phone_number_receiver: formValues2.phoneNum,
+      mass: mass,
+      height: height,
+      width: width,
+      length: length,
+      province_source: formValues.province,
+      district_source: formValues.district,
+      ward_source: formValues.town,
+      detail_source: formValues.address,
+      province_dest: formValues2.province,
+      district_dest: formValues2.district,
+      ward_dest: formValues2.town,
+      detail_dest: formValues2.address,
+      long_source: source.lng,
+      lat_source: source.lat,
+      long_destination: destination.lng,
+      lat_destination: destination.lat,
+      COD: COD,
+      service_type: useT60Service == true ? "T60" : selectedOption3,
+    };
+    ordersOperation.createByUser(socket, orderInfo);
+  }
 
   useEffect(() => {
     let timer: NodeJS.Timeout;
@@ -457,7 +562,7 @@ const OrderForm = ({ toggleCollapse, setToggleCollapse }) => {
               <CollapsIcon />
             </button>
           </div>
-          {!toggleCollapse && !toggleCollapse2 && currentForm > 0 && (
+          {!toggleCollapse && !toggleCollapse2 && (currentForm == 1 || currentForm == 3) && (
             <div className="flex items-center justify-between relative">
               <motion.button
                 whileHover={{ scale: 1.05 }}
@@ -485,24 +590,33 @@ const OrderForm = ({ toggleCollapse, setToggleCollapse }) => {
               setSelectedOption1={setSelectedOption1}
               selectedOption2={selectedOption2}
               setSelectedOption2={setSelectedOption2}
-              selectedCity={selectedCity}
-              setSelectedCity={setSelectedCity}
+              selectedCity={selectedProvince}
+              setSelectedCity={setSelectedProvince}
               selectedDistrict={selectedDistrict}
               setSelectedDistrict={setSelectedDistrict}
-              selectedCity2={selectedCity2}
-              setSelectedCity2={setSelectedCity2}
+              selectedWard={selectedWard}
+              setSelectedWard={setSelectedWard}
+              selectedCity2={selectedProvince2}
+              setSelectedCity2={setSelectedProvince2}
               selectedDistrict2={selectedDistrict2}
               setSelectedDistrict2={setSelectedDistrict2}
-              cities={cities}
-              cities2={cities2}
+              selectedWard2={selectedWard2}
+              setSelectedWard2={setSelectedWard2}
+              cities={provinces}
+              districts={districts}
+              setDistricts={setDistricts}
+              wards={wards}
+              setWards={setWards}
+              districts2={districts2}
+              setDistricts2={setDistricts2}
+              wards2={wards2}
+              setWards2={setWards2}
             />
           )}
           {!toggleCollapse && !toggleCollapse2 && currentForm == 1 && (
             <MoreDetailsForm
               selectedOption3={selectedOption3}
               setSelectedOption3={setSelectedOption3}
-              selectedOption4={selectedOption4}
-              setSelectedOption4={setSelectedOption4}
               height={height}
               setHeight={setHeight}
               width={width}
@@ -513,9 +627,37 @@ const OrderForm = ({ toggleCollapse, setToggleCollapse }) => {
               setFormErrors3={setFormErrors3}
               currentForm={currentForm}
               setshake={setshake}
+              mass={mass}
+              setMass={setMass}
+              useT60Service={useT60Service}
+              setUseT60Service={setUseT60Service}
+              COD={COD}
+              setCOD={setCOD}
             />
           )}
-          {!toggleCollapse && !toggleCollapse2 && currentForm < 2 && (
+          {!toggleCollapse && !toggleCollapse2 && currentForm == 2 && <Loading currentForm={currentForm} />}
+          {!toggleCollapse && !toggleCollapse2 && currentForm == 3 && <FeeForm
+            name_sender={formValues.name}
+            phone_number_sender={formValues.phoneNum}
+            name_receiver={formValues2.name}
+            phone_number_receiver={formValues2.phoneNum}
+            mass={mass}
+            height={height}
+            width={width}
+            length={length}
+            province_source={formValues.province}
+            district_source={formValues.district}
+            ward_source={formValues.town}
+            detail_source={formValues.address}
+            province_dest={formValues2.province}
+            district_dest={formValues2.district}
+            ward_dest={formValues2.town}
+            detail_dest={formValues2.address}
+            COD={COD}
+            service_type={useT60Service == true ? "T60" : selectedOption3}
+            fee={fee} />}
+          {!toggleCollapse && !toggleCollapse2 && currentForm == 4 && <Loading currentForm={currentForm} />}
+          {!toggleCollapse && !toggleCollapse2 && currentForm < 4 && currentForm != 2 && (
             <div className="flex flex-col justify-start self-center w-full rounded-2xl">
               <div className="flex flex-col justify-start self-center w-full rounded-2xl">
                 <h1 className="mt-2 xs:mt-2 text-xs text-black cursor-default hidden sm:block">
@@ -529,20 +671,19 @@ const OrderForm = ({ toggleCollapse, setToggleCollapse }) => {
                 </Link>
               </div>
 
-              <Button
-                className={`self-center w-full rounded-lg mt-3 py-3 bg-buttonColorForm-default hover:bg-buttonColorForm-hover text-buttonColorForm-text ${
-                  shake ? "animate-shake bg-gray-500 hover:bg-gray-500" : ""
-                }`}
+              <button
+                className={`self-center w-full rounded-lg mt-3 py-3 bg-buttonColorForm-default hover:bg-buttonColorForm-hover text-buttonColorForm-text ${shake ? "animate-shake bg-gray-500 hover:bg-gray-500" : ""
+                  }`}
                 onClick={handleSubmitButton}
               >
-                <FormattedMessage id="OrderForm.Continue" />
-              </Button>
+                {currentForm == 3 ? <FormattedMessage id="OrderForm.ConfirmCreate" /> : <FormattedMessage id="OrderForm.Continue" />}
+              </button>
             </div>
           )}
         </div>
 
         {showNotification && (
-          <OrderNotification onClose={handleNotificationClose} />
+          <OrderNotification onClose={handleNotificationClose} message={message} />
         )}
       </div>
     </div>

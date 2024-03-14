@@ -5,6 +5,8 @@ import CommonDropdown from "./ListBox";
 import { motion, Variants } from "framer-motion";
 import { FormattedMessage, useIntl } from "react-intl";
 import Notification2 from "./Notification2";
+import { AdministrativeOperation } from "@/TDLib/tdlogistics";
+import { Select, SelectItem } from "@nextui-org/react";
 
 const LocationForm = ({
   formValues,
@@ -23,12 +25,23 @@ const LocationForm = ({
   setSelectedCity,
   selectedDistrict,
   setSelectedDistrict,
+  selectedWard,
+  setSelectedWard,
   selectedCity2,
   setSelectedCity2,
   selectedDistrict2,
   setSelectedDistrict2,
+  selectedWard2,
+  setSelectedWard2,
   cities,
-  cities2,
+  districts,
+  setDistricts,
+  wards,
+  setWards,
+  districts2,
+  setDistricts2,
+  wards2,
+  setWards2,
 }) => {
   const [showNotification, setShowNotification] = useState(false);
   const intl = useIntl();
@@ -65,24 +78,25 @@ const LocationForm = ({
       [key]: value,
     }));
   };
-
-  const handleCityChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
-    setSelectedCity(event.target.value);
-    setSelectedDistrict("");
-    handleInputChange(
-      "province",
-      cities.find((city) => city.Id === event.target.value)?.Name
-    );
+  const adminOperation = new AdministrativeOperation();
+  const handleProvinceChange = async (e) => {
+    setSelectedCity(e.target.value);
+    const a = { province: e.target.value }
+    handleInputChange("province", e.target.value);
+    const response = await adminOperation.get(a);
+    setDistricts(response.data);
   };
 
-  const handleDistrictChange = (
-    event: React.ChangeEvent<HTMLSelectElement>
-  ) => {
-    setSelectedDistrict(event.target.value);
-    handleInputChange(
-      "district",
-      districts.find((district) => district.Id === event.target.value)?.Name
-    );
+  const handleDistrictChange = async (e) => {
+    setSelectedDistrict(e.target.value);
+    const a = { province: selectedCity, district: e.target.value }
+    handleInputChange("district", e.target.value);
+    const response = await adminOperation.get(a);
+    setWards(response.data);
+  };
+  const handleWardChange = (e) => {
+    setSelectedWard(e.target.value);
+    handleInputChange("town", e.target.value);
   };
 
   const handleInputChange2 = (key: string, value: string) => {
@@ -92,40 +106,25 @@ const LocationForm = ({
     }));
   };
 
-  const handleCityChange2 = (event: React.ChangeEvent<HTMLSelectElement>) => {
-    setSelectedCity2(event.target.value);
-    setSelectedDistrict2("");
-    handleInputChange2(
-      "province",
-      cities2.find((city) => city.Id === event.target.value)?.Name
-    );
+  const handleProvinceChange2 = async (e) => {
+    setSelectedCity2(e.target.value);
+    const a = { province: e.target.value }
+    handleInputChange2("province", e.target.value);
+    const response = await adminOperation.get(a);
+    setDistricts2(response.data);
   };
 
-  const handleDistrictChange2 = (
-    event: React.ChangeEvent<HTMLSelectElement>
-  ) => {
-    setSelectedDistrict2(event.target.value);
-    handleInputChange2(
-      "district",
-      districts2.find((district) => district.Id === event.target.value)?.Name
-    );
+  const handleDistrictChange2 = async (e) => {
+    setSelectedDistrict2(e.target.value);
+    const a = { province: selectedCity2, district: e.target.value }
+    handleInputChange2("district", e.target.value);
+    const response = await adminOperation.get(a);
+    setWards2(response.data);
   };
-
-  const selectedCityObj = cities.find((city) => city.Id === selectedCity);
-  const districts = selectedCityObj ? selectedCityObj.Districts : [];
-
-  const selectedDistrictObj = districts.find(
-    (district) => district.Id === selectedDistrict
-  );
-  const wards = selectedDistrictObj ? selectedDistrictObj.Wards : [];
-
-  const selectedCityObj2 = cities2.find((city) => city.Id === selectedCity2);
-  const districts2 = selectedCityObj2 ? selectedCityObj2.Districts : [];
-
-  const selectedDistrictObj2 = districts2.find(
-    (district) => district.Id === selectedDistrict2
-  );
-  const wards2 = selectedDistrictObj2 ? selectedDistrictObj2.Wards : [];
+  const handleWardChange2 = (e) => {
+    setSelectedWard2(e.target.value);
+    handleInputChange2("town", e.target.value);
+  };
 
   const handleAddress = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
@@ -199,7 +198,7 @@ const LocationForm = ({
   };
 
   return (
-    <div className="relative h-5/6 w-full mt-4 lg:mt-8 border-2 border-formBorder-parent rounded-md">
+    <div className="relative h-full w-full mt-4 lg:mt-8 border-2 border-formBorder-parent rounded-md">
       {!isAtBottom && (
         <motion.button
           variants={{ initial: { opacity: 0 }, enter: { opacity: 1 } }}
@@ -265,9 +264,8 @@ const LocationForm = ({
           </h1>
 
           <div
-            className={`relative self-center w-11/12 ${
-              formErrors.address ? "mb-7" : "mb-2"
-            } mt-3`}
+            className={`relative self-center w-11/12 ${formErrors.address ? "mb-7" : "mb-2"
+              } mt-3`}
           >
             <div className="relative self-center sm:grow w-full">
               <input
@@ -278,23 +276,21 @@ const LocationForm = ({
                 onChange={handleAddress}
                 placeholder=""
                 className={`peer h-12 self-center w-full border border-gray-300 rounded focus:outline-none truncate bg-formBgColor-secondChild
-                    ${
-                      formErrors.address
-                        ? "ring-2 ring-red-500 focus:ring-2 focus:ring-red-500"
-                        : "focus:ring-2 focus:ring-blue-500"
-                    } 
+                    ${formErrors.address
+                    ? "ring-2 ring-red-500 focus:ring-2 focus:ring-red-500"
+                    : "focus:ring-2 focus:ring-blue-500"
+                  } 
                     text-left placeholder-transparent pl-3 pt-2 text-headlineText-default pr-12`}
               />
               <label
                 htmlFor="sourceAddress"
                 className={`absolute left-3 -top-0 text-xxs leading-5 text-gray-600 transition-all 
                     peer-placeholder-shown:text-sm peer-placeholder-shown:text-gray-700 peer-placeholder-shown:top-3.5 
-                    peer-focus:-top-0 peer-focus:leading-5 peer-focus:text-xxs
-                    ${
-                      formErrors.address
-                        ? "peer-focus:text-red-500"
-                        : "peer-focus:text-blue-600"
-                    }`}
+                    peer-focus:-top-0 peer-focus:leading-5 peer-focus:text-xxs truncate
+                    ${formErrors.address
+                    ? "peer-focus:text-red-500"
+                    : "peer-focus:text-blue-600"
+                  }`}
               >
                 <FormattedMessage id="OrderForm.LocationForm.pickupAddress" />
               </label>
@@ -305,72 +301,98 @@ const LocationForm = ({
           </div>
 
           <div className="flex flex-col lg:flex-row gap-2 lg:gap-3 w-11/12 self-center mb-2">
-            <select
-              className={`text-xs md:text-sm border border-gray-300 focus:outline-none rounded-xl h-12 w-full pl-1 ${
-                formErrors.address
-                  ? "ring-2 ring-red-500 focus:ring-2 focus:ring-red-500"
-                  : "focus:ring-2 focus:ring-blue-500"
-              } `}
+            <Select
+              placeholder={intl.formatMessage({ id: "OrderForm.LocationForm.SelectProvince" })}
+              classNames={{
+                listboxWrapper: "max-h-[300px] no-scrollbar",
+                trigger: `text-xs md:text-sm text-black h-12 border border-gray-300 focus:outline-none rounded-xl w-full text-center text-black ${formErrors.address ? 'ring-2 ring-red-500 focus:ring-2 focus:ring-red-500' : 'focus:ring-2 focus:ring-blue-500'}`
+              }}
+              listboxProps={{
+                itemClasses: {
+                  base: [
+                    "rounded-md text-black transition-opacity hover:text-blue-500",
+                  ],
+                },
+              }}
+              popoverProps={{
+                classNames: {
+                  base: "before:bg-white",
+                  content: "p-0 bg-white rounded-xl border border-gray-300",
+                },
+              }}
               id="city"
               aria-label=".form-select-sm"
               value={selectedCity}
-              onChange={handleCityChange}
+              onChange={handleProvinceChange}
             >
-              <option value="">
-                <FormattedMessage id="OrderForm.LocationForm.SelectProvince" />
-              </option>
-              {cities.map((city, index) => (
-                <option key={index} value={city.Id}>
-                  {city.Name}
-                </option>
+              {cities?.map((city) => (
+                <SelectItem key={city} value={city}>
+                  {city}
+                </SelectItem>
               ))}
-            </select>
+            </Select>
 
-            <select
-              className={`text-xs md:text-sm border border-gray-300 focus:outline-none rounded-xl h-12 w-full pl-1 ${
-                formErrors.address
-                  ? "ring-2 ring-red-500 focus:ring-2 focus:ring-red-500"
-                  : "focus:ring-2 focus:ring-blue-500"
-              } `}
+            <Select
+              placeholder={intl.formatMessage({ id: "OrderForm.LocationForm.SelectDistrict" })}
+              classNames={{
+                listboxWrapper: "max-h-[300px] no-scrollbar",
+                trigger: `text-xs md:text-sm text-black h-12 border border-gray-300 focus:outline-none rounded-xl w-full text-center text-black ${formErrors.address ? 'ring-2 ring-red-500 focus:ring-2 focus:ring-red-500' : 'focus:ring-2 focus:ring-blue-500'}`,
+              }}
+              listboxProps={{
+                itemClasses: {
+                  base: [
+                    "rounded-md text-black transition-opacity hover:text-blue-500",
+                  ],
+                },
+              }}
+              popoverProps={{
+                classNames: {
+                  base: "before:bg-white",
+                  content: "p-0 bg-white rounded-xl border border-gray-300",
+                },
+              }}
               id="district"
               aria-label=".form-select-sm"
               value={selectedDistrict}
               onChange={handleDistrictChange}
             >
-              <option value="">
-                <FormattedMessage id="OrderForm.LocationForm.SelectDistrict" />
-              </option>
-              {districts.map((district, index) => (
-                <option key={index} value={district.Id}>
-                  {district.Name}
-                </option>
+              {districts?.map((district) => (
+                <SelectItem key={district} value={district}>
+                  {district}
+                </SelectItem>
               ))}
-            </select>
+            </Select>
 
-            <select
-              className={`text-xs md:text-sm border border-gray-300 focus:outline-none rounded-xl h-12 w-full pl-1 ${
-                formErrors.address
-                  ? "ring-2 ring-red-500 focus:ring-2 focus:ring-red-500"
-                  : "focus:ring-2 focus:ring-blue-500"
-              } `}
+            <Select
+              placeholder={intl.formatMessage({ id: "OrderForm.LocationForm.SelectWard" })}
+              classNames={{
+                listboxWrapper: "max-h-[300px] no-scrollbar",
+                trigger: `text-xs md:text-sm text-black h-12 border border-gray-300 focus:outline-none rounded-xl w-full text-center text-black ${formErrors.address ? 'ring-2 ring-red-500 focus:ring-2 focus:ring-red-500' : 'focus:ring-2 focus:ring-blue-500'}`,
+              }}
+              listboxProps={{
+                itemClasses: {
+                  base: [
+                    "rounded-md text-black transition-opacity hover:text-blue-500",
+                  ],
+                },
+              }}
+              popoverProps={{
+                classNames: {
+                  base: "before:bg-white",
+                  content: "p-0 bg-white rounded-xl border border-gray-300",
+                },
+              }}
               id="ward"
               aria-label=".form-select-sm"
-              onChange={(e) =>
-                handleInputChange(
-                  "town",
-                  wards.find((ward) => ward.Id === e.target.value)?.Name
-                )
-              }
+              value={selectedWard}
+              onChange={handleWardChange}
             >
-              <option value="">
-                <FormattedMessage id="OrderForm.LocationForm.SelectWard" />
-              </option>
-              {wards.map((ward, index) => (
-                <option key={index} value={ward.Id}>
-                  {ward.Name}
-                </option>
+              {wards?.map((ward) => (
+                <SelectItem key={ward} value={ward}>
+                  {ward}
+                </SelectItem>
               ))}
-            </select>
+            </Select>
           </div>
 
           <CommonDropdown
@@ -387,11 +409,10 @@ const LocationForm = ({
                 name="orderName"
                 type="text"
                 className={`peer h-12 self-center w-full border border-gray-300 rounded focus:outline-none truncate bg-formBgColor-secondChild
-                    ${
-                      formErrors.name
-                        ? "ring-2 ring-red-500 focus:ring-2 focus:ring-red-500"
-                        : "focus:ring-2 focus:ring-blue-500"
-                    } 
+                    ${formErrors.name
+                    ? "ring-2 ring-red-500 focus:ring-2 focus:ring-red-500"
+                    : "focus:ring-2 focus:ring-blue-500"
+                  } 
                     text-left placeholder-transparent pl-3 pt-2 text-headlineText-default pr-12`}
                 placeholder=""
                 onChange={handleName}
@@ -401,12 +422,11 @@ const LocationForm = ({
                 htmlFor="orderName"
                 className={`absolute left-3 -top-0 text-xxs leading-5 text-gray-600 transition-all 
                     peer-placeholder-shown:text-sm peer-placeholder-shown:text-gray-700 peer-placeholder-shown:top-3.5 
-                    peer-focus:-top-0 peer-focus:leading-5 peer-focus:text-xxs
-                    ${
-                      formErrors.name
-                        ? "peer-focus:text-red-500"
-                        : "peer-focus:text-blue-600"
-                    }`}
+                    peer-focus:-top-0 peer-focus:leading-5 peer-focus:text-xxs truncate
+                    ${formErrors.name
+                    ? "peer-focus:text-red-500"
+                    : "peer-focus:text-blue-600"
+                  }`}
               >
                 <FormattedMessage id="OrderForm.LocationForm.sendersName" />
               </label>
@@ -419,28 +439,25 @@ const LocationForm = ({
                     rounded-r-xl"
               >
                 <FaUserCircle
-                  className={`flex text-gray-500 w-full border-l-2 ${
-                    formErrors.name ? "border-red-500" : ""
-                  }`}
+                  className={`flex text-gray-500 w-full border-l-2 ${formErrors.name ? "border-red-500" : ""
+                    }`}
                 />
               </button>
             </div>
 
             <div
-              className={`relative self-center sm:grow sm:pl-4 w-full ${
-                formErrors.name ? "mt-7 sm:mt-0" : "mt-4 sm:mt-0"
-              }`}
+              className={`relative self-center sm:grow sm:pl-4 w-full ${formErrors.name ? "mt-7 sm:mt-0" : "mt-4 sm:mt-0"
+                }`}
             >
               <input
                 id="orderPhoneNum"
                 name="orderPhoneNum"
                 type="text"
                 className={`peer h-12 self-center w-full border border-gray-300 rounded focus:outline-none truncate bg-formBgColor-secondChild
-                    ${
-                      formErrors.phoneNum
-                        ? "ring-2 ring-red-500 focus:ring-2 focus:ring-red-500"
-                        : "focus:ring-2 focus:ring-blue-500"
-                    } 
+                    ${formErrors.phoneNum
+                    ? "ring-2 ring-red-500 focus:ring-2 focus:ring-red-500"
+                    : "focus:ring-2 focus:ring-blue-500"
+                  } 
                     text-left placeholder-transparent pl-3 pt-2 text-headlineText-default pr-12`}
                 placeholder=""
                 onChange={handleNum}
@@ -452,21 +469,19 @@ const LocationForm = ({
                     rounded-r-xl"
               >
                 <FaMobile
-                  className={`flex text-gray-500 w-full border-l-2 ${
-                    formErrors.phoneNum ? "border-red-500" : ""
-                  }`}
+                  className={`flex text-gray-500 w-full border-l-2 ${formErrors.phoneNum ? "border-red-500" : ""
+                    }`}
                 />
               </button>
               <label
                 htmlFor="orderPhoneNum"
                 className={`sm:left-7 absolute left-3 -top-0 text-xxs leading-5 text-gray-600 transition-all 
                     peer-placeholder-shown:text-sm peer-placeholder-shown:text-gray-700 peer-placeholder-shown:top-3.5 
-                    peer-focus:-top-0 peer-focus:leading-5 peer-focus:text-xxs 
-                    ${
-                      formErrors.phoneNum
-                        ? "peer-focus:text-red-500"
-                        : "peer-focus:text-blue-600"
-                    }`}
+                    peer-focus:-top-0 peer-focus:leading-5 peer-focus:text-xxs truncate 
+                    ${formErrors.phoneNum
+                    ? "peer-focus:text-red-500"
+                    : "peer-focus:text-blue-600"
+                  }`}
               >
                 <FormattedMessage id="OrderForm.LocationForm.sendersNum" />
               </label>
@@ -489,9 +504,8 @@ const LocationForm = ({
             <FormattedMessage id="OrderForm.LocationForm.deliveryLocation" />
           </h1>
           <div
-            className={`relative self-center w-11/12 ${
-              formErrors2.address ? "mb-7" : "mb-2"
-            } mt-3`}
+            className={`relative self-center w-11/12 ${formErrors2.address ? "mb-7" : "mb-2"
+              } mt-3`}
           >
             <input
               id="desAddress"
@@ -501,23 +515,21 @@ const LocationForm = ({
               onChange={handleAddress2}
               placeholder=""
               className={`peer h-12 self-center w-full border border-gray-300 rounded focus:outline-none truncate bg-formBgColor-secondChild
-                    ${
-                      formErrors2.address
-                        ? "ring-2 ring-red-500 focus:ring-2 focus:ring-red-500"
-                        : "focus:ring-2 focus:ring-blue-500"
-                    } 
+                    ${formErrors2.address
+                  ? "ring-2 ring-red-500 focus:ring-2 focus:ring-red-500"
+                  : "focus:ring-2 focus:ring-blue-500"
+                } 
                     text-left placeholder-transparent pl-3 pt-2 text-headlineText-default pr-12`}
             />
             <label
               htmlFor="desAddress"
               className={`absolute left-3 -top-0 text-xxs leading-5 text-gray-600 transition-all 
                     peer-placeholder-shown:text-sm peer-placeholder-shown:text-gray-700 peer-placeholder-shown:top-3.5 
-                    peer-focus:-top-0 peer-focus:leading-5 peer-focus:text-xxs
-                    ${
-                      formErrors2.address
-                        ? "peer-focus:text-red-500"
-                        : "peer-focus:text-blue-600"
-                    }`}
+                    peer-focus:-top-0 peer-focus:leading-5 peer-focus:text-xxs truncate
+                    ${formErrors2.address
+                  ? "peer-focus:text-red-500"
+                  : "peer-focus:text-blue-600"
+                }`}
             >
               <FormattedMessage id="OrderForm.LocationForm.deliveryAddress" />
             </label>
@@ -527,72 +539,98 @@ const LocationForm = ({
           </div>
 
           <div className="flex flex-col lg:flex-row gap-2 lg:gap-3 w-11/12 self-center mb-2">
-            <select
-              className={`text-xs md:text-sm border border-gray-300 focus:outline-none rounded-xl h-12 w-full pl-1 ${
-                formErrors2.address
-                  ? "ring-2 ring-red-500 focus:ring-2 focus:ring-red-500"
-                  : "focus:ring-2 focus:ring-blue-500"
-              } `}
+            <Select
+              placeholder={intl.formatMessage({ id: "OrderForm.LocationForm.SelectProvince" })}
+              classNames={{
+                listboxWrapper: "max-h-[300px] no-scrollbar",
+                trigger: `text-xs md:text-sm text-black h-12 border border-gray-300 focus:outline-none rounded-xl w-full text-center text-black ${formErrors2.address ? 'ring-2 ring-red-500 focus:ring-2 focus:ring-red-500' : 'focus:ring-2 focus:ring-blue-500'}`
+              }}
+              listboxProps={{
+                itemClasses: {
+                  base: [
+                    "rounded-md text-black transition-opacity hover:text-blue-500",
+                  ],
+                },
+              }}
+              popoverProps={{
+                classNames: {
+                  base: "before:bg-white",
+                  content: "p-0 bg-white rounded-xl border border-gray-300",
+                },
+              }}
               id="city2"
               aria-label=".form-select-sm"
               value={selectedCity2}
-              onChange={handleCityChange2}
+              onChange={handleProvinceChange2}
             >
-              <option value="">
-                <FormattedMessage id="OrderForm.LocationForm.SelectProvince" />
-              </option>
-              {cities2.map((city) => (
-                <option key={city.Id} value={city.Id}>
-                  {city.Name}
-                </option>
+              {cities?.map((city) => (
+                <SelectItem key={city} value={city}>
+                  {city}
+                </SelectItem>
               ))}
-            </select>
+            </Select>
 
-            <select
-              className={`text-xs md:text-sm border border-gray-300 focus:outline-none rounded-xl h-12 w-full pl-1 ${
-                formErrors2.address
-                  ? "ring-2 ring-red-500 focus:ring-2 focus:ring-red-500"
-                  : "focus:ring-2 focus:ring-blue-500"
-              } `}
+            <Select
+              placeholder={intl.formatMessage({ id: "OrderForm.LocationForm.SelectDistrict" })}
+              classNames={{
+                listboxWrapper: "max-h-[300px] no-scrollbar",
+                trigger: `text-xs md:text-sm text-black h-12 border border-gray-300 focus:outline-none rounded-xl w-full text-center text-black ${formErrors2.address ? 'ring-2 ring-red-500 focus:ring-2 focus:ring-red-500' : 'focus:ring-2 focus:ring-blue-500'}`,
+              }}
+              listboxProps={{
+                itemClasses: {
+                  base: [
+                    "rounded-md text-black transition-opacity hover:text-blue-500",
+                  ],
+                },
+              }}
+              popoverProps={{
+                classNames: {
+                  base: "before:bg-white",
+                  content: "p-0 bg-white rounded-xl border border-gray-300",
+                },
+              }}
               id="district2"
               aria-label=".form-select-sm"
               value={selectedDistrict2}
               onChange={handleDistrictChange2}
             >
-              <option value="">
-                <FormattedMessage id="OrderForm.LocationForm.SelectDistrict" />
-              </option>
-              {districts2.map((district, index) => (
-                <option key={index} value={district.Id}>
-                  {district.Name}
-                </option>
+              {districts2?.map((district) => (
+                <SelectItem key={district} value={district}>
+                  {district}
+                </SelectItem>
               ))}
-            </select>
+            </Select>
 
-            <select
-              className={`text-xs md:text-sm border border-gray-300 focus:outline-none rounded-xl h-12 w-full pl-1 ${
-                formErrors2.address
-                  ? "ring-2 ring-red-500 focus:ring-2 focus:ring-red-500"
-                  : "focus:ring-2 focus:ring-blue-500"
-              } `}
+            <Select
+              placeholder={intl.formatMessage({ id: "OrderForm.LocationForm.SelectWard" })}
+              classNames={{
+                listboxWrapper: "max-h-[300px] no-scrollbar",
+                trigger: `text-xs md:text-sm text-black h-12 border border-gray-300 focus:outline-none rounded-xl w-full text-center text-black ${formErrors2.address ? 'ring-2 ring-red-500 focus:ring-2 focus:ring-red-500' : 'focus:ring-2 focus:ring-blue-500'}`,
+              }}
+              listboxProps={{
+                itemClasses: {
+                  base: [
+                    "rounded-md text-black transition-opacity hover:text-blue-500",
+                  ],
+                },
+              }}
+              popoverProps={{
+                classNames: {
+                  base: "before:bg-white",
+                  content: "p-0 bg-white rounded-xl border border-gray-300",
+                },
+              }}
               id="ward2"
               aria-label=".form-select-sm"
-              onChange={(e) =>
-                handleInputChange2(
-                  "town",
-                  wards2.find((ward) => ward.Id === e.target.value)?.Name
-                )
-              }
+              value={selectedWard2}
+              onChange={handleWardChange2}
             >
-              <option value="">
-                <FormattedMessage id="OrderForm.LocationForm.SelectWard" />
-              </option>
-              {wards2.map((ward, index) => (
-                <option key={index} value={ward.Id}>
-                  {ward.Name}
-                </option>
+              {wards2?.map((ward) => (
+                <SelectItem key={ward} value={ward}>
+                  {ward}
+                </SelectItem>
               ))}
-            </select>
+            </Select>
           </div>
 
           <CommonDropdown
@@ -609,11 +647,10 @@ const LocationForm = ({
                 name="receiverName"
                 type="text"
                 className={`peer h-12 self-center w-full border border-gray-300 rounded focus:outline-none truncate bg-formBgColor-secondChild
-                    ${
-                      formErrors2.name
-                        ? "ring-2 ring-red-500 focus:ring-2 focus:ring-red-500"
-                        : "focus:ring-2 focus:ring-blue-500"
-                    }  
+                    ${formErrors2.name
+                    ? "ring-2 ring-red-500 focus:ring-2 focus:ring-red-500"
+                    : "focus:ring-2 focus:ring-blue-500"
+                  }  
                     text-left placeholder-transparent pl-3 pt-2 text-headlineText-default pr-12`}
                 placeholder=""
                 onChange={handleName2}
@@ -623,12 +660,11 @@ const LocationForm = ({
                 htmlFor="receiverName"
                 className={`absolute left-3 -top-0 text-xxs leading-5 text-gray-600 transition-all 
                     peer-placeholder-shown:text-sm peer-placeholder-shown:text-gray-700 peer-placeholder-shown:top-3.5 
-                    peer-focus:-top-0 peer-focus:leading-5 peer-focus:text-xxs 
-                    ${
-                      formErrors2.name
-                        ? "peer-focus:text-red-500"
-                        : "peer-focus:text-blue-600"
-                    }`}
+                    peer-focus:-top-0 peer-focus:leading-5 peer-focus:text-xxs truncate 
+                    ${formErrors2.name
+                    ? "peer-focus:text-red-500"
+                    : "peer-focus:text-blue-600"
+                  }`}
               >
                 <FormattedMessage id="OrderForm.LocationForm.recipientsName" />
               </label>
@@ -641,28 +677,25 @@ const LocationForm = ({
                     rounded-r-xl"
               >
                 <FaUserCircle
-                  className={`flex text-gray-500 w-full border-l-2 ${
-                    formErrors2.name ? "border-red-500" : ""
-                  }`}
+                  className={`flex text-gray-500 w-full border-l-2 ${formErrors2.name ? "border-red-500" : ""
+                    }`}
                 />
               </button>
             </div>
 
             <div
-              className={`relative self-center sm:grow sm:pl-4 w-full ${
-                formErrors2.name ? "mt-7 sm:mt-0" : "mt-4 sm:mt-0"
-              }`}
+              className={`relative self-center sm:grow sm:pl-4 w-full ${formErrors2.name ? "mt-7 sm:mt-0" : "mt-4 sm:mt-0"
+                }`}
             >
               <input
                 id="receiverPhoneNum"
                 name="receiverPhoneNum"
                 type="text"
                 className={`peer h-12 self-center w-full border border-gray-300 rounded focus:outline-none bg-formBgColor-secondChild truncate
-                    ${
-                      formErrors2.phoneNum
-                        ? "ring-2 ring-red-500 focus:ring-2 focus:ring-red-500"
-                        : "focus:ring-2 ring-blue-500"
-                    } 
+                    ${formErrors2.phoneNum
+                    ? "ring-2 ring-red-500 focus:ring-2 focus:ring-red-500"
+                    : "focus:ring-2 ring-blue-500"
+                  } 
                     text-left placeholder-transparent pl-3 pt-2 text-headlineText-default pr-12`}
                 placeholder=""
                 onChange={handleNum2}
@@ -674,21 +707,19 @@ const LocationForm = ({
                     rounded-r-xl"
               >
                 <FaMobile
-                  className={`flex text-gray-500 w-full border-l-2 ${
-                    formErrors2.phoneNum ? "border-red-500" : ""
-                  }`}
+                  className={`flex text-gray-500 w-full border-l-2 ${formErrors2.phoneNum ? "border-red-500" : ""
+                    }`}
                 />
               </button>
               <label
                 htmlFor="receiverPhoneNum"
                 className={`sm:left-7 absolute left-3 -top-0 text-xxs leading-5 text-gray-600 transition-all
                     peer-placeholder-shown:text-sm peer-placeholder-shown:text-gray-700 peer-placeholder-shown:top-3.5 
-                    peer-focus:-top-0 peer-focus:leading-5 peer-focus:text-xxs 
-                    ${
-                      formErrors2.phoneNum
-                        ? "peer-focus:text-red-500"
-                        : "peer-focus:text-blue-600"
-                    }`}
+                    peer-focus:-top-0 peer-focus:leading-5 peer-focus:text-xxs truncate 
+                    ${formErrors2.phoneNum
+                    ? "peer-focus:text-red-500"
+                    : "peer-focus:text-blue-600"
+                  }`}
               >
                 <FormattedMessage id="OrderForm.LocationForm.recipientsNum" />
               </label>
