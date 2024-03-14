@@ -24,16 +24,17 @@ const App = () => {
   };
 
   const renderView = () => {
-    switch (view) {
-      case "overview":
-        return <Overview />;
-      case "distribution":
-        return <Distribution />;
-      case "performance":
-        return <Performance />;
-      default:
-        return <Overview />;
-    }
+    return <Overview />;
+    // switch (view) {
+    //   case "overview":
+    //     return <Overview />;
+    //   case "distribution":
+    //     return <Distribution />;
+    //   case "performance":
+    //     return <Performance />;
+    //   default:
+    //     return <Overview />;
+    // }
   };
 
   return (
@@ -51,7 +52,7 @@ const App = () => {
             <span className="font-semibold text-2xl tracking-tight">
               <FormattedMessage id="ReportStatistics.title" />
             </span>
-            <div className="block lg:hidden">
+            {/* <div className="block lg:hidden">
               <button
                 onClick={toggleNav}
                 className="flex items-center px-3 py-2 border rounded text-black border-teal-400 hover:text-red-500 focus:text-red-500 hover:border-white"
@@ -65,16 +66,16 @@ const App = () => {
                   <path d="M0 3h20v2H0V3zm0 6h20v2H0V9zm0 6h20v2H0v-2z" />
                 </svg>
               </button>
-            </div>
+            </div> */}
           </div>
 
-          <div
+          {/* <div
             className={` z-10 mt-2  w-5/6 block flex-grow lg:flex lg:items-center lg:w-auto ${
               isOpen ? "" : "hidden"
             }`}
           >
             <div className="text-base lg:flex-grow bg-white  block rounded-xl text-gray-500">
-              {/* Your buttons go here */}
+              
               <button
                 onClick={() => setView("overview")}
                 className="rounded-xl block mt-4 z-10 lg:inline-block lg:mt-0  hover:text-red-500 focus:text-red-500 focus:underline focus:underline-offset-4 mr-4"
@@ -94,7 +95,7 @@ const App = () => {
                 <FormattedMessage id="ReportStatistics.option3" />
               </button>
             </div>
-          </div>
+          </div> */}
         </nav>
       </motion.div>
       <motion.div

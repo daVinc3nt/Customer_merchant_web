@@ -51,7 +51,7 @@ export const columns: ColumnDef<OrderDetail>[] = [
     cell: ({ row }) => {
       return (
         <div className="flex flex-row">
-          <div className="text-base font-semibold"> Order ID : </div>
+          <div className="text-base font-semibold"> Mã đơn hàng : </div>
           <div className="ml-2 text-base">{row.original.order_id}</div>
         </div>
       );
@@ -62,8 +62,8 @@ export const columns: ColumnDef<OrderDetail>[] = [
     cell: ({ row }) => {
       return (
         <div className="flex flex-row">
-          <div className="text-base font-semibold"> COD : </div>
-          <div className="ml-2 text-base">{row.original.COD}</div>
+          <div className="text-base font-semibold"> Phí COD : </div>
+          <div className="ml-2 text-base">{row.original.COD} (vnđ)</div>
         </div>
       );
     },
@@ -73,8 +73,8 @@ export const columns: ColumnDef<OrderDetail>[] = [
     cell: ({ row }) => {
       return (
         <div className="flex flex-row">
-          <div className="text-base font-semibold"> Fee : </div>
-          <div className="ml-2 text-base">{row.original.fee}</div>
+          <div className="text-base font-semibold"> Phí vận chuyển : </div>
+          <div className="ml-2 text-base">{row.original.fee} (vnđ)</div>
         </div>
       );
     },
@@ -85,7 +85,10 @@ export const columns: ColumnDef<OrderDetail>[] = [
     cell: ({ row }) => {
       return (
         <div className="flex flex-row">
-          <div className="text-base font-semibold"> Phone number sender : </div>
+          <div className="text-base font-semibold">
+            {" "}
+            Số điện thoại người gửi :{" "}
+          </div>
           <div className="ml-2 text-base">
             {row.original.phone_number_sender}
           </div>
@@ -98,7 +101,7 @@ export const columns: ColumnDef<OrderDetail>[] = [
     cell: ({ row }) => {
       return (
         <div className="flex flex-row">
-          <div className="text-base font-semibold"> Name sender : </div>
+          <div className="text-base font-semibold"> Tên người gửi : </div>
           <div className="ml-2 text-base">{row.original.name_sender}</div>
         </div>
       );

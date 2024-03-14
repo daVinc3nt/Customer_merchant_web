@@ -143,7 +143,7 @@ export function DataTable<TData, TValue>({
                     peer-placeholder-shown:text-sm peer-placeholder-shown:text-gray-500 peer-placeholder-shown:top-2.5 
                     peer-focus:-top-0.5 peer-focus:leading-5 peer-focus:text-blue-500 peer-focus:text-xxs`}
             >
-              <FormattedMessage id="PostOffice.SearchBox" />
+              Tìm kiếm theo mã đơn hàng
             </label>
             <Dropdown className="z-30">
               <DropdownTrigger>
@@ -151,7 +151,7 @@ export function DataTable<TData, TValue>({
                   className="text-xs md:text-base border border-gray-600 rounded ml-2 w-36 text-center"
                   aria-label="Show items per page"
                 >
-                  Show {table.getState().pagination.pageSize}
+                  Hiển thị {table.getState().pagination.pageSize}
                 </Button>
               </DropdownTrigger>
               <DropdownMenu
@@ -169,7 +169,7 @@ export function DataTable<TData, TValue>({
                       aria-label={`Show ${pageSize}`}
                       className="text-center  dark:text-white w-full"
                     >
-                      Show {pageSize}
+                      Hiển thị {pageSize}
                     </Button>
                   </DropdownItem>
                 ))}

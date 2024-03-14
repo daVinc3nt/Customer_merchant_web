@@ -2,7 +2,7 @@ import React from "react";
 import Box from "./Box";
 import { info } from "console";
 import { FormattedMessage, useIntl } from "react-intl";
-
+import { ShippersOperation, OrdersOperation } from "@/TDLib/tdlogistics";
 const OverView = () => {
   const intl = useIntl();
   return (
@@ -35,9 +35,7 @@ const OverView = () => {
           <div className="m-4">
             <Box
               data={{
-                text: intl.formatMessage({
-                  id: "ReportStatistics.overview.orderindex.option1",
-                }),
+                text: "Tổng đơn hàng",
                 info: intl.formatMessage({
                   id: "ReportStatistics.overview.orderindex.option1info",
                 }),
@@ -49,9 +47,7 @@ const OverView = () => {
           <div className="m-4">
             <Box
               data={{
-                text: intl.formatMessage({
-                  id: "ReportStatistics.overview.orderindex.option2",
-                }),
+                text: "Đơn hàng thành công",
                 info: intl.formatMessage({
                   id: "ReportStatistics.overview.orderindex.option2info",
                 }),
@@ -63,9 +59,7 @@ const OverView = () => {
           <div className="m-4">
             <Box
               data={{
-                text: intl.formatMessage({
-                  id: "ReportStatistics.overview.orderindex.option3",
-                }),
+                text: "Đơn hàng thất bại",
                 info: intl.formatMessage({
                   id: "ReportStatistics.overview.orderindex.option3info",
                 }),
@@ -77,9 +71,55 @@ const OverView = () => {
           <div className="m-4">
             <Box
               data={{
-                text: intl.formatMessage({
-                  id: "ReportStatistics.overview.orderindex.option4",
+                text: "Đang chờ lấy",
+                info: intl.formatMessage({
+                  id: "ReportStatistics.overview.orderindex.option4info",
                 }),
+                num: 0,
+                percent: 0,
+              }}
+            />
+          </div>
+          <div className="m-4">
+            <Box
+              data={{
+                text: "Đang chờ giao",
+                info: intl.formatMessage({
+                  id: "ReportStatistics.overview.orderindex.option4info",
+                }),
+                num: 0,
+                percent: 0,
+              }}
+            />
+          </div>
+          <div className="m-4">
+            <Box
+              data={{
+                text: "Lấy thành công",
+                info: intl.formatMessage({
+                  id: "ReportStatistics.overview.orderindex.option4info",
+                }),
+                num: 0,
+                percent: 0,
+              }}
+            />
+          </div>
+          <div className="m-4">
+            <Box
+              data={{
+                text: "Lấy thất bại",
+                info: intl.formatMessage({
+                  id: "ReportStatistics.overview.orderindex.option4info",
+                }),
+                num: 0,
+                percent: 0,
+              }}
+            />
+          </div>
+          <div className="m-4">
+            <Box
+              data={{
+                text: "Đã hủy",
                 info: intl.formatMessage({
                   id: "ReportStatistics.overview.orderindex.option4info",
                 }),
