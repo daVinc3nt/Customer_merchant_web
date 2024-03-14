@@ -7,7 +7,7 @@ import MoreDetailsForm from "./component/MoreDetailsForm";
 import OrderNotification from "./component/OrderNotification";
 import { motion } from "framer-motion";
 import { FormattedMessage, useIntl } from "react-intl";
-import { button } from "@nextui-org/react";
+import { Button } from "@nextui-org/react";
 import { getCoordinates } from "../MapRender/GetCoordinates";
 import axios from "axios";
 import { DestinationContext } from "@/context/DestinationContext";
@@ -671,13 +671,13 @@ const OrderForm = ({ toggleCollapse, setToggleCollapse }) => {
                 </Link>
               </div>
 
-              <button
+              <Button
                 className={`self-center w-full rounded-lg mt-3 py-3 bg-buttonColorForm-default hover:bg-buttonColorForm-hover text-buttonColorForm-text ${shake ? "animate-shake bg-gray-500 hover:bg-gray-500" : ""
                   }`}
                 onClick={handleSubmitButton}
               >
                 {currentForm == 3 ? <FormattedMessage id="OrderForm.ConfirmCreate" /> : <FormattedMessage id="OrderForm.Continue" />}
-              </button>
+              </Button>
             </div>
           )}
         </div>
