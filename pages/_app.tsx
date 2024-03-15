@@ -14,7 +14,7 @@ export const SocketContext = createContext<Socket | null>(null);
 const googleMapsLibraries: Libraries = ["places"];
 
 function MyApp({ Component, pageProps }: AppProps) {
-  const socket = io('http://localhost:5000', { transports: ['websocket'] });
+  const socket = io('https://api.tdlogistics.net.vn', { transports: ['websocket'] });
   function Loading() {
     const router = useRouter();
     const [loading, setLoading] = useState(false);
