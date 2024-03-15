@@ -301,98 +301,65 @@ const LocationForm = ({
           </div>
 
           <div className="flex flex-col lg:flex-row gap-2 lg:gap-3 w-11/12 self-center mb-2">
-            <Select
-              placeholder={intl.formatMessage({ id: "OrderForm.LocationForm.SelectProvince" })}
-              classNames={{
-                listboxWrapper: "max-h-[300px] min-w-[150px] no-scrollbar",
-                trigger: `text-xs md:text-sm text-black h-12 border border-gray-300 focus:outline-none rounded-xl w-full text-center text-black ${formErrors.address ? 'ring-2 ring-red-500 focus:ring-2 focus:ring-red-500' : 'focus:ring-2 focus:ring-blue-500'}`
-              }}
-              listboxProps={{
-                itemClasses: {
-                  base: [
-                    "rounded-md text-black transition-opacity hover:text-blue-500",
-                  ],
-                },
-              }}
-              popoverProps={{
-                classNames: {
-                  base: "before:bg-white",
-                  content: "p-0 bg-white rounded-xl border border-gray-300 min-w-[150px]",
-                },
-              }}
+            <select
               id="city"
               aria-label=".form-select-sm"
+              className={`text-xs md:text-sm text-black h-12 border border-gray-300 focus:outline-none w-full rounded-xl text-center ${formErrors.address
+                ? "ring-2 ring-red-500 focus:ring-2 focus:ring-red-500"
+                : "focus:ring-2 focus:ring-blue-500"
+                }`}
               value={selectedCity}
               onChange={handleProvinceChange}
             >
+              <option value="">
+                {intl.formatMessage({ id: "OrderForm.LocationForm.SelectProvince" })}
+              </option>
               {cities?.map((city) => (
-                <SelectItem key={city} value={city}>
+                <option key={city} value={city}>
                   {city}
-                </SelectItem>
+                </option>
               ))}
-            </Select>
+            </select>
 
-            <Select
-              placeholder={intl.formatMessage({ id: "OrderForm.LocationForm.SelectDistrict" })}
-              classNames={{
-                listboxWrapper: "max-h-[300px] no-scrollbar",
-                trigger: `text-xs md:text-sm text-black h-12 border border-gray-300 focus:outline-none rounded-xl w-full text-center text-black ${formErrors.address ? 'ring-2 ring-red-500 focus:ring-2 focus:ring-red-500' : 'focus:ring-2 focus:ring-blue-500'}`,
-              }}
-              listboxProps={{
-                itemClasses: {
-                  base: [
-                    "rounded-md text-black transition-opacity hover:text-blue-500",
-                  ],
-                },
-              }}
-              popoverProps={{
-                classNames: {
-                  base: "before:bg-white",
-                  content: "p-0 bg-white rounded-xl border border-gray-300",
-                },
-              }}
+            <select
               id="district"
               aria-label=".form-select-sm"
+              className={`text-xs md:text-sm text-black h-12 border border-gray-300 focus:outline-none rounded-xl w-full text-center ${formErrors.address
+                ? "ring-2 ring-red-500 focus:ring-2 focus:ring-red-500"
+                : "focus:ring-2 focus:ring-blue-500"
+                }`}
               value={selectedDistrict}
               onChange={handleDistrictChange}
             >
+              <option value="">
+                {intl.formatMessage({ id: "OrderForm.LocationForm.SelectDistrict" })}
+              </option>
               {districts?.map((district) => (
-                <SelectItem key={district} value={district}>
+                <option key={district} value={district}>
                   {district}
-                </SelectItem>
+                </option>
               ))}
-            </Select>
+            </select>
 
-            <Select
-              placeholder={intl.formatMessage({ id: "OrderForm.LocationForm.SelectWard" })}
-              classNames={{
-                listboxWrapper: "max-h-[300px] no-scrollbar",
-                trigger: `text-xs md:text-sm text-black h-12 border border-gray-300 focus:outline-none rounded-xl w-full text-center text-black ${formErrors.address ? 'ring-2 ring-red-500 focus:ring-2 focus:ring-red-500' : 'focus:ring-2 focus:ring-blue-500'}`,
-              }}
-              listboxProps={{
-                itemClasses: {
-                  base: [
-                    "rounded-md text-black transition-opacity hover:text-blue-500",
-                  ],
-                },
-              }}
-              popoverProps={{
-                classNames: {
-                  base: "before:bg-white",
-                  content: "p-0 bg-white rounded-xl border border-gray-300",
-                },
-              }}
+            <select
               id="ward"
               aria-label=".form-select-sm"
+              className={`text-xs md:text-sm text-black h-12 border border-gray-300 focus:outline-none rounded-xl w-full text-center ${formErrors.address
+                ? "ring-2 ring-red-500 focus:ring-2 focus:ring-red-500"
+                : "focus:ring-2 focus:ring-blue-500"
+                }`}
               value={selectedWard}
               onChange={handleWardChange}
             >
+              <option value="">
+                {intl.formatMessage({ id: "OrderForm.LocationForm.SelectWard" })}
+              </option>
               {wards?.map((ward) => (
-                <SelectItem key={ward} value={ward}>
+                <option key={ward} value={ward}>
                   {ward}
-                </SelectItem>
+                </option>
               ))}
-            </Select>
+            </select>
           </div>
 
           <CommonDropdown
@@ -539,98 +506,65 @@ const LocationForm = ({
           </div>
 
           <div className="flex flex-col lg:flex-row gap-2 lg:gap-3 w-11/12 self-center mb-2">
-            <Select
-              placeholder={intl.formatMessage({ id: "OrderForm.LocationForm.SelectProvince" })}
-              classNames={{
-                listboxWrapper: "max-h-[300px] no-scrollbar",
-                trigger: `text-xs md:text-sm text-black h-12 border border-gray-300 focus:outline-none rounded-xl w-full text-center text-black ${formErrors2.address ? 'ring-2 ring-red-500 focus:ring-2 focus:ring-red-500' : 'focus:ring-2 focus:ring-blue-500'}`
-              }}
-              listboxProps={{
-                itemClasses: {
-                  base: [
-                    "rounded-md text-black transition-opacity hover:text-blue-500",
-                  ],
-                },
-              }}
-              popoverProps={{
-                classNames: {
-                  base: "before:bg-white",
-                  content: "p-0 bg-white rounded-xl border border-gray-300",
-                },
-              }}
+            <select
               id="city2"
               aria-label=".form-select-sm"
+              className={`text-xs md:text-sm text-black h-12 border border-gray-300 focus:outline-none rounded-xl w-full text-center ${formErrors2.address
+                ? "ring-2 ring-red-500 focus:ring-2 focus:ring-red-500"
+                : "focus:ring-2 focus:ring-blue-500"
+                }`}
               value={selectedCity2}
               onChange={handleProvinceChange2}
             >
+              <option value="">
+                {intl.formatMessage({ id: "OrderForm.LocationForm.SelectProvince" })}
+              </option>
               {cities?.map((city) => (
-                <SelectItem key={city} value={city}>
+                <option key={city} value={city}>
                   {city}
-                </SelectItem>
+                </option>
               ))}
-            </Select>
+            </select>
 
-            <Select
-              placeholder={intl.formatMessage({ id: "OrderForm.LocationForm.SelectDistrict" })}
-              classNames={{
-                listboxWrapper: "max-h-[300px] no-scrollbar",
-                trigger: `text-xs md:text-sm text-black h-12 border border-gray-300 focus:outline-none rounded-xl w-full text-center text-black ${formErrors2.address ? 'ring-2 ring-red-500 focus:ring-2 focus:ring-red-500' : 'focus:ring-2 focus:ring-blue-500'}`,
-              }}
-              listboxProps={{
-                itemClasses: {
-                  base: [
-                    "rounded-md text-black transition-opacity hover:text-blue-500",
-                  ],
-                },
-              }}
-              popoverProps={{
-                classNames: {
-                  base: "before:bg-white",
-                  content: "p-0 bg-white rounded-xl border border-gray-300",
-                },
-              }}
+            <select
               id="district2"
               aria-label=".form-select-sm"
+              className={`text-xs md:text-sm text-black h-12 border border-gray-300 focus:outline-none rounded-xl w-full text-center ${formErrors2.address
+                ? "ring-2 ring-red-500 focus:ring-2 focus:ring-red-500"
+                : "focus:ring-2 focus:ring-blue-500"
+                }`}
               value={selectedDistrict2}
               onChange={handleDistrictChange2}
             >
+              <option value="">
+                {intl.formatMessage({ id: "OrderForm.LocationForm.SelectDistrict" })}
+              </option>
               {districts2?.map((district) => (
-                <SelectItem key={district} value={district}>
+                <option key={district} value={district}>
                   {district}
-                </SelectItem>
+                </option>
               ))}
-            </Select>
+            </select>
 
-            <Select
-              placeholder={intl.formatMessage({ id: "OrderForm.LocationForm.SelectWard" })}
-              classNames={{
-                listboxWrapper: "max-h-[300px] no-scrollbar",
-                trigger: `text-xs md:text-sm text-black h-12 border border-gray-300 focus:outline-none rounded-xl w-full text-center text-black ${formErrors2.address ? 'ring-2 ring-red-500 focus:ring-2 focus:ring-red-500' : 'focus:ring-2 focus:ring-blue-500'}`,
-              }}
-              listboxProps={{
-                itemClasses: {
-                  base: [
-                    "rounded-md text-black transition-opacity hover:text-blue-500",
-                  ],
-                },
-              }}
-              popoverProps={{
-                classNames: {
-                  base: "before:bg-white",
-                  content: "p-0 bg-white rounded-xl border border-gray-300",
-                },
-              }}
+            <select
               id="ward2"
               aria-label=".form-select-sm"
+              className={`text-xs md:text-sm text-black h-12 border border-gray-300 focus:outline-none rounded-xl w-full text-center ${formErrors2.address
+                ? "ring-2 ring-red-500 focus:ring-2 focus:ring-red-500"
+                : "focus:ring-2 focus:ring-blue-500"
+                }`}
               value={selectedWard2}
               onChange={handleWardChange2}
             >
+              <option value="">
+                {intl.formatMessage({ id: "OrderForm.LocationForm.SelectWard" })}
+              </option>
               {wards2?.map((ward) => (
-                <SelectItem key={ward} value={ward}>
+                <option key={ward} value={ward}>
                   {ward}
-                </SelectItem>
+                </option>
               ))}
-            </Select>
+            </select>
           </div>
 
           <CommonDropdown
