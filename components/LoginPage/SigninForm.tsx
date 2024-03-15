@@ -1,11 +1,12 @@
 import { useState } from "react";
 import {useRouter } from "next/navigation";
 import OTPField from "../OtpField/OtpField";
-import Link from "next/link";
-import { OTP, User } from "./fetching";
+import Link from "next/link";;
 import classNames from "classnames";
 import LoginLangSelector from "@/components/LangSelector/LoginLangSelector"
 import { FormattedMessage, useIntl, IntlShape, } from "react-intl";
+import { UsersAuthenticate } from "@/TDLib/tdlogistics";
+const userAuth =new UsersAuthenticate()
 const SigninForm = () => {
   const welcome = <FormattedMessage id="signup.welcome.message" />
   interface FormValues {
@@ -17,7 +18,6 @@ const SigninForm = () => {
     emailEr: string;
     phoneNumberEr: string;
   }
-  let user, otpCode;
   const initialValues: FormValues = {  email: "", phoneNumber: "", otp: ""};
   const initialValues2: ErrorValues = { emailEr: "", phoneNumberEr: "" };
   const [formValues, setFormValues] = useState<FormValues>(initialValues);
@@ -59,12 +59,9 @@ const SigninForm = () => {
     const {email, phoneNumber} = formValues;
     if (!email || !phoneNumber)
       return null;
-    otpCode = new OTP(phoneNumber,email);
-    // Send OTP
-    console.log(otpCode);
-    otpCode.sendOTP()
-    .then(message => console.log(message))
-    .catch(error => console.log(error));
+    userAuth.sendOTP(phoneNumber, email)
+    .then(e => console.log(e))
+    .catch(e => console.log(e));
   }
 
   const validate = (values: FormValues, type: number)=> {
@@ -172,8 +169,9 @@ const SigninForm = () => {
                   <OTPField 
                   showOtp={showOtp}
                   setshowOtp={setshowOtp}
-                  user = {user}
-                  otp = {otpCode}
+                  email={formValues.email}
+                  phone={formValues.phoneNumber}
+                  otp = {userAuth}
                />
                 </form>
               </div>

@@ -2,31 +2,31 @@ import axios, { AxiosResponse } from "axios";
 import { io } from 'socket.io-client';
 const FormData = require("form-data");
 
-const socket = io("http://localhost:5000", {
-    withCredentials: true,
-});
+// const socket = io("http://localhost:4000", {
+//     withCredentials: true,
+// });
 
-socket.on("connect", () => {
-    console.log("Connected to server.");
-});
+// socket.on("connect", () => {
+//     console.log("Connected to server.");
+// });
 
-socket.on("notifyError", message => {
-    // showing custome notification on UI
-});
+// socket.on("notifyError", message => {
+//     // showing custome notification on UI
+// });
 
-socket.on("notifySuccessCreatedNewOrder", message => {
-    // showing custome notification on UI
-});
+// socket.on("notifySuccessCreatedNewOrder", message => {
+//     // showing custome notification on UI
+// });
 
-socket.on("notifyFailCreatedNewOrder", message => {
-    // showing custome notification on UI
-});
+// socket.on("notifyFailCreatedNewOrder", message => {
+//     // showing custome notification on UI
+// });
 
 class UsersAuthenticate {
     private baseUrl: string;
     constructor() {
         // this.baseUrl = "https://tdlogistics.govt.hu/api/v1/users";
-        this.baseUrl = "http://localhost:5000/api/v1/users";
+        this.baseUrl = "http://localhost:4000/api/v1/users";
     }
 
     async sendOTP(phoneNumber: string, email: string): Promise<any> {
@@ -46,11 +46,10 @@ class UsersAuthenticate {
         }
     }
 
-    async verifyOTP(phoneNumber: string, email: string, otp: string): Promise<any> {
+    async verifyOTP(phoneNumber: string, otp: string): Promise<any> {
         try {
             const response: AxiosResponse = await axios.post(`${this.baseUrl}/verify_otp`, {
                 phone_number: phoneNumber,
-                email: email,
                 otp: otp,
             }, {
                 withCredentials: true,
@@ -69,7 +68,7 @@ class StaffsAuthenticate {
     private baseUrl: string;
     constructor() {
         // this.baseUrl = "https://tdlogistics.govt.hu/api/v1/staffs";
-        this.baseUrl = "http://localhost:5000/api/v1/staffs";
+        this.baseUrl = "http://localhost:4000/api/v1/staffs";
     }
 
     async login(username: string, password: string): Promise<any> {
@@ -154,9 +153,9 @@ export interface UpdatingUserCondition {
 class UsersOperation {
     private baseUrl: string;
 
-    constructor(phoneNumber: string) {
+    constructor() {
         // this.baseUrl = "https://tdlogistics.govt.hu/api/v1/users";
-        this.baseUrl = "http://localhost:5000/api/v1/users";
+        this.baseUrl = "http://localhost:4000/api/v1/users";
     }
 
     async findByUser(condition: FindingUserByUserCondition) : Promise<any> {
@@ -300,7 +299,7 @@ class AgencyOperation {
     private baseUrl: string;
     constructor() {
         // this.baseUrl = "https://tdlogistics.govt.hu/api/v1/agencies";
-        this.baseUrl = "http://localhost:5000/api/v1/agencies";
+        this.baseUrl = "http://localhost:4000/api/v1/agencies";
     }
 
     async checkExist(condition: CheckingExistAgencyCondition) {
@@ -494,7 +493,7 @@ class TransportPartnersOperation {
 
     constructor() {
         // this.baseUrl = "https://tdlogistics.govt.hu/api/v1/transport_partners";
-        this.baseUrl = "http://localhost:5000/api/v1/transport_partners";
+        this.baseUrl = "http://localhost:4000/api/v1/transport_partners";
     }
 
     async createByAdmin(info: CreatingTransportPartnerByAdminInfo) {
@@ -656,7 +655,7 @@ class VehicleOperation {
 
     constructor() {
         // this.baseUrl = "https://tdlogistics.govt.hu/api/v1/vehicles";
-        this.baseUrl = "http://localhost:5000/api/v1/vehicles";
+        this.baseUrl = "http://localhost:4000/api/v1/vehicles";
     }
 
     async checkExist(condition: CheckingExistVehicleCondition) {
@@ -897,7 +896,7 @@ class StaffsOperation {
 
 	constructor() {
 		// this.baseUrl = "https://tdlogistics.govt.hu/api/v1/staffs";
-		this.baseUrl = "http://localhost:5000/api/v1/staffs";
+		this.baseUrl = "http://localhost:4000/api/v1/staffs";
 	}
 
 	// ROLE: any
@@ -1063,9 +1062,9 @@ class StaffsOperation {
 	}
 
 	// ROLE: any.
-	async findAvatar (conditions: FindingAvatarCondition) {
+	async findAvatar (condition: FindingAvatarCondition) {
 		try {
-			const response: AxiosResponse = await axios.post(`${this.baseUrl}/get_avatar`, conditions, {
+			const response: AxiosResponse = await axios.get(`${this.baseUrl}/get_avatar?staff_id=${condition.staff_id}`, {
 				withCredentials: true,
 			});
 
@@ -1228,7 +1227,7 @@ class BusinessOperation {
 
 	constructor() {
 		// this.baseUrl = "https://tdlogistics.govt.hu/api/v1/business";
-		this.baseUrl = "http://localhost:5000/api/v1/business";
+		this.baseUrl = "http://localhost:4000/api/v1/business";
 
 	}
 
@@ -1392,16 +1391,16 @@ class BusinessOperation {
 			} 
 	}
 
-	async findContract(conditions: FindingContractCondition) {
+	async findContract(condition: FindingContractCondition) {
 		try {
-			const response = await axios.post(`${this.baseUrl}/get_contract`, conditions, {
+			const response = await axios.get(`${this.baseUrl}/get_contract?business_id=${condition.business_id}`, {
 				withCredentials: true,
 			});
 
 			const data = response.data;
 			return { error: data.error, data: data.data, message: data.message };
 		} catch (error: any) {
-			console.log("Error finding partner staff: ", error.response.data);
+			console.log("Error finding contract: ", error.response.data);
 			return error.response.data;
 		}
 	}
@@ -1515,7 +1514,7 @@ class PartnerStaffOperation {
 
 	constructor() {
 		// this.baseUrl = "https://tdlogistics.govt.hu/api/v1/partner_staffs";
-		this.baseUrl = "http://localhost:5000/api/v1/partner_staffs";
+		this.baseUrl = "http://localhost:4000/api/v1/partner_staffs";
 	}
 
 	// ROLE: PARTNER_DRIVER, PARTNER_SHIPPER
@@ -1758,7 +1757,7 @@ export interface GettingHistoryInfo {
 class ShippersOperation {
 	private baseUrl: string;
 	constructor() {
-		this.baseUrl = "http://localhost:5000/api/v1/shippers";
+		this.baseUrl = "http://localhost:4000/api/v1/shippers";
 	}
 
 	async getTask(condition: GettingTasksCondition) {
@@ -1836,7 +1835,7 @@ class ShipmentsOperation {
     private baseUrl: string;
 	constructor() {
         // this.baseUrl = "https://tdlogistics.govt.hu/api/v1/shipments";
-		this.baseUrl = "http://localhost:5000/api/v1/shipments";
+		this.baseUrl = "http://localhost:4000/api/v1/shipments";
 	}
 
     async check(condition: ShipmentID) {
@@ -2061,7 +2060,7 @@ export interface CancelingOrderCondition {
 class OrdersOperation {
     private baseUrl: string;
     constructor() {
-        this.baseUrl = "http://localhost:5000/api/v1/orders";
+        this.baseUrl = "http://localhost:4000/api/v1/orders";
     }
 
     async get(conditions: GettingOrdersConditions) {
@@ -2092,11 +2091,11 @@ class OrdersOperation {
         }
     }
 
-    async create(info: CreatingOrderInformation) {
+    async create(socket: any, info: CreatingOrderInformation) {
         try {
             socket.emit("notifyNewOrderFromUser", info)
         } catch (error: any) {
-            console.log("Error creating new order: ", error.response.data);
+            console.log("Error creating new order: ", error);
         }
     }
 
@@ -2129,7 +2128,7 @@ class OrdersOperation {
     }
 }
 
-export interface GettingTasksCondition {
+export interface GettingTasksConditions {
     task?: string,
     priority?: number,
     deadline?: string,
@@ -2155,10 +2154,10 @@ export interface TaskId {
 class ScheduleOperation {
     private baseUrl: string;
     constructor() {
-        this.baseUrl = "http://localhost:5000/api/v1/schedules";
+        this.baseUrl = "http://localhost:4000/api/v1/schedules";
     }
 
-    async get(conditions: GettingTasksCondition) {
+    async get(conditions: GettingTasksConditions) {
         try {
             const response: AxiosResponse = await axios.post(`${this.baseUrl}/search`, conditions, {
                 withCredentials: true
@@ -2215,6 +2214,33 @@ class ScheduleOperation {
     }
 }
 
+export interface AdministrativeInfo {
+    province?: string,
+    district?: string,
+    ward?: string
+}
+
+class AdministrativeOperation {
+    private baseUrl: string;
+    constructor() {
+        this.baseUrl = "http://localhost:4000/api/v1/administrative";
+    }
+
+    async get(conditions: AdministrativeInfo) {
+        try {
+            const response: AxiosResponse = await axios.post(`${this.baseUrl}/search`, conditions, {
+                withCredentials: true
+            });
+
+            const data = response.data;
+            return { error: data, data: data.data, message: data.message }
+        } catch (error: any) {
+            console.log("Error getting tasks: ", error.response.data);
+            return error.response.data;
+        }
+    }
+}
+
 export {
 	UsersAuthenticate,
 	StaffsAuthenticate,
@@ -2229,4 +2255,5 @@ export {
     ShipmentsOperation,
     OrdersOperation,
     ScheduleOperation,
+    AdministrativeOperation,
 }

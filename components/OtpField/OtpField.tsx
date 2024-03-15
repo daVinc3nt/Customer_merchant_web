@@ -2,14 +2,16 @@ import React, { FC, useState, useRef, useEffect} from "react";
 import { useRouter } from 'next/router'
 import { User, OTP } from "../LoginPage/fetching"
 import { FormattedMessage } from "react-intl";
+import { UsersAuthenticate } from "@/TDLib/tdlogistics";
 interface OptFieldProps {
     showOtp: boolean;
     setshowOtp: React.Dispatch<React.SetStateAction<boolean>>;
-    user: User;
-    otp: OTP;
+    email:string;
+    phone:string
+    otp: UsersAuthenticate;
   }
 let currentOTPIndex: number = 0;
-const OTPField: FC<OptFieldProps> = ({showOtp, setshowOtp, user, otp}) => {
+const OTPField: FC<OptFieldProps> = ({showOtp, setshowOtp, email, phone, otp}) => {
     const [otp1, setOtp] = useState<string[]>(new Array(4).fill(""));
     const [activeOTPIndex, setActiveOTPIndex] = useState<number>(0);
     const inputRef = useRef<HTMLInputElement>(null)
@@ -39,10 +41,10 @@ const OTPField: FC<OptFieldProps> = ({showOtp, setshowOtp, user, otp}) => {
         {
             console.log("bắt đầu check");
             let CheckOtp = parseFloat(otp1.join(""));
-            otp.verifyOTP({phone_number: user.phone_number, otp: CheckOtp })
+            otp.verifyOTP(phone, CheckOtp.toString())
             .then(valid => {
                 if (!valid) {
-                    return console.log("OTP không hợp lệ. Vui lòng thử lại!");
+                    return alert("OTP không hợp lệ. Vui lòng thử lại!");
                 }
                 else 
                 router.push("/dashboard");
@@ -75,7 +77,6 @@ const OTPField: FC<OptFieldProps> = ({showOtp, setshowOtp, user, otp}) => {
             })}
             </div>
         <button
-            type="submit"
             onClick={(e) => setshowOtp(!showOtp)}
             className="mt-10 py-3 px-6 rounded-full bg-indigo-600 hover:bg-indigo-500
             text-white font-bold uppercase text-xs text-center block w-3/4 focus:outline-none 
