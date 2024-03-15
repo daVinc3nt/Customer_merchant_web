@@ -1,10 +1,5 @@
 import axios, { AxiosResponse } from "axios";
-import { io } from 'socket.io-client';
 const FormData = require("form-data");
-
-// const socket = io("http://localhost:4000", {
-//     withCredentials: true,
-// });
 
 // socket.on("connect", () => {
 //     console.log("Connected to server.");
@@ -124,6 +119,57 @@ class StaffsAuthenticate {
     }
 }
 
+class BusinessAuthenticate {
+    private baseUrl: string;
+    constructor() {
+        // this.baseUrl = "https://tdlogistics.govt.hu/api/v1/business";
+        this.baseUrl = "http://localhost:4000/api/v1/business";
+    }
+
+    async login(username: string, password: string): Promise<any> {
+        try {
+            const response = await axios.post(`${this.baseUrl}/login`, {
+                username: username,
+                password: password,
+            }, {
+                withCredentials: true,
+            });
+
+            const data = response.data;
+            return { error: data.error, valid: data.valid, message: data.message };
+        } catch (error: any) {
+            console.log("Error logging in: ", error.response.data);
+            return error.response.data;
+        }
+    }
+
+}
+
+class PartnerStaffAuthenticate {
+    private baseUrl: string;
+    constructor() {
+        // this.baseUrl = "https://tdlogistics.govt.hu/api/v1/partner_staffs";
+        this.baseUrl = "http://localhost:4000/api/v1/partner_staffs";
+    }
+
+    async login(username: string, password: string) : Promise<any> {
+        try {
+            const response = await axios.post(`${this.baseUrl}/login`, {
+                username: username,
+                password: password,
+            }, {
+                withCredentials: true,
+            });
+
+            const data = response.data;
+            return { error: data.error, valid: data.valid, message: data.message };
+        } catch (error: any) {
+            console.log("Error logging in: ", error.response.data);
+            return error.response.data;
+        }
+    }
+}
+
 export interface CreatingUserInfo {
     fullname: string,
     phone_number: string,
@@ -237,19 +283,19 @@ export interface CreatingAgencyInfo {
     user_salary: number,
 
     type: string,
-    level: string,
+    level: number,
     postal_code: string,
     agency_name: string,
     province: string,
     district: string,
     town: string,
     detail_address: string,
-    latitude: string,
-    longitude: string,
-    managed_wards: string,
+    latitude: number,
+    longitude: number,
+    managed_wards: string[],
     phone_number: string,
     email: string,
-    commission_rate: string,
+    commission_rate: number,
     bin: string,
     bank: string,
 }
@@ -879,7 +925,7 @@ export interface DeletingStaffCondition {
 };
   
 export interface UpdatingAvatarStaffInfo {
-    avatarFile: Buffer,
+    avatarFile: File,
 };
   
 export interface UpdatingPasswordsInfo {
@@ -1020,13 +1066,12 @@ class StaffsOperation {
 			const response: AxiosResponse = await axios.patch(`${this.baseUrl}/update_avatar?staff_id=${condition.staff_id}`, formData , {
 				withCredentials: true,
 			});
-		
-			console.log('Image uploaded successfully:', response.data);
-			return response.data; // Trả về dữ liệu phản hồi từ máy chủ
 	
+			const data = response.data;
+            return { error: data.error, message: data.message };
 		} catch (error: any) {
 			console.error('Error uploading image:', error.response.data);
-			throw error; // Ném lỗi để xử lý bên ngoài
+			return error.response.data; // Ném lỗi để xử lý bên ngoài
 		}   
 	}
 
@@ -1062,18 +1107,21 @@ class StaffsOperation {
 	}
 
 	// ROLE: any.
-	async findAvatar (condition: FindingAvatarCondition) {
+	async getAvatar (condition: FindingAvatarCondition) {
 		try {
-			const response: AxiosResponse = await axios.get(`${this.baseUrl}/get_avatar?staff_id=${condition.staff_id}`, {
-				withCredentials: true,
-			});
-
-			const data = response.data;
-			return { error: data.error, data: data.data, message: data.message };
-		} catch (error: any) {
-			console.log("Error finding partner staff: ", error.response.data);
-			return error.response.data;
-		}
+            const response = await axios.get(`${this.baseUrl}/get_avatar?staff_id=${condition.staff_id}`, {
+                withCredentials: true,
+                responseType: 'arraybuffer',
+            });
+    
+            const blob = new Blob([response.data], { type: response.headers['content-type'] });
+            const imgUrl = URL.createObjectURL(blob);
+    
+            return imgUrl;
+        } catch (error: any) {
+            console.error("Error getting avatar: ", error);
+            return error.response.data;
+        }
 	}
 }
   
@@ -1215,7 +1263,7 @@ export interface DeletingBusinessCondition {
 }
   
 export interface UpdatingContractInfo {
-    contractFile: Buffer,
+    contractFile: File,
 }
   
 export interface FindingContractCondition {
@@ -1382,27 +1430,28 @@ class BusinessOperation {
 				withCredentials: true,
 			});
 		
-			console.log('File uploaded successfully:', response.data);
-			return response.data; // Trả về dữ liệu phản hồi từ máy chủ
-	
+			const data = response.data;
+            return { error: data.error, message: data.message };
 			} catch (error: any) {
-			console.error('Error uploading file:', error.response.data);
-			throw error; // Ném lỗi để xử lý bên ngoài
+                console.error('Error uploading file:', error.response.data);
+                return error.response.data; // Ném lỗi để xử lý bên ngoài
 			} 
 	}
 
 	async findContract(condition: FindingContractCondition) {
 		try {
-			const response = await axios.get(`${this.baseUrl}/get_contract?business_id=${condition.business_id}`, {
-				withCredentials: true,
-			});
+            const response = await axios.get(`${this.baseUrl}/get_contract?business_id=${condition.business_id}`, {
+                responseType: 'arraybuffer',
+            });
 
-			const data = response.data;
-			return { error: data.error, data: data.data, message: data.message };
-		} catch (error: any) {
-			console.log("Error finding contract: ", error.response.data);
-			return error.response.data;
-		}
+            const blob = new Blob([response.data], { type: response.headers['content-type'] });
+            const fileUrl = URL.createObjectURL(blob);
+    
+            return fileUrl;
+        } catch (error: any) {
+            console.error("Error getting contract: ", error);
+            return error.response.data;
+        }
 	}
 }
 
@@ -1497,12 +1546,12 @@ export interface CheckingExistPartnerStaffCondition {
 
 
 export interface UpdatingPartnerLicenseImg {
-	license_before: Buffer,
-	license_after: Buffer,
+	license_before: File,
+	license_after: File,
 }
 
 export interface UpdatingPartnerStaffAvatarInfo {
-	avatarFile: Buffer
+	avatarFile: File
 }
 
 export interface FindingPartnerAvatarAndLicenseCondition {
@@ -1661,15 +1710,14 @@ class PartnerStaffOperation {
 			formData.append('avatar', info.avatarFile);
 
 			const response: AxiosResponse = await axios.patch(`${this.baseUrl}/update_avatar?staff_id=${condition.staff_id}`, formData , {
-			withCredentials: true,
-		});
+			    withCredentials: true,
+		    });
 		
-			console.log('Image uploaded successfully:', response.data);
-			return response.data; // Trả về dữ liệu phản hồi từ máy chủ
-
+            const data = response.data;
+            return { error: data.error, message: data.message };
 		} catch (error: any) {
 			console.error('Error uploading image:', error.response.data);
-			throw error; // Ném lỗi để xử lý bên ngoài
+			return error.response.data; // Ném lỗi để xử lý bên ngoài
 		}
 	}
 	
@@ -1684,61 +1732,66 @@ class PartnerStaffOperation {
 
 			// Gửi yêu cầu POST để tải lên hình ảnh
 			const response: AxiosResponse = await axios.patch(`${this.baseUrl}/update_licenses?staff_id=${condition.staff_id}`, formData , {
-			withCredentials: true,
-		});
-		
-			console.log('Image uploaded successfully:', response.data);
-			return response.data; // Trả về dữ liệu phản hồi từ máy chủ
-
+                withCredentials: true,
+            });
+            
+            const data = response.data;
+            return { error: data.error, message: data.message };
 		} catch (error: any) {
 			console.error('Error uploading image:', error.response.data);
-			throw error; // Ném lỗi để xử lý bên ngoài
+			return error.response.data; // Ném lỗi để xử lý bên ngoài
 		}
 	}
 
 	// ROLE: ADMIN, MANAGER, HUMAN_RESOURCE_MANAGER, AGENCY_MANAGER, AGENCY_HUMAN_RESOURCE_MANAGER, PARTNER_DRIVER, PARTNER_SHIPPER
 	async findPartnerStaffAvatar(condition: FindingPartnerAvatarAndLicenseCondition) {
 		try {
-			const response = await axios.post(`${this.baseUrl}/get_avatar?staff_id=${condition.staff_id}`, {
-				withCredentials: true,
-			});
+            const response = await axios.get(`${this.baseUrl}/get_avatar?staff_id=${condition.staff_id}`, {
+                responseType: 'arraybuffer',
+            });
 
-			const data = response.data;
-			return { error: data.error, data: data.data, message: data.message };
-		} catch (error: any) {
-			console.log("Error finding partner staff: ", error.response.data);
-			return error.response.data;
-		}
+            const blob = new Blob([response.data], { type: response.headers['content-type'] });
+            const fileUrl = URL.createObjectURL(blob);
+    
+            return fileUrl;
+        } catch (error: any) {
+            console.error("Error getting avatar: ", error);
+            return error.response.data;
+        }
 	} 
 
 	// ROLE: ADMIN, MANAGER, HUMAN_RESOURCE_MANAGER, AGENCY_MANAGER, AGENCY_HUMAN_RESOURCE_MANAGER, PARTNER_DRIVER, PARTNER_SHIPPER
 	async findPartnerStaffLicenseBefore(condition: FindingPartnerAvatarAndLicenseCondition) {
 		try {
-			const response = await axios.post(`${this.baseUrl}/get_license_before?staff_id=${condition.staff_id}`, {
-				withCredentials: true,
-			});
+            const response = await axios.get(`${this.baseUrl}/get_license_before?staff_id=${condition.staff_id}`, {
+                responseType: 'arraybuffer',
+            });
 
-			const data = response.data;
-			return { error: data.error, data: data.data, message: data.message };
-		} catch (error: any) {
-			console.log("Error finding partner staff: ", error.response.data);
-			return error.response.data;
-		}
+            const blob = new Blob([response.data], { type: response.headers['content-type'] });
+            const fileUrl = URL.createObjectURL(blob);
+    
+            return fileUrl;
+        } catch (error: any) {
+            console.error("Error getting license front: ", error);
+            return error.response.data;
+        }
 	} 
 
 	// ROLE: ADMIN, MANAGER, HUMAN_RESOURCE_MANAGER, AGENCY_MANAGER, AGENCY_HUMAN_RESOURCE_MANAGER, PARTNER_DRIVER, PARTNER_SHIPPER
 	async findPartnerStaffLicenseAfter(condition: FindingPartnerAvatarAndLicenseCondition) {
 		try {
-			const response = await axios.post(`${this.baseUrl}/get_license_after?staff_id=${condition.staff_id}`, {
-				withCredentials: true,
-			});
+            const response = await axios.get(`${this.baseUrl}/get_license_after?staff_id=${condition.staff_id}`, {
+                responseType: 'arraybuffer',
+            });
 
-			const data = response.data;
-			return { error: data.error, data: data.data, message: data.message };
-		} catch (error: any) {
-			console.log("Error finding partner staff: ", error.response.data);
-			return error.response.data;
-		}
+            const blob = new Blob([response.data], { type: response.headers['content-type'] });
+            const fileUrl = URL.createObjectURL(blob);
+    
+            return fileUrl;
+        } catch (error: any) {
+            console.error("Error getting license after: ", error);
+            return error.response.data;
+        }
 	} 
 }
   
@@ -2018,7 +2071,7 @@ export interface GettingOrdersConditions {
     service_type?: number,
 }
 
-export interface CreatingOrderInformation {
+export interface CreatingOrderByUserInformation {
     name_receiver: string,
     phone_number_receiver: string,
     mass: number,
@@ -2038,7 +2091,32 @@ export interface CreatingOrderInformation {
     long_destination: number,
     lat_destination: number,
     COD: number,
-    service_type: number,
+    service_type: string,
+}
+
+export interface CreatingOrderByAdminAndAgencyInformation {
+    name_sender: string,
+    phone_number_sender: string,
+    name_receiver: string,
+    phone_number_receiver: string,
+    mass: number,
+    height: number,
+    width: number,
+    length: number,
+    province_source: string,
+    district_source: string,
+    ward_source: string,
+    detail_source: string,
+    province_dest: string,
+    district_dest: string,
+    ward_dest: string,
+    detail_dest: string,
+    long_source: number,
+    lat_source: number,
+    long_destination: number,
+    lat_destination: number,
+    COD: number,
+    service_type: string,
 }
 
 export interface UpdatingOrderCondition {
@@ -2051,10 +2129,30 @@ export interface UpdatingOrderInfo {
     width: number,
     length: number,
     COD: number,
+    status_code: number,
 }
 
 export interface CancelingOrderCondition {
     order_id: string,
+}
+
+export interface UploadingOrderFileCondition {
+    file: File,
+}
+
+export interface CalculatingFeeInfo {
+    province_source: string,
+    district_source: string,
+    ward_source: string,
+    detail_source: string,
+    province_dest: string,
+    district_dest: string,
+    ward_dest: string,
+    detail_dest: string,
+    service_type: string,
+    length: number,
+    width: number,
+    height: number,
 }
 
 class OrdersOperation {
@@ -2066,6 +2164,20 @@ class OrdersOperation {
     async get(conditions: GettingOrdersConditions) {
         try {
             const response: AxiosResponse = await axios.post(`${this.baseUrl}/search`, conditions, {
+                withCredentials: true,
+            });
+
+            const data = response.data;
+            return { error: data.error, data: data.data, message: data.message };
+        } catch (error: any) {
+            console.log("Error getting orders: ", error.response.data);
+            return error.response.data;
+        }
+    }
+
+    async calculatefee(info: CalculatingFeeInfo) {
+        try {
+            const response: AxiosResponse = await axios.post(`${this.baseUrl}/calculatefee`, info, {
                 withCredentials: true,
             });
 
@@ -2091,11 +2203,59 @@ class OrdersOperation {
         }
     }
 
-    async create(socket: any, info: CreatingOrderInformation) {
+    async checkFileFormat(info: UploadingOrderFileCondition) {
         try {
-            socket.emit("notifyNewOrderFromUser", info)
+            const formData = new FormData();
+            formData.append("file", info.file);
+
+            const response: AxiosResponse = await axios.post(`${this.baseUrl}/check_file_format`, formData, {
+                headers: {
+                    'Content-Type': 'multipart/form-data',
+                },
+                withCredentials: true,
+            });
+
+            const data = response.data;
+			return { error: data.error, valid: data.valid, message: data.message };
+        } catch (error: any) {
+            console.error('Error checking file format:', error.response.data);
+			return error.response.data;
+        }
+    }
+
+    async createByUser(socket: any, info: CreatingOrderByUserInformation) {
+        try {
+            socket.emit("notifyNewOrder", info)
         } catch (error: any) {
             console.log("Error creating new order: ", error);
+        }
+    }
+
+    async createByAdminAndAgency(socket: any, info: CreatingOrderByAdminAndAgencyInformation) {
+        try {
+            socket.emit("notifyNewOrder", info)
+        } catch (error: any) {
+            console.log("Error creating new order: ", error);
+        }
+    }
+
+    async createByFile(info: UploadingOrderFileCondition) {
+        try {
+            const formData = new FormData();
+            formData.append("file", info.file);
+
+            const response: AxiosResponse = await axios.post(`${this.baseUrl}/create_by_file`, formData, {
+                headers: {
+                    'Content-Type': 'multipart/form-data',
+                },
+                withCredentials: true,
+            });
+
+            const data = response.data;
+			return { error: data.error, message: data.message };
+        } catch (error: any) {
+            console.error('Error creating orders by file:', error.response.data);
+			return error.response.data;
         }
     }
 
@@ -2123,6 +2283,20 @@ class OrdersOperation {
             return { error: data.error, message: data.message };
         } catch (error: any) {
             console.log("Error canceling order: ", error.response.data);
+            return error.response.data;
+        }
+    }
+
+    async calculateFee(info: CalculatingFeeInfo) {
+        try {
+            const response: AxiosResponse = await axios.post(`${this.baseUrl}/calculate_fee`, info, {
+                withCredentials: true,
+            });
+
+            const data = response.data;
+            return { error: data.error, data: data.data, message: data.message };
+        } catch (error: any) {
+            console.log("Error calculating fee: ", error.response.data);
             return error.response.data;
         }
     }
@@ -2244,6 +2418,8 @@ class AdministrativeOperation {
 export {
 	UsersAuthenticate,
 	StaffsAuthenticate,
+    BusinessAuthenticate,
+    PartnerStaffAuthenticate,
 	UsersOperation,
 	AgencyOperation,
 	TransportPartnersOperation,

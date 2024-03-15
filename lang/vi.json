@@ -9,11 +9,16 @@
     "signinpage.createaccount": "Tạo tài khoản mới",
     "signinpage.name": "Họ và tên",
     "signinpage.phoneNumber": "Số điện thoại",
-    "signinpage.verify": "Xác minh sms",
+    "signinpage.verify": "Xác minh",
     "signinpage.have_account": "Đã có tài khoản?",
     "signinpage.create_new": "Đăng nhập bên này nè!",
     "signinpage.signup": "Đăng nhập",
-
+    "signin.username":"Tên tài khoản",
+    "signin.password":"Mật khẩu",
+    "signin.business":"khách hàng doanh nghiệp",
+    "signin.customer":"khách hàng Cá nhân",
+    "signin.select":"Chọn",
+    "signin.role":"Bạn là?",
     "sms.getback": "Quay lại",
     "sms.wait": "Chờ xíu!",
 
