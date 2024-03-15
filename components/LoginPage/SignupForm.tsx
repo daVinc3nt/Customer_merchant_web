@@ -194,14 +194,14 @@ const SignupForm = () => {
                 <FormattedMessage id="sms.wait" />
              </h1>
 
-             <form className="mt-5 sm:mt-12 w-5/6" action="" method="POST">
+             {/* <form className="mt-5 sm:mt-12 w-5/6" action="" method="POST">
                <OTPField 
                showOtp={showOtp}
                setshowOtp={setshowOtp}
                user = {user}
                otp = {otpCode}
               />
-             </form>
+             </form> */}
            </div>
          </div>
        </div>
