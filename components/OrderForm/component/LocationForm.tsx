@@ -304,7 +304,7 @@ const LocationForm = ({
             <Select
               placeholder={intl.formatMessage({ id: "OrderForm.LocationForm.SelectProvince" })}
               classNames={{
-                listboxWrapper: "max-h-[300px] no-scrollbar",
+                listboxWrapper: "max-h-[300px] min-w-[150px] no-scrollbar",
                 trigger: `text-xs md:text-sm text-black h-12 border border-gray-300 focus:outline-none rounded-xl w-full text-center text-black ${formErrors.address ? 'ring-2 ring-red-500 focus:ring-2 focus:ring-red-500' : 'focus:ring-2 focus:ring-blue-500'}`
               }}
               listboxProps={{
@@ -317,7 +317,7 @@ const LocationForm = ({
               popoverProps={{
                 classNames: {
                   base: "before:bg-white",
-                  content: "p-0 bg-white rounded-xl border border-gray-300",
+                  content: "p-0 bg-white rounded-xl border border-gray-300 min-w-[150px]",
                 },
               }}
               id="city"

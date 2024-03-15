@@ -1,6 +1,10 @@
 import axios, { AxiosResponse } from "axios";
 const FormData = require("form-data");
 
+// const socket = io("http://localhost:5000", {
+//     withCredentials: true,
+// });
+
 // socket.on("connect", () => {
 //     console.log("Connected to server.");
 // });
@@ -21,6 +25,7 @@ class UsersAuthenticate {
     private baseUrl: string;
     constructor() {
         // this.baseUrl = "https://tdlogistics.govt.hu/api/v1/users";
+        this.baseUrl = "http://localhost:5000/api/v1/users";
         this.baseUrl = "http://localhost:5000/api/v1/users";
     }
 
@@ -63,6 +68,7 @@ class StaffsAuthenticate {
     private baseUrl: string;
     constructor() {
         // this.baseUrl = "https://tdlogistics.govt.hu/api/v1/staffs";
+        this.baseUrl = "http://localhost:5000/api/v1/staffs";
         this.baseUrl = "http://localhost:5000/api/v1/staffs";
     }
 
@@ -201,6 +207,7 @@ class UsersOperation {
 
     constructor() {
         // this.baseUrl = "https://tdlogistics.govt.hu/api/v1/users";
+        this.baseUrl = "http://localhost:5000/api/v1/users";
         this.baseUrl = "http://localhost:5000/api/v1/users";
     }
 
@@ -345,6 +352,7 @@ class AgencyOperation {
     private baseUrl: string;
     constructor() {
         // this.baseUrl = "https://tdlogistics.govt.hu/api/v1/agencies";
+        this.baseUrl = "http://localhost:5000/api/v1/agencies";
         this.baseUrl = "http://localhost:5000/api/v1/agencies";
     }
 
@@ -540,6 +548,7 @@ class TransportPartnersOperation {
     constructor() {
         // this.baseUrl = "https://tdlogistics.govt.hu/api/v1/transport_partners";
         this.baseUrl = "http://localhost:5000/api/v1/transport_partners";
+        this.baseUrl = "http://localhost:5000/api/v1/transport_partners";
     }
 
     async createByAdmin(info: CreatingTransportPartnerByAdminInfo) {
@@ -701,6 +710,7 @@ class VehicleOperation {
 
     constructor() {
         // this.baseUrl = "https://tdlogistics.govt.hu/api/v1/vehicles";
+        this.baseUrl = "http://localhost:5000/api/v1/vehicles";
         this.baseUrl = "http://localhost:5000/api/v1/vehicles";
     }
 
@@ -942,6 +952,7 @@ class StaffsOperation {
 
 	constructor() {
 		// this.baseUrl = "https://tdlogistics.govt.hu/api/v1/staffs";
+		this.baseUrl = "http://localhost:5000/api/v1/staffs";
 		this.baseUrl = "http://localhost:5000/api/v1/staffs";
 	}
 
@@ -1276,6 +1287,7 @@ class BusinessOperation {
 	constructor() {
 		// this.baseUrl = "https://tdlogistics.govt.hu/api/v1/business";
 		this.baseUrl = "http://localhost:5000/api/v1/business";
+		this.baseUrl = "http://localhost:5000/api/v1/business";
 
 	}
 
@@ -1564,6 +1576,7 @@ class PartnerStaffOperation {
 	constructor() {
 		// this.baseUrl = "https://tdlogistics.govt.hu/api/v1/partner_staffs";
 		this.baseUrl = "http://localhost:5000/api/v1/partner_staffs";
+		this.baseUrl = "http://localhost:5000/api/v1/partner_staffs";
 	}
 
 	// ROLE: PARTNER_DRIVER, PARTNER_SHIPPER
@@ -1811,6 +1824,7 @@ class ShippersOperation {
 	private baseUrl: string;
 	constructor() {
 		this.baseUrl = "http://localhost:5000/api/v1/shippers";
+		this.baseUrl = "http://localhost:5000/api/v1/shippers";
 	}
 
 	async getTask(condition: GettingTasksCondition) {
@@ -1888,6 +1902,7 @@ class ShipmentsOperation {
     private baseUrl: string;
 	constructor() {
         // this.baseUrl = "https://tdlogistics.govt.hu/api/v1/shipments";
+		this.baseUrl = "http://localhost:5000/api/v1/shipments";
 		this.baseUrl = "http://localhost:5000/api/v1/shipments";
 	}
 
@@ -2159,6 +2174,7 @@ class OrdersOperation {
     private baseUrl: string;
     constructor() {
         this.baseUrl = "http://localhost:5000/api/v1/orders";
+        this.baseUrl = "http://localhost:5000/api/v1/orders";
     }
 
     async get(conditions: GettingOrdersConditions) {
@@ -2329,6 +2345,7 @@ class ScheduleOperation {
     private baseUrl: string;
     constructor() {
         this.baseUrl = "http://localhost:5000/api/v1/schedules";
+        this.baseUrl = "http://localhost:5000/api/v1/schedules";
     }
 
     async get(conditions: GettingTasksConditions) {
@@ -2397,6 +2414,7 @@ export interface AdministrativeInfo {
 class AdministrativeOperation {
     private baseUrl: string;
     constructor() {
+        this.baseUrl = "http://localhost:5000/api/v1/administrative";
         this.baseUrl = "http://localhost:5000/api/v1/administrative";
     }
 

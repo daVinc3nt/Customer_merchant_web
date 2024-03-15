@@ -39,6 +39,9 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.AdministrativeOperation = exports.ScheduleOperation = exports.OrdersOperation = exports.ShipmentsOperation = exports.ShippersOperation = exports.PartnerStaffOperation = exports.BusinessOperation = exports.VehicleOperation = exports.StaffsOperation = exports.TransportPartnersOperation = exports.AgencyOperation = exports.UsersOperation = exports.PartnerStaffAuthenticate = exports.BusinessAuthenticate = exports.StaffsAuthenticate = exports.UsersAuthenticate = void 0;
 var axios_1 = require("axios");
 var FormData = require("form-data");
+// const socket = io("http://localhost:5000", {
+//     withCredentials: true,
+// });
 // socket.on("connect", () => {
 //     console.log("Connected to server.");
 // });
@@ -54,6 +57,7 @@ var FormData = require("form-data");
 var UsersAuthenticate = /** @class */ (function () {
     function UsersAuthenticate() {
         // this.baseUrl = "https://tdlogistics.govt.hu/api/v1/users";
+        this.baseUrl = "http://localhost:5000/api/v1/users";
         this.baseUrl = "http://localhost:5000/api/v1/users";
     }
     UsersAuthenticate.prototype.sendOTP = function (phoneNumber, email) {
@@ -114,6 +118,7 @@ exports.UsersAuthenticate = UsersAuthenticate;
 var StaffsAuthenticate = /** @class */ (function () {
     function StaffsAuthenticate() {
         // this.baseUrl = "https://tdlogistics.govt.hu/api/v1/staffs";
+        this.baseUrl = "http://localhost:5000/api/v1/staffs";
         this.baseUrl = "http://localhost:5000/api/v1/staffs";
     }
     StaffsAuthenticate.prototype.login = function (username, password) {
@@ -270,6 +275,7 @@ var UsersOperation = /** @class */ (function () {
     function UsersOperation() {
         // this.baseUrl = "https://tdlogistics.govt.hu/api/v1/users";
         this.baseUrl = "http://localhost:5000/api/v1/users";
+        this.baseUrl = "http://localhost:5000/api/v1/users";
     }
     UsersOperation.prototype.findByUser = function (condition) {
         return __awaiter(this, void 0, void 0, function () {
@@ -369,6 +375,7 @@ exports.UsersOperation = UsersOperation;
 var AgencyOperation = /** @class */ (function () {
     function AgencyOperation() {
         // this.baseUrl = "https://tdlogistics.govt.hu/api/v1/agencies";
+        this.baseUrl = "http://localhost:5000/api/v1/agencies";
         this.baseUrl = "http://localhost:5000/api/v1/agencies";
     }
     AgencyOperation.prototype.checkExist = function (condition) {
@@ -516,6 +523,7 @@ var TransportPartnersOperation = /** @class */ (function () {
     function TransportPartnersOperation() {
         // this.baseUrl = "https://tdlogistics.govt.hu/api/v1/transport_partners";
         this.baseUrl = "http://localhost:5000/api/v1/transport_partners";
+        this.baseUrl = "http://localhost:5000/api/v1/transport_partners";
     }
     TransportPartnersOperation.prototype.createByAdmin = function (info) {
         return __awaiter(this, void 0, void 0, function () {
@@ -661,6 +669,7 @@ exports.TransportPartnersOperation = TransportPartnersOperation;
 var VehicleOperation = /** @class */ (function () {
     function VehicleOperation() {
         // this.baseUrl = "https://tdlogistics.govt.hu/api/v1/vehicles";
+        this.baseUrl = "http://localhost:5000/api/v1/vehicles";
         this.baseUrl = "http://localhost:5000/api/v1/vehicles";
     }
     VehicleOperation.prototype.checkExist = function (condition) {
@@ -902,6 +911,7 @@ exports.VehicleOperation = VehicleOperation;
 var StaffsOperation = /** @class */ (function () {
     function StaffsOperation() {
         // this.baseUrl = "https://tdlogistics.govt.hu/api/v1/staffs";
+        this.baseUrl = "http://localhost:5000/api/v1/staffs";
         this.baseUrl = "http://localhost:5000/api/v1/staffs";
     }
     // ROLE: any
@@ -1178,6 +1188,7 @@ exports.StaffsOperation = StaffsOperation;
 var BusinessOperation = /** @class */ (function () {
     function BusinessOperation() {
         // this.baseUrl = "https://tdlogistics.govt.hu/api/v1/business";
+        this.baseUrl = "http://localhost:5000/api/v1/business";
         this.baseUrl = "http://localhost:5000/api/v1/business";
     }
     BusinessOperation.prototype.createByAdmin = function (info) {
@@ -1466,6 +1477,7 @@ exports.BusinessOperation = BusinessOperation;
 var PartnerStaffOperation = /** @class */ (function () {
     function PartnerStaffOperation() {
         // this.baseUrl = "https://tdlogistics.govt.hu/api/v1/partner_staffs";
+        this.baseUrl = "http://localhost:5000/api/v1/partner_staffs";
         this.baseUrl = "http://localhost:5000/api/v1/partner_staffs";
     }
     // ROLE: PARTNER_DRIVER, PARTNER_SHIPPER
@@ -1818,6 +1830,7 @@ exports.PartnerStaffOperation = PartnerStaffOperation;
 var ShippersOperation = /** @class */ (function () {
     function ShippersOperation() {
         this.baseUrl = "http://localhost:5000/api/v1/shippers";
+        this.baseUrl = "http://localhost:5000/api/v1/shippers";
     }
     ShippersOperation.prototype.getTask = function (condition) {
         return __awaiter(this, void 0, void 0, function () {
@@ -1894,6 +1907,7 @@ exports.ShippersOperation = ShippersOperation;
 var ShipmentsOperation = /** @class */ (function () {
     function ShipmentsOperation() {
         // this.baseUrl = "https://tdlogistics.govt.hu/api/v1/shipments";
+        this.baseUrl = "http://localhost:5000/api/v1/shipments";
         this.baseUrl = "http://localhost:5000/api/v1/shipments";
     }
     ShipmentsOperation.prototype.check = function (condition) {
@@ -2164,6 +2178,7 @@ exports.ShipmentsOperation = ShipmentsOperation;
 var OrdersOperation = /** @class */ (function () {
     function OrdersOperation() {
         this.baseUrl = "http://localhost:5000/api/v1/orders";
+        this.baseUrl = "http://localhost:5000/api/v1/orders";
     }
     OrdersOperation.prototype.get = function (conditions) {
         return __awaiter(this, void 0, void 0, function () {
@@ -2391,6 +2406,7 @@ exports.OrdersOperation = OrdersOperation;
 var ScheduleOperation = /** @class */ (function () {
     function ScheduleOperation() {
         this.baseUrl = "http://localhost:5000/api/v1/schedules";
+        this.baseUrl = "http://localhost:5000/api/v1/schedules";
     }
     ScheduleOperation.prototype.get = function (conditions) {
         return __awaiter(this, void 0, void 0, function () {
@@ -2489,6 +2505,7 @@ var ScheduleOperation = /** @class */ (function () {
 exports.ScheduleOperation = ScheduleOperation;
 var AdministrativeOperation = /** @class */ (function () {
     function AdministrativeOperation() {
+        this.baseUrl = "http://localhost:5000/api/v1/administrative";
         this.baseUrl = "http://localhost:5000/api/v1/administrative";
     }
     AdministrativeOperation.prototype.get = function (conditions) {

@@ -50,8 +50,11 @@ const OTPField: FC<OptFieldProps> = ({showOtp, setshowOtp, email, phone, otp}) =
                 if (!valid) {
                     return alert("OTP không hợp lệ. Vui lòng thử lại!");
                 }
-                else 
-                router.push("/dashboard");
+                else {
+                    alert("OTP hợp lệ");
+                    router.push("/dashboard");
+                }
+
             })
             .catch(error => console.log(error))
         }
