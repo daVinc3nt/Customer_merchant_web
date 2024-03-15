@@ -3,11 +3,11 @@ import Link from "next/link";
 import { motion } from "framer-motion";
 import { FormattedMessage } from "react-intl";
 
-interface OrderNotificationProps {
-  onClose: () => void; // Callback function to close the notification window
+interface Notification2Props {
+  onClose: () => void;
 }
 
-const OrderNotification: React.FC<OrderNotificationProps> = ({ onClose }) => {
+const Notification2: React.FC<Notification2Props> = ({ onClose }) => {
   const notificationRef = useRef<HTMLDivElement>(null);
   const [isVisible, setIsVisible] = useState(true);
 
@@ -52,32 +52,21 @@ const OrderNotification: React.FC<OrderNotificationProps> = ({ onClose }) => {
         exit={{ scale: 0 }}
         transition={{ duration: 0.5 }}
       >
-        <h2 className="text-gray-600 text-xl font-bold mb-2"><FormattedMessage id="OrderForm.OrderNotification.noti"/></h2>
-        <p className="text-gray-600"><FormattedMessage id="OrderForm.OrderNotification.detail"/></p>
+        <h2 className="text-gray-600 text-xl font-bold mb-2 text-center"><FormattedMessage id="OrderForm.Notification2.noti" /></h2>
+        <p className="text-gray-600"><FormattedMessage id="OrderForm.Notification2.detail" /></p>
 
         <motion.button
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.9 }}
-            transition={{ duration: 0.3 }}
-            className="absolute bottom-5 left-5 mt-4 px-4 py-2 bg-gray-100 hover:bg-gray-300 text-black rounded"
+          whileHover={{ scale: 1.05 }}
+          whileTap={{ scale: 0.9 }}
+          transition={{ duration: 0.3 }}
+          className="absolute bottom-4 right-4 mt-4 px-3 py-2 sm:px-4 sm:py-2 bg-red-500 hover:bg-red-600 text-white rounded"
+          onClick={handleClose}
         >
-        <Link href="/" >
-        <FormattedMessage id="OrderForm.OrderNotification.backHome"/>
-        </Link>
-        </motion.button>
-
-        <motion.button
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.9 }}
-            transition={{ duration: 0.3 }}
-            className="absolute bottom-5 right-5 mt-4 px-4 py-2 bg-red-500 hover:bg-red-600 text-white rounded"
-            onClick={handleClose}
-        >
-          <FormattedMessage id="OrderForm.OrderNotification.closeBtn"/>
+          <FormattedMessage id="OrderForm.Notification2.closeBtn" />
         </motion.button>
       </motion.div>
     </motion.div>
   );
 };
 
-export default OrderNotification;
+export default Notification2;

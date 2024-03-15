@@ -36,9 +36,18 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 Object.defineProperty(exports, "__esModule", { value: true });
+<<<<<<< HEAD
 exports.AdministrativeOperation = exports.ScheduleOperation = exports.OrdersOperation = exports.ShipmentsOperation = exports.ShippersOperation = exports.PartnerStaffOperation = exports.BusinessOperation = exports.VehicleOperation = exports.StaffsOperation = exports.TransportPartnersOperation = exports.AgencyOperation = exports.UsersOperation = exports.PartnerStaffAuthenticate = exports.BusinessAuthenticate = exports.StaffsAuthenticate = exports.UsersAuthenticate = void 0;
 var axios_1 = require("axios");
 var FormData = require("form-data");
+=======
+exports.AdministrativeOperation = exports.ScheduleOperation = exports.OrdersOperation = exports.ShipmentsOperation = exports.ShippersOperation = exports.PartnerStaffOperation = exports.BusinessOperation = exports.VehicleOperation = exports.StaffsOperation = exports.TransportPartnersOperation = exports.AgencyOperation = exports.UsersOperation = exports.StaffsAuthenticate = exports.UsersAuthenticate = void 0;
+var axios_1 = require("axios");
+var FormData = require("form-data");
+// const socket = io("http://localhost:5000", {
+//     withCredentials: true,
+// });
+>>>>>>> origin/AddAPIOrder
 // socket.on("connect", () => {
 //     console.log("Connected to server.");
 // });
@@ -1149,13 +1158,20 @@ var StaffsOperation = /** @class */ (function () {
     // ROLE: any.
     StaffsOperation.prototype.getAvatar = function (condition) {
         return __awaiter(this, void 0, void 0, function () {
+<<<<<<< HEAD
             var response, blob, imgUrl, error_44;
+=======
+            var response, blob, imgUrl, error_42;
+>>>>>>> origin/AddAPIOrder
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
                         _a.trys.push([0, 2, , 3]);
                         return [4 /*yield*/, axios_1.default.get("".concat(this.baseUrl, "/get_avatar?staff_id=").concat(condition.staff_id), {
+<<<<<<< HEAD
                                 withCredentials: true,
+=======
+>>>>>>> origin/AddAPIOrder
                                 responseType: 'arraybuffer',
                             })];
                     case 1:
@@ -1166,7 +1182,11 @@ var StaffsOperation = /** @class */ (function () {
                     case 2:
                         error_42 = _a.sent();
                         console.error("Error getting avatar: ", error_42);
+<<<<<<< HEAD
                         return [2 /*return*/, error_42.response.data];
+=======
+                        throw error_42;
+>>>>>>> origin/AddAPIOrder
                     case 3: return [2 /*return*/];
                 }
             });
@@ -1437,7 +1457,11 @@ var BusinessOperation = /** @class */ (function () {
     };
     BusinessOperation.prototype.findContract = function (condition) {
         return __awaiter(this, void 0, void 0, function () {
+<<<<<<< HEAD
             var response, blob, fileUrl, error_56;
+=======
+            var response, blob, fileUrl, error_54;
+>>>>>>> origin/AddAPIOrder
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
@@ -1453,7 +1477,11 @@ var BusinessOperation = /** @class */ (function () {
                     case 2:
                         error_54 = _a.sent();
                         console.error("Error getting contract: ", error_54);
+<<<<<<< HEAD
                         return [2 /*return*/, error_54.response.data];
+=======
+                        throw error_54;
+>>>>>>> origin/AddAPIOrder
                     case 3: return [2 /*return*/];
                 }
             });
@@ -1740,7 +1768,11 @@ var PartnerStaffOperation = /** @class */ (function () {
     // ROLE: ADMIN, MANAGER, HUMAN_RESOURCE_MANAGER, AGENCY_MANAGER, AGENCY_HUMAN_RESOURCE_MANAGER, PARTNER_DRIVER, PARTNER_SHIPPER
     PartnerStaffOperation.prototype.findPartnerStaffAvatar = function (condition) {
         return __awaiter(this, void 0, void 0, function () {
+<<<<<<< HEAD
             var response, blob, fileUrl, error_68;
+=======
+            var response, blob, fileUrl, error_66;
+>>>>>>> origin/AddAPIOrder
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
@@ -1756,7 +1788,11 @@ var PartnerStaffOperation = /** @class */ (function () {
                     case 2:
                         error_66 = _a.sent();
                         console.error("Error getting avatar: ", error_66);
+<<<<<<< HEAD
                         return [2 /*return*/, error_66.response.data];
+=======
+                        throw error_66;
+>>>>>>> origin/AddAPIOrder
                     case 3: return [2 /*return*/];
                 }
             });
@@ -1765,7 +1801,11 @@ var PartnerStaffOperation = /** @class */ (function () {
     // ROLE: ADMIN, MANAGER, HUMAN_RESOURCE_MANAGER, AGENCY_MANAGER, AGENCY_HUMAN_RESOURCE_MANAGER, PARTNER_DRIVER, PARTNER_SHIPPER
     PartnerStaffOperation.prototype.findPartnerStaffLicenseBefore = function (condition) {
         return __awaiter(this, void 0, void 0, function () {
+<<<<<<< HEAD
             var response, blob, fileUrl, error_69;
+=======
+            var response, blob, fileUrl, error_67;
+>>>>>>> origin/AddAPIOrder
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
@@ -1781,7 +1821,11 @@ var PartnerStaffOperation = /** @class */ (function () {
                     case 2:
                         error_67 = _a.sent();
                         console.error("Error getting license front: ", error_67);
+<<<<<<< HEAD
                         return [2 /*return*/, error_67.response.data];
+=======
+                        throw error_67;
+>>>>>>> origin/AddAPIOrder
                     case 3: return [2 /*return*/];
                 }
             });
@@ -1790,7 +1834,11 @@ var PartnerStaffOperation = /** @class */ (function () {
     // ROLE: ADMIN, MANAGER, HUMAN_RESOURCE_MANAGER, AGENCY_MANAGER, AGENCY_HUMAN_RESOURCE_MANAGER, PARTNER_DRIVER, PARTNER_SHIPPER
     PartnerStaffOperation.prototype.findPartnerStaffLicenseAfter = function (condition) {
         return __awaiter(this, void 0, void 0, function () {
+<<<<<<< HEAD
             var response, blob, fileUrl, error_70;
+=======
+            var response, blob, fileUrl, error_68;
+>>>>>>> origin/AddAPIOrder
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
@@ -1806,7 +1854,11 @@ var PartnerStaffOperation = /** @class */ (function () {
                     case 2:
                         error_68 = _a.sent();
                         console.error("Error getting license after: ", error_68);
+<<<<<<< HEAD
                         return [2 /*return*/, error_68.response.data];
+=======
+                        throw error_68;
+>>>>>>> origin/AddAPIOrder
                     case 3: return [2 /*return*/];
                 }
             });
@@ -2236,7 +2288,11 @@ var OrdersOperation = /** @class */ (function () {
     };
     OrdersOperation.prototype.checkFileFormat = function (info) {
         return __awaiter(this, void 0, void 0, function () {
+<<<<<<< HEAD
             var formData, response, data, error_88;
+=======
+            var formData, response, data, error_85;
+>>>>>>> origin/AddAPIOrder
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
@@ -2254,9 +2310,15 @@ var OrdersOperation = /** @class */ (function () {
                         data = response.data;
                         return [2 /*return*/, { error: data.error, valid: data.valid, message: data.message }];
                     case 2:
+<<<<<<< HEAD
                         error_88 = _a.sent();
                         console.error('Error checking file format:', error_88.response.data);
                         return [2 /*return*/, error_88.response.data];
+=======
+                        error_85 = _a.sent();
+                        console.error('Error checking file format:', error_85.response.data);
+                        return [2 /*return*/, error_85.response.data];
+>>>>>>> origin/AddAPIOrder
                     case 3: return [2 /*return*/];
                 }
             });
@@ -2290,7 +2352,11 @@ var OrdersOperation = /** @class */ (function () {
     };
     OrdersOperation.prototype.createByFile = function (info) {
         return __awaiter(this, void 0, void 0, function () {
+<<<<<<< HEAD
             var formData, response, data, error_89;
+=======
+            var formData, response, data, error_86;
+>>>>>>> origin/AddAPIOrder
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
@@ -2308,9 +2374,15 @@ var OrdersOperation = /** @class */ (function () {
                         data = response.data;
                         return [2 /*return*/, { error: data.error, message: data.message }];
                     case 2:
+<<<<<<< HEAD
                         error_89 = _a.sent();
                         console.error('Error creating orders by file:', error_89.response.data);
                         return [2 /*return*/, error_89.response.data];
+=======
+                        error_86 = _a.sent();
+                        console.error('Error creating orders by file:', error_86.response.data);
+                        return [2 /*return*/, error_86.response.data];
+>>>>>>> origin/AddAPIOrder
                     case 3: return [2 /*return*/];
                 }
             });
@@ -2318,7 +2390,11 @@ var OrdersOperation = /** @class */ (function () {
     };
     OrdersOperation.prototype.update = function (info, condition) {
         return __awaiter(this, void 0, void 0, function () {
+<<<<<<< HEAD
             var response, data, error_90;
+=======
+            var response, data, error_87;
+>>>>>>> origin/AddAPIOrder
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
@@ -2331,9 +2407,15 @@ var OrdersOperation = /** @class */ (function () {
                         data = response.data;
                         return [2 /*return*/, { error: data.error, message: data.message }];
                     case 2:
+<<<<<<< HEAD
                         error_90 = _a.sent();
                         console.log("Error updating order: ", error_90.response.data);
                         return [2 /*return*/, error_90.response.data];
+=======
+                        error_87 = _a.sent();
+                        console.log("Error updating order: ", error_87.response.data);
+                        return [2 /*return*/, error_87.response.data];
+>>>>>>> origin/AddAPIOrder
                     case 3: return [2 /*return*/];
                 }
             });
@@ -2341,7 +2423,11 @@ var OrdersOperation = /** @class */ (function () {
     };
     OrdersOperation.prototype.cancel = function (condition) {
         return __awaiter(this, void 0, void 0, function () {
+<<<<<<< HEAD
             var response, data, error_91;
+=======
+            var response, data, error_88;
+>>>>>>> origin/AddAPIOrder
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
@@ -2354,9 +2440,15 @@ var OrdersOperation = /** @class */ (function () {
                         data = response.data;
                         return [2 /*return*/, { error: data.error, message: data.message }];
                     case 2:
+<<<<<<< HEAD
                         error_91 = _a.sent();
                         console.log("Error canceling order: ", error_91.response.data);
                         return [2 /*return*/, error_91.response.data];
+=======
+                        error_88 = _a.sent();
+                        console.log("Error canceling order: ", error_88.response.data);
+                        return [2 /*return*/, error_88.response.data];
+>>>>>>> origin/AddAPIOrder
                     case 3: return [2 /*return*/];
                 }
             });
@@ -2364,7 +2456,11 @@ var OrdersOperation = /** @class */ (function () {
     };
     OrdersOperation.prototype.calculateFee = function (info) {
         return __awaiter(this, void 0, void 0, function () {
+<<<<<<< HEAD
             var response, data, error_92;
+=======
+            var response, data, error_89;
+>>>>>>> origin/AddAPIOrder
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
@@ -2377,9 +2473,15 @@ var OrdersOperation = /** @class */ (function () {
                         data = response.data;
                         return [2 /*return*/, { error: data.error, data: data.data, message: data.message }];
                     case 2:
+<<<<<<< HEAD
                         error_92 = _a.sent();
                         console.log("Error calculating fee: ", error_92.response.data);
                         return [2 /*return*/, error_92.response.data];
+=======
+                        error_89 = _a.sent();
+                        console.log("Error calculating fee: ", error_89.response.data);
+                        return [2 /*return*/, error_89.response.data];
+>>>>>>> origin/AddAPIOrder
                     case 3: return [2 /*return*/];
                 }
             });
@@ -2394,7 +2496,11 @@ var ScheduleOperation = /** @class */ (function () {
     }
     ScheduleOperation.prototype.get = function (conditions) {
         return __awaiter(this, void 0, void 0, function () {
+<<<<<<< HEAD
             var response, data, error_93;
+=======
+            var response, data, error_90;
+>>>>>>> origin/AddAPIOrder
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
@@ -2407,9 +2513,15 @@ var ScheduleOperation = /** @class */ (function () {
                         data = response.data;
                         return [2 /*return*/, { error: data, data: data.data, message: data.message }];
                     case 2:
+<<<<<<< HEAD
                         error_93 = _a.sent();
                         console.log("Error getting tasks: ", error_93.response.data);
                         return [2 /*return*/, error_93.response.data];
+=======
+                        error_90 = _a.sent();
+                        console.log("Error getting tasks: ", error_90.response.data);
+                        return [2 /*return*/, error_90.response.data];
+>>>>>>> origin/AddAPIOrder
                     case 3: return [2 /*return*/];
                 }
             });
@@ -2417,7 +2529,11 @@ var ScheduleOperation = /** @class */ (function () {
     };
     ScheduleOperation.prototype.create = function (info) {
         return __awaiter(this, void 0, void 0, function () {
+<<<<<<< HEAD
             var response, data, error_94;
+=======
+            var response, data, error_91;
+>>>>>>> origin/AddAPIOrder
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
@@ -2430,9 +2546,15 @@ var ScheduleOperation = /** @class */ (function () {
                         data = response.data;
                         return [2 /*return*/, { error: data, message: data.message }];
                     case 2:
+<<<<<<< HEAD
                         error_94 = _a.sent();
                         console.log("Error creating new tasks: ", error_94.response.data);
                         return [2 /*return*/, error_94.response.data];
+=======
+                        error_91 = _a.sent();
+                        console.log("Error creating new tasks: ", error_91.response.data);
+                        return [2 /*return*/, error_91.response.data];
+>>>>>>> origin/AddAPIOrder
                     case 3: return [2 /*return*/];
                 }
             });
@@ -2440,7 +2562,11 @@ var ScheduleOperation = /** @class */ (function () {
     };
     ScheduleOperation.prototype.update = function (info, condition) {
         return __awaiter(this, void 0, void 0, function () {
+<<<<<<< HEAD
             var response, data, error_95;
+=======
+            var response, data, error_92;
+>>>>>>> origin/AddAPIOrder
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
@@ -2453,9 +2579,15 @@ var ScheduleOperation = /** @class */ (function () {
                         data = response.data;
                         return [2 /*return*/, { error: data, message: data.message }];
                     case 2:
+<<<<<<< HEAD
                         error_95 = _a.sent();
                         console.log("Error updating tasks: ", error_95.response.data);
                         return [2 /*return*/, error_95.response.data];
+=======
+                        error_92 = _a.sent();
+                        console.log("Error updating tasks: ", error_92.response.data);
+                        return [2 /*return*/, error_92.response.data];
+>>>>>>> origin/AddAPIOrder
                     case 3: return [2 /*return*/];
                 }
             });
@@ -2463,7 +2595,11 @@ var ScheduleOperation = /** @class */ (function () {
     };
     ScheduleOperation.prototype.deleteTask = function (condition) {
         return __awaiter(this, void 0, void 0, function () {
+<<<<<<< HEAD
             var response, data, error_96;
+=======
+            var response, data, error_93;
+>>>>>>> origin/AddAPIOrder
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
@@ -2476,9 +2612,15 @@ var ScheduleOperation = /** @class */ (function () {
                         data = response.data;
                         return [2 /*return*/, { error: data, message: data.message }];
                     case 2:
+<<<<<<< HEAD
                         error_96 = _a.sent();
                         console.log("Error deleting tasks: ", error_96.response.data);
                         return [2 /*return*/, error_96.response.data];
+=======
+                        error_93 = _a.sent();
+                        console.log("Error deleting tasks: ", error_93.response.data);
+                        return [2 /*return*/, error_93.response.data];
+>>>>>>> origin/AddAPIOrder
                     case 3: return [2 /*return*/];
                 }
             });
@@ -2493,7 +2635,11 @@ var AdministrativeOperation = /** @class */ (function () {
     }
     AdministrativeOperation.prototype.get = function (conditions) {
         return __awaiter(this, void 0, void 0, function () {
+<<<<<<< HEAD
             var response, data, error_97;
+=======
+            var response, data, error_94;
+>>>>>>> origin/AddAPIOrder
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
@@ -2506,9 +2652,15 @@ var AdministrativeOperation = /** @class */ (function () {
                         data = response.data;
                         return [2 /*return*/, { error: data, data: data.data, message: data.message }];
                     case 2:
+<<<<<<< HEAD
                         error_97 = _a.sent();
                         console.log("Error getting tasks: ", error_97.response.data);
                         return [2 /*return*/, error_97.response.data];
+=======
+                        error_94 = _a.sent();
+                        console.log("Error getting tasks: ", error_94.response.data);
+                        return [2 /*return*/, error_94.response.data];
+>>>>>>> origin/AddAPIOrder
                     case 3: return [2 /*return*/];
                 }
             });
