@@ -37,21 +37,29 @@ const OTPField: FC<OptFieldProps> = ({showOtp, setshowOtp, email, phone, otp}) =
         else setActiveOTPIndex(currentOTPIndex + 1);
         setOtp(newOTP);
         //verify
-        if ( otp1.some((element) => element !== "") )
+        console.log("OTP1: ", otp1);
+        console.log("True or false ",!otp1.some((element) => element === "") );
+    }
+    useEffect(() => {
+        if ( !otp1.some((element) => element === "") )
         {
             console.log("bắt đầu check");
-            let CheckOtp = parseFloat(otp1.join(""));
-            otp.verifyOTP(phone, CheckOtp.toString())
-            .then(valid => {
-                if (!valid) {
+            let CheckOtp =otp1.join("");
+            otp.verifyOTP(phone, CheckOtp)
+            .then(data => {
+                if (!data.valid) {
                     return alert("OTP không hợp lệ. Vui lòng thử lại!");
                 }
-                else 
-                router.push("/dashboard");
+                else {
+                    alert("OTP hợp lệ");
+                    router.push("/dashboard");
+                }
+
             })
             .catch(error => console.log(error))
         }
     }
+    ,[otp1]);
     useEffect(() => {
         inputRef.current?.focus();
     }, [activeOTPIndex]);
