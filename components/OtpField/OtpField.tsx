@@ -46,8 +46,8 @@ const OTPField: FC<OptFieldProps> = ({showOtp, setshowOtp, email, phone, otp}) =
             console.log("bắt đầu check");
             let CheckOtp =otp1.join("");
             otp.verifyOTP(phone, CheckOtp)
-            .then(data => {
-                if (!data.valid) {
+            .then(valid => {
+                if (!valid) {
                     return alert("OTP không hợp lệ. Vui lòng thử lại!");
                 }
                 else {

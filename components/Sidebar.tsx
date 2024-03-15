@@ -23,6 +23,7 @@ import {
 } from "./Icons";
 import { log } from "console";
 import { FormattedMessage, useIntl } from "react-intl";
+import { Logout } from "./Logout";
 
 interface MyComponentProps {
   toggleCollapseMobile: boolean;
@@ -236,7 +237,9 @@ const Sidebar: React.FC<MyComponentProps> = ({ toggleCollapseMobile }) => {
           </div>
         </div>
         <div className={`${getNavItemClasses({})}`}>
-          <div className="flex py-4 px-3 items-center w-full h-full">
+            <button
+              onClick={Logout} 
+              className="flex py-4 px-3 items-center w-full h-full">
             <div
               style={!toggleCollapse ? { width: "2.5rem" } : { width: "0rem" }}
             >
@@ -247,7 +250,7 @@ const Sidebar: React.FC<MyComponentProps> = ({ toggleCollapseMobile }) => {
                 <FormattedMessage id="Sidebar.option6" />
               </span>
             )}
-          </div>
+          </button>
         </div>
       </div>
 
@@ -370,7 +373,9 @@ const Sidebar: React.FC<MyComponentProps> = ({ toggleCollapseMobile }) => {
         </div>
 
         <div className={`${getNavItemClasses({})}`}>
-          <div className="flex py-4 px-3 items-center w-full h-full">
+        <button
+          onClick={Logout}
+          className="flex py-4 px-3 items-center w-full h-full">
             {!toggleCollapseMobile && (
               <div style={{ width: "2.5rem" }}>
                 <LogoutIcon />
@@ -381,7 +386,7 @@ const Sidebar: React.FC<MyComponentProps> = ({ toggleCollapseMobile }) => {
                 <FormattedMessage id="Sidebar.option6" />
               </span>
             )}
-          </div>
+          </button>
         </div>
       </div>
     </>

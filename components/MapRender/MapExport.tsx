@@ -23,7 +23,6 @@ const MapExport = ({ toggleCollapse }) => {
   });
   const [openMap, setOpenMap] = useState(false);
   const [type, setType] = useState(null);
-
   const mapRef = useRef(null);
 
   const containerStyle = {
@@ -46,21 +45,63 @@ const MapExport = ({ toggleCollapse }) => {
     setOpenMap(false);
   };
 
-  const calculateDistance = (point1, point2) => {
-    const R = 6371;
-    const dLat = (point2.lat - point1.lat) * (Math.PI / 180);
-    const dLng = (point2.lng - point1.lng) * (Math.PI / 180);
-    const a =
-      Math.sin(dLat / 2) * Math.sin(dLat / 2) +
-      Math.cos(point1.lat * (Math.PI / 180)) *
-        Math.cos(point2.lat * (Math.PI / 180)) *
-        Math.sin(dLng / 2) *
-        Math.sin(dLng / 2);
-    const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
-    return R * c;
-  };
+  useEffect(() => {
+    const map = mapRef.current?.state.map;
+    if (map && source && destination) {
+      const projection = map.getProjection();
+      const bounds = new window.google.maps.LatLngBounds();
+      bounds.extend(new window.google.maps.LatLng(source.lat, source.lng));
+      bounds.extend(new window.google.maps.LatLng(destination.lat, destination.lng));
+      map.fitBounds(bounds);
+
+      const getNewLng = (point, offsetX) => {
+        const sourcePixel = projection.fromLatLngToPoint(point);
+        return projection
+          .fromPointToLatLng({
+            x: sourcePixel.x - offsetX * (1 / Math.pow(2, map.getZoom())),
+            y: sourcePixel.y,
+          })
+          .lng();
+      };
+
+      map.panTo({
+        lat: (source.lat + destination.lat) / 2,
+        lng: getNewLng(
+          { lat: (source.lat + destination.lat) / 2, lng: (source.lng + destination.lng) / 2 },
+          !toggleCollapse ? 250 : 0
+        ),
+      });
+    }
+  }, [source, destination, toggleCollapse]);
 
   useEffect(() => {
+
+    const map = mapRef.current?.state.map;
+    if (map) {
+      const projection = map.getProjection();
+
+      const getNewLng = (point, offsetX) => {
+        const sourcePixel = projection.fromLatLngToPoint(point);
+        return projection
+          .fromPointToLatLng({
+            x: sourcePixel.x - offsetX * (1 / Math.pow(2, map.getZoom())),
+            y: sourcePixel.y,
+          })
+          .lng();
+      };
+
+      if (source && !destination) {
+        map.setZoom(12);
+        map.panTo({
+          lat: source.lat,
+          lng: getNewLng(source, !toggleCollapse ? 250 : 0),
+        });
+      }
+    }
+  }, [source, toggleCollapse]);
+
+  useEffect(() => {
+
     const map = mapRef.current?.state.map;
     if (map) {
       const projection = map.getProjection();
@@ -81,33 +122,9 @@ const MapExport = ({ toggleCollapse }) => {
           lat: destination.lat,
           lng: getNewLng(destination, !toggleCollapse ? 250 : 0),
         });
-      } else if (source && !destination) {
-        map.setZoom(12);
-        map.panTo({
-          lat: source.lat,
-          lng: getNewLng(source, !toggleCollapse ? 250 : 0),
-        });
-      } else if (source && destination) {
-        const midLat = (source.lat + destination.lat) / 2;
-        const midLng = (source.lng + destination.lng) / 2;
-        const distance = calculateDistance(source, destination);
-        const newLng = getNewLng(
-          { lat: midLat, lng: midLng },
-          !toggleCollapse ? 250 : 0
-        );
-        map.panTo({ lat: midLat, lng: newLng });
-        map.setZoom(
-          distance > 1000
-            ? distance > 2000
-              ? distance > 3000
-                ? 3
-                : 4
-              : 5
-            : 7
-        );
       }
     }
-  }, [source, destination, toggleCollapse]);
+  }, [destination, toggleCollapse]);
 
   const handleZoomIn = () => {
     const currentZoom = mapRef.current.state.map.getZoom();
