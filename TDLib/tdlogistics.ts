@@ -18,10 +18,32 @@ import * as JSZip from 'jszip';
 //     // showing custome notification on UI
 // });
 
+class UserOperation {
+    private baseUrl: string;
+    constructor() {
+        this.baseUrl = "https://api.tdlogistics.net.vn/api/v1/users";
+    }
+
+    async getAuthenticatedUserInfo() {
+        try {
+            const response = await axios.get(`${this.baseUrl}/get_info`, {
+                withCredentials: true,
+            });
+
+            const data = response.data;
+            return { error: data.error, info: data.info, message: data.message };
+        } catch (error: any) {
+            console.log("Error getting authenticated user info: ", error?.response?.data);
+            console.error("Request that caused the error: ", error?.request);
+            return { error: error?.response?.data, request: error?.request, status: error.response ? error.response.status : null };
+        }
+    }
+}
+
 class UsersAuthenticate {
     private baseUrl: string;
     constructor() {
-        // this.baseUrl = "https://tdlogistics.govt.hu/api/v1/users";
+        // this.baseUrl = "https://api.tdlogistics.net.vn/api/v1/users";
         this.baseUrl = "https://api.tdlogistics.net.vn/api/v1/users";
     }
 
@@ -65,7 +87,7 @@ class UsersAuthenticate {
 class StaffsAuthenticate {
     private baseUrl: string;
     constructor() {
-        // this.baseUrl = "https://tdlogistics.govt.hu/api/v1/staffs";
+        // this.baseUrl = "https://api.tdlogistics.net.vn/api/v1/staffs";
         this.baseUrl = "https://api.tdlogistics.net.vn/api/v1/staffs";
     }
 
@@ -128,7 +150,7 @@ class StaffsAuthenticate {
 class BusinessAuthenticate {
     private baseUrl: string;
     constructor() {
-        // this.baseUrl = "https://tdlogistics.govt.hu/api/v1/business";
+        // this.baseUrl = "https://api.tdlogistics.net.vn/api/v1/business";
         this.baseUrl = "https://api.tdlogistics.net.vn/api/v1/business";
     }
 
@@ -155,7 +177,7 @@ class BusinessAuthenticate {
 class PartnerStaffAuthenticate {
     private baseUrl: string;
     constructor() {
-        // this.baseUrl = "https://tdlogistics.govt.hu/api/v1/partner_staffs";
+        // this.baseUrl = "https://api.tdlogistics.net.vn/api/v1/partner_staffs";
         this.baseUrl = "https://api.tdlogistics.net.vn/api/v1/partner_staffs";
     }
 
@@ -208,7 +230,7 @@ class UsersOperation {
     private baseUrl: string;
 
     constructor() {
-        // this.baseUrl = "https://tdlogistics.govt.hu/api/v1/users";
+        // this.baseUrl = "https://api.tdlogistics.net.vn/api/v1/users";
         this.baseUrl = "https://api.tdlogistics.net.vn/api/v1/users";
     }
 
@@ -353,10 +375,14 @@ export interface DeletingAgencyCondition {
     agency_id: string,
 }
 
+export interface UpdatingLicenseInfo {
+    licenseFiles: FileList,
+}
+
 class AgencyOperation {
     private baseUrl: string;
     constructor() {
-        // this.baseUrl = "https://tdlogistics.govt.hu/api/v1/agencies";
+        // this.baseUrl = "https://api.tdlogistics.net.vn/api/v1/agencies";
         this.baseUrl = "https://api.tdlogistics.net.vn/api/v1/agencies";
     }
 
@@ -449,6 +475,55 @@ class AgencyOperation {
             return { error: error?.response?.data, request: error?.request, status: error.response ? error.response.status : null };
         }
     }
+
+    async updateLicense(info : UpdatingLicenseInfo, condition: UpdatingAgencyCondition) {
+        try {       
+			// Tạo FormData object và thêm hình ảnh vào đó
+			const formData = new FormData();
+            for (let i = 0; i < info.licenseFiles.length; i++) {
+                formData.append('files', info.licenseFiles[i]);
+            }
+			// Gửi yêu cầu POST để tải lên hình ảnh
+			const response: AxiosResponse = await axios.post(`${this.baseUrl}/update_agency_company_license?agency_id=${condition.agency_id}`, formData , {
+				withCredentials: true,
+			});
+		
+			console.log('Image uploaded successfully:', response.data);
+			return response.data; // Trả về dữ liệu phản hồi từ máy chủ
+	
+		} catch (error: any) {
+			console.error('Error uploading image:', error.response.data);
+			throw error; // Ném lỗi để xử lý bên ngoài
+		} 
+    }
+
+    async findLicense(condition: UpdatingAgencyCondition) {
+		try {
+            
+            const response: AxiosResponse = await axios.get(`${this.baseUrl}/search_agency_company_license?agency_id=${condition.agency_id}`, {
+                responseType: 'arraybuffer', // Ensure response is treated as a binary buffer
+                withCredentials: true,
+            });
+            // const zip = new JSZip();
+            const zipFile = await JSZip.loadAsync(response.data);
+            const imageUrls: string[] = [];
+
+            // Extract each file from the ZIP archive and create object URLs
+            await Promise.all(
+                Object.keys(zipFile.files).map(async (filename) => {
+                    const file = zipFile.files[filename];
+                    const blob = await file.async('blob');
+                    const url = URL.createObjectURL(blob);
+                    imageUrls.push(url);
+                })
+            );
+
+            return imageUrls;
+        } catch (error: any) {
+			console.error('Error getting image:', error.message);
+			throw error; // Ném lỗi để xử lý bên ngoài
+		} 
+	}
 }
 
 export interface CreatingTransportPartnerByAdminInfo {
@@ -556,7 +631,7 @@ class TransportPartnersOperation {
     private baseUrl: string;
 
     constructor() {
-        // this.baseUrl = "https://tdlogistics.govt.hu/api/v1/transport_partners";
+        // this.baseUrl = "https://api.tdlogistics.net.vn/api/v1/transport_partners";
         this.baseUrl = "https://api.tdlogistics.net.vn/api/v1/transport_partners";
     }
 
@@ -724,7 +799,7 @@ class VehicleOperation {
     private baseUrl: string;
 
     constructor() {
-        // this.baseUrl = "https://tdlogistics.govt.hu/api/v1/vehicles";
+        // this.baseUrl = "https://api.tdlogistics.net.vn/api/v1/vehicles";
         this.baseUrl = "https://api.tdlogistics.net.vn/api/v1/vehicles";
     }
 
@@ -975,7 +1050,7 @@ class StaffsOperation {
 	private baseUrl: string;
 
 	constructor() {
-		// this.baseUrl = "https://tdlogistics.govt.hu/api/v1/staffs";
+		// this.baseUrl = "https://api.tdlogistics.net.vn/api/v1/staffs";
 		this.baseUrl = "https://api.tdlogistics.net.vn/api/v1/staffs";
 	}
 
@@ -1233,18 +1308,19 @@ export interface FindingBusinessByBusinessCondition {
 }
   
 export interface FindingBusinessByAdminCondition {
-	business_id: string,
-	agency_id: string,
-	username: string,
-	business_name: string,
-	email: string,
-	phone_number: string,
-	tax_number: string,
-	province: string,
-	district: string,
-	town: string,
-	bin: string,
-	bank: string,
+	business_id?: string,
+	agency_id?: string,
+	username?: string,
+	business_name?: string,
+	email?: string,
+	phone_number?: string,
+	tax_number?: string,
+	province?: string,
+	district?: string,
+	town?: string,
+	bin?: string,
+	bank?: string,
+    approved?: boolean,
 }
   
 export interface FindingRepresentorByBusinessCondition {
@@ -1343,11 +1419,15 @@ export interface SigningUpInfo {
     bank: string,
 }
   
+export interface ApprovingBusinessInfo {
+    agency_id: string
+}
+
 class BusinessOperation {
 	private baseUrl: string;
 
 	constructor() {
-		// this.baseUrl = "https://tdlogistics.govt.hu/api/v1/business";
+		// this.baseUrl = "https://api.tdlogistics.net.vn/api/v1/business";
 		this.baseUrl = "https://api.tdlogistics.net.vn/api/v1/business";
 
 	}
@@ -1533,20 +1613,20 @@ class BusinessOperation {
 	async updateContract(info: UpdatingContractInfo, condition: UpdatingBusinessCondition) {
 		try {        
 			// Tạo FormData object 
-			const formData = new FormData();
-			formData.append('contract', info.contractFile);
-	
-			// Gửi yêu cầu POST để tải lên hình ảnh
-			const response: AxiosResponse = await axios.patch(`${this.baseUrl}/update_contract?business_id=${condition.business_id}`, formData , {
-				withCredentials: true,
-			});
-		
-			const data = response.data;
+            const formData = new FormData();
+            formData.append('contract', info.contractFile);
+
+            // Gửi yêu cầu POST để tải lên hình ảnh
+            const response: AxiosResponse = await axios.patch(`${this.baseUrl}/update_contract?business_id=${condition.business_id}`, formData , {
+                withCredentials: true,
+            });
+        
+            const data = response.data;
             return { error: data.error, message: data.message };
-			} catch (error: any) {
-                console.error('Error uploading file:', error.response.data);
-                return error.response.data; // Ném lỗi để xử lý bên ngoài
-			} 
+        } catch (error: any) {
+            console.error('Error uploading file:', error.response.data);
+            return error.response.data; // Ném lỗi để xử lý bên ngoài
+        } 
 	}
 
     // "ADMIN", "MANAGER", "HUMAN_RESOURCE_MANAGER", "TELLER", "COMPLAINTS_SOLVER",
@@ -1563,10 +1643,27 @@ class BusinessOperation {
     
             return fileUrl;
         } catch (error: any) {
-            console.error("Error getting contract: ", error);
-            return error.response.data;
+            console.error("Error getting contract: ", error?.response?.data);
+            console.error("Request that caused the error: ", error?.request);
+            return { error: error?.response?.data, request: error?.request, status: error.response ? error.response.status : null };
         }
 	}
+
+    // ROLE: ADMIN, MANAGER, TELLER
+    async approve(info: ApprovingBusinessInfo, condition: UpdatingBusinessCondition) {
+        try {
+            const response = await axios.post(`${this.baseUrl}/approve?business_id=${condition.business_id}`, info, {
+                withCredentials: true,
+            });
+
+            const data = response.data;
+            return { error: data.error, message: data.message };
+        } catch (error: any) {
+            console.error("Error approving new business: ", error?.response?.data);
+            console.error("Request that caused the error: ", error?.request);
+            return { error: error?.response?.data, request: error?.request, status: error.response ? error.response.status : null };
+        }
+    }
 }
 
 export interface CreatingPartnerStaffInfo {
@@ -1676,7 +1773,7 @@ class PartnerStaffOperation {
 	private baseUrl: string;
 
 	constructor() {
-		// this.baseUrl = "https://tdlogistics.govt.hu/api/v1/partner_staffs";
+		// this.baseUrl = "https://api.tdlogistics.net.vn/api/v1/partner_staffs";
 		this.baseUrl = "https://api.tdlogistics.net.vn/api/v1/partner_staffs";
 	}
 
@@ -2018,7 +2115,7 @@ export interface UndertakingShipmentInfo {
 class ShipmentsOperation {
     private baseUrl: string;
 	constructor() {
-        // this.baseUrl = "https://tdlogistics.govt.hu/api/v1/shipments";
+        // this.baseUrl = "https://api.tdlogistics.net.vn/api/v1/shipments";
 		this.baseUrl = "https://api.tdlogistics.net.vn/api/v1/shipments";
 	}
 
@@ -2629,6 +2726,7 @@ class AdministrativeOperation {
 }
 
 export {
+	UserOperation,
 	UsersAuthenticate,
 	StaffsAuthenticate,
     BusinessAuthenticate,
