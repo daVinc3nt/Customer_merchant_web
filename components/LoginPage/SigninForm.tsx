@@ -29,7 +29,7 @@ const SigninForm = () => {
   const [formErrors, setFormErrors] = useState<ErrorValues>(initialValues2);
   const [showOtp, setshowOtp] = useState(false);
   const [shake, setshake] = useState(false);
-  const [role, setRole] =useState(null);
+  const [role, setRole] =useState("null");
 
   const buttonstyle = classNames(
     "mt-7 py-3 px-4  w-[calc(95%)] rounded-full text-white font-bold uppercase text-xs text-center block focus:outline-none cursor-pointer sm:mt-10 sm:text-sm transition duration-150",
@@ -169,7 +169,7 @@ const SigninForm = () => {
       <LoginLangSelector/>
     </div>
     {
-    !role ?
+    role=="null" ?
     <>
     <div className="selection:bg-indigo-500 selection:text-white">
         <div className="flex justify-center items-center">
@@ -185,7 +185,7 @@ const SigninForm = () => {
                 onChange={e => setRole(e.target.value)}
                 value ={role}
                 >
-                  <option value=""><FormattedMessage id="signin.select"/></option>
+                  <option value="null"><FormattedMessage id="signin.select"/></option>
                   <option value="Business"> <FormattedMessage id="signin.business"/></option>
                   <option value="Customer"><FormattedMessage id="signin.customer"/></option>
                 </select>

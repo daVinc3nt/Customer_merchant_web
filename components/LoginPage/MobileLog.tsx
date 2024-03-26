@@ -6,6 +6,7 @@ import { OTP, User } from "./fetching";
 import classNames from "classnames";
 import { FormattedMessage } from "react-intl";
 import { BusinessAuthenticate, UsersAuthenticate } from "@/TDLib/tdlogistics";
+import LoginLangSelector from "@/components/LangSelector/LoginLangSelector"
 const busAuth =new BusinessAuthenticate();
 const userAuth =new UsersAuthenticate();
 const MobileLog = () => {
@@ -29,10 +30,10 @@ const MobileLog = () => {
   const [formErrors, setFormErrors] = useState<ErrorValues>(initialValues2);
   const [showOtp, setshowOtp] = useState(false);
   const [shake, setshake] = useState(false);
-  const [role, setRole] =useState(null);
+  const [role, setRole] =useState("null");
 
   const buttonstyle = classNames(
-    "mt-14 py-3 px-4  w-[calc(95%)] rounded-full text-white font-bold uppercase text-xs text-center block focus:outline-none cursor-pointer sm:mt-10 sm:text-sm transition duration-150",
+    "mt-14 py-3 sm:px-4  w-[calc(95%)] rounded-full text-white font-bold uppercase text-xs text-center block focus:outline-none cursor-pointer sm:mt-10 sm:text-sm transition duration-150",
     {
       ["bg-indigo-200 animate-shake"]: shake,
       ["bg-indigo-600"]: !shake,
@@ -164,182 +165,197 @@ const MobileLog = () => {
 
   return (
     <div className="fixed z-50 inset-0 bg-whiteRedGradient w-full flex items-center justify-center">
-          <div className="flex flex-col items-center justify-center w-[calc(70%)]">
-              <a href="/log" className="flex mb-6 text-4xl text-white font-bold">
-                  TDLogistics  
-              </a>
-              <div className="w-full justify-center bg-white rounded-xl h-104 shadow flex items-center">
+      <div className="flex flex-col items-center justify-center w-[calc(90%)]">
+          <a href="/log" className="flex mb-6 text-4xl text-white font-bold">
+              TDLogistics  
+          </a>
+          <div className="w-full justify-center bg-white rounded-xl h-[calc(100vh-20rem)] shadow flex items-center">
+            <div>
+            <div className="">
+                <LoginLangSelector/>
+            </div>
+            {
+              role==="null" ?
+              <>
+              <div className="selection:bg-indigo-500 selection:text-white">
+                  <div className="flex justify-center items-center">
+                    <div className="p-6 sm:p-8 flex-1">
+                      <div className="mx-auto overflow-hidden">
+                        <div className="text-center">
+                          <h1 className="text-6xl font-bold text-indigo-900 mb-10">
+                          <FormattedMessage id="signin.role"/>
+                          </h1>
+                          <select 
+                          name="business or not"
+                          className="border w-2/3 rounded-xl bg-white text-center " 
+                          onChange={e => setRole(e.target.value)}
+                          value ={role}
+                          >
+                            <option value="null"><FormattedMessage id="signin.select"/></option>
+                            <option value="Business"> <FormattedMessage id="signin.business"/></option>
+                            <option value="Customer"><FormattedMessage id="signin.customer"/></option>
+                          </select>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div> 
+              </>
+              : role=="Business" ?
                 <div>
-                {
-    !role ?
-    <>
-    <div className="selection:bg-indigo-500 selection:text-white">
-        <div className="flex justify-center items-center">
-          <div className="p-6 sm:p-8 flex-1">
-            <div className="mx-auto overflow-hidden">
-              <div className="text-center">
-                <h1 className="text-5xl font-bold text-indigo-900 mb-10">
-                <FormattedMessage id="signin.role"/>
-                </h1>
-                <select 
-                name="business or not"
-                className="border border-black rounded-sm text-center " 
-                onChange={e => setRole(e.target.value)}
-                value ={role}
-                >
-                  <option value=""><FormattedMessage id="signin.select"/></option>
-                  <option value="Business"> <FormattedMessage id="signin.business"/></option>
-                  <option value="Customer"><FormattedMessage id="signin.customer"/></option>
-                </select>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div> 
-    </>
-    : role=="Business" ?
-      <div>
-        <div className="selection:bg-indigo-500 selection:text-white">
-          <div className="flex justify-center items-center">
-            <div className="p-6 sm:p-8 flex-1">
-              <div className="mx-auto">
-                <div className="text-center">
-                  <h1 className="text-2xl sm:text-5xl w-72 font-bold text-indigo-900">
-                    <FormattedMessage id="signup.welcome.message" />
-                  </h1>
-                  <form className="mt-5 sm:mt-12" action="" method="POST">
-                    <div className="mt-5 sm:mt-10 relative">
-                    <input
-                      id="username"
-                      name="username"
-                      type="text"
-                      className="peer h-10 w-full bg-transparent border-b-2 border-gray-300 text-gray-900 placeholder-transparent focus:outline-none focus:border-indigo-600"
-                      placeholder="john@doe.com"
-                      onChange={(e) => handleName(e.target.value)} 
-                    />
-                    <label
-                      htmlFor="text"
-                      className=" absolute left-0 -top-3.5 text-gray-600 text-xs sm:text-sm transition-all peer-placeholder-shown:text-base peer-placeholder-shown:text-gray-400 peer-placeholder-shown:top-2 peer-focus:-top-5 peer-focus:text-gray-600 peer-focus:text-sm"
-                    >
-                      <FormattedMessage id="signin.username"/>
-                    </label>
-                    <p className="text-red-500 fixed mt-1 text-xxs sm:text-sm">{formErrors.nameEr}</p>
+                  <div className="selection:bg-indigo-500 selection:text-white">
+                    <div className="flex justify-center items-center">
+                      <div className="p-6 sm:p-8 flex-1">
+                        <div className="mx-auto">
+                          <div className="text-center w-[calc(75vh-20rem)]">
+                            <h1 className="text-4xl sm:text-5xl font-bold text-indigo-900">
+                              <FormattedMessage id="signup.welcome.message" />
+                            </h1>
+                            <form className="mt-5 sm:mt-12 w-full" action="" method="POST">
+                              <div className="mt-5 sm:mt-10 relative">
+                              <input
+                                id="username"
+                                name="username"
+                                type="text"
+                                className="peer h-10 w-full bg-transparent border-b-2 border-gray-300 text-gray-900 placeholder-transparent focus:outline-none focus:border-indigo-600"
+                                placeholder="john@doe.com"
+                                onChange={(e) => handleName(e.target.value)} 
+                              />
+                              <label
+                                htmlFor="text"
+                                className=" absolute left-0 -top-3.5 text-gray-600 text-xs sm:text-sm transition-all peer-placeholder-shown:text-base peer-placeholder-shown:text-gray-400 peer-placeholder-shown:top-2 peer-focus:-top-5 peer-focus:text-gray-600 peer-focus:text-sm"
+                              >
+                                <FormattedMessage id="signin.username"/>
+                              </label>
+                              <p className="text-red-500 fixed mt-1 text-xxs sm:text-sm">{formErrors.nameEr}</p>
+                              </div>
+                              <div className="mt-5 sm:mt-10 relative">
+                                <input
+                                  type="tel"
+                                  className="peer h-10 w-full bg-transparent border-b-2 border-gray-300 text-gray-900 placeholder-transparent focus:outline-none focus:border-indigo-600"
+                                  placeholder="Số điện thoại"
+                                  onChange={(e) => handlePass(e.target.value)} 
+                                />
+                                <label
+                                  htmlFor="password"
+                                  className="absolute left-0 -top-5 text-gray-600 text-xs sm:text-sm transition-all peer-placeholder-shown:text-base peer-placeholder-shown:text-gray-400 peer-placeholder-shown:top-2 peer-focus:-top-3.5 peer-focus:text-gray-600 peer-focus:text-sm"
+                                >
+                                  <FormattedMessage id="signin.password"/>
+                                </label>
+                                <p className="text-red-500 fixed mt-1 text-xxs sm:text-sm">{formErrors.passEr}</p>
+                                {/* <p className="text-red-500 fixed mt-2 text-xxs sm:text-sm">{formErrors.phoneNumberEr}</p> */}
+                              </div>
+                            </form>
+                            <div className="flex gap-5">
+                            <button
+                                  onClick={e => setRole("")}
+                                  className={buttonstyle}
+                                >
+                                  <FormattedMessage id="sms.getback" />
+                              </button>
+                              <button
+                                  onClick={signIn}
+                                  className={buttonstyle}
+                                >
+                                  <FormattedMessage id="signinpage.verify" />
+                              </button>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
                     </div>
-                    <div className="mt-5 sm:mt-10 relative">
-                      <input
-                        type="tel"
-                        className=" peer h-10 w-full border-b-2 bg-white border-gray-300 text-gray-900 placeholder-transparent focus:outline-none focus:border-indigo-600"
-                        placeholder="Số điện thoại"
-                        onChange={(e) => handlePass(e.target.value)} 
-                      />
-                      <label
-                        htmlFor="password"
-                        className="absolute left-0 -top-5 text-gray-600 text-xs sm:text-sm transition-all peer-placeholder-shown:text-base peer-placeholder-shown:text-gray-400 peer-placeholder-shown:top-2 peer-focus:-top-3.5 peer-focus:text-gray-600 peer-focus:text-sm"
-                      >
-                        <FormattedMessage id="signin.password"/>
-                      </label>
-                      <p className="text-red-500 fixed mt-1 text-xxs sm:text-sm">{formErrors.passEr}</p>
-                      {/* <p className="text-red-500 fixed mt-2 text-xxs sm:text-sm">{formErrors.phoneNumberEr}</p> */}
+                  </div>
+                </div> :
+              !showOtp ? (
+                <div className="selection:bg-indigo-500 selection:text-white">
+                  <div className="flex justify-center items-center">
+                    <div className="p-6 sm:p-8 flex-1">
+                      <div className="mx-auto overflow-hidden">
+                        <div className="text-center w-[calc(75vh-20rem)]">
+                          <h1 className="text-4xl sm:text-5xl font-bold text-indigo-900">
+                            <FormattedMessage id="signup.welcome.message" />
+                          </h1>
+                          <form className="mt-5 sm:mt-12" action="" method="POST">
+                            <div className="mt-5 sm:mt-10 relative">
+                            <input
+                              id="email"
+                              name="email"
+                              type="text"
+                              className="peer h-10 w-full bg-transparent border-b-2 border-gray-300 text-gray-900 placeholder-transparent focus:outline-none focus:border-indigo-600"
+                              placeholder="john@doe.com"
+                              onChange={(e) => handleEmail(e.target.value)} 
+                            />
+                            <label
+                              htmlFor="email"
+                              className=" absolute left-0 -top-3.5 text-gray-600 text-xs sm:text-sm transition-all peer-placeholder-shown:text-base peer-placeholder-shown:text-gray-400 peer-placeholder-shown:top-2 peer-focus:-top-3.5 peer-focus:text-gray-600 peer-focus:text-sm"
+                            >
+                              Email
+                            </label>
+                            <p className="text-red-500 fixed mt-1 text-xxs sm:text-sm">{formErrors.emailEr}</p>
+                            </div>
+                            <div className="mt-5 sm:mt-10 relative">
+                              <input
+                                type="tel"
+                                className=" peer h-10 w-full border-b-2 border-gray-300 text-gray-900 placeholder-transparent focus:outline-none focus:border-indigo-600"
+                                placeholder="Số điện thoại"
+                                onChange={(e) => handleNum(e.target.value)} 
+                              />
+                              <label
+                                htmlFor="password"
+                                className="absolute left-0 -top-3.5 text-gray-600 text-xs sm:text-sm transition-all peer-placeholder-shown:text-base peer-placeholder-shown:text-gray-400 peer-placeholder-shown:top-2 peer-focus:-top-3.5 peer-focus:text-gray-600 peer-focus:text-sm"
+                              >
+                                <FormattedMessage id="signup.phonenumber"/>
+                              </label>
+                              <p className="text-red-500 fixed mt-2 text-xxs sm:text-sm">{formErrors.phoneNumberEr}</p>
+                            </div>
+                          </form>
+                          <div className="flex gap-5">
+                            <button
+                                  onClick={e => setRole("")}
+                                  className={buttonstyle}
+                                >
+                                  <FormattedMessage id="sms.getback" />
+                            </button>
+                            <button
+                                onClick={signIn}
+                                className={buttonstyle}
+                              >
+                              <FormattedMessage id="signup.verify" />
+                            </button>
+                          </div>
+                        </div>
+                      </div>
                     </div>
-                  </form>
-                  <div className="flex">
-                    <button
-                        onClick={signIn}
-                        className={buttonstyle}
-                      >
-                        <FormattedMessage id="signinpage.verify" />
-                    </button>
                   </div>
                 </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div> :
-    !showOtp ? (
-      <div className="selection:bg-indigo-500 selection:text-white">
-        <div className="flex justify-center items-center">
-          <div className="p-6 sm:p-8 flex-1">
-            <div className="mx-auto overflow-hidden">
-              <div className="text-center">
-                <h1 className="text-2xl sm:text-5xl font-bold text-indigo-900">
-                  <FormattedMessage id="signup.welcome.message" />
-                </h1>
-                <form className="mt-5 sm:mt-12" action="" method="POST">
-                  <div className="mt-5 sm:mt-10 relative">
-                  <input
-                    id="email"
-                    name="email"
-                    type="text"
-                    className="peer h-10 w-full bg-transparent border-b-2 border-gray-300 text-gray-900 placeholder-transparent focus:outline-none focus:border-indigo-600"
-                    placeholder="john@doe.com"
-                    onChange={(e) => handleEmail(e.target.value)} 
-                  />
-                  <label
-                    htmlFor="email"
-                    className=" absolute left-0 -top-3.5 text-gray-600 text-xs sm:text-sm transition-all peer-placeholder-shown:text-base peer-placeholder-shown:text-gray-400 peer-placeholder-shown:top-2 peer-focus:-top-3.5 peer-focus:text-gray-600 peer-focus:text-sm"
-                  >
-                    Email
-                  </label>
-                  <p className="text-red-500 fixed mt-1 text-xxs sm:text-sm">{formErrors.emailEr}</p>
+                ) : (
+                <div> 
+                  <div className="flex justify-center items-center">
+                    <div className="p-6 sm:p-8 flex-1">
+                      <div className="mx-auto overflow-hidden">
+                        <div className="text-center">
+                          <h1 className="text-xl sm:text-5xl font-bold text-indigo-900">
+                            <FormattedMessage id="sms.wait" />
+                          </h1>
+                          <form className="mt-5 sm:mt-12" action="" method="POST">
+                            <OTPField 
+                            showOtp={showOtp}
+                            setshowOtp={setshowOtp}
+                            email={formValues.email}
+                            phone={formValues.phoneNumber}
+                            otp = {userAuth}
+                        />
+                          </form>
+                        </div>
+                      </div>
+                    </div>
                   </div>
-                  <div className="mt-5 sm:mt-10 relative">
-                    <input
-                      type="tel"
-                      className=" peer h-10 w-full border-b-2 border-gray-300 text-gray-900 placeholder-transparent focus:outline-none focus:border-indigo-600"
-                      placeholder="Số điện thoại"
-                      onChange={(e) => handleNum(e.target.value)} 
-                    />
-                    <label
-                      htmlFor="password"
-                      className="absolute left-0 -top-3.5 text-gray-600 text-xs sm:text-sm transition-all peer-placeholder-shown:text-base peer-placeholder-shown:text-gray-400 peer-placeholder-shown:top-2 peer-focus:-top-3.5 peer-focus:text-gray-600 peer-focus:text-sm"
-                    >
-                      <FormattedMessage id="signup.phonenumber"/>
-                    </label>
-                    <p className="text-red-500 fixed mt-2 text-xxs sm:text-sm">{formErrors.phoneNumberEr}</p>
-                  </div>
-                </form>
-                <div className="">
-                  <button
-                      onClick={signIn}
-                      className={buttonstyle}
-                    >
-                     <FormattedMessage id="signup.verify" />
-                  </button>
                 </div>
-              </div>
+                )
+            }
             </div>
           </div>
-        </div>
       </div>
-      ) : (
-      <div> 
-         <div className="flex justify-center items-center">
-          <div className="p-6 sm:p-8 flex-1">
-            <div className="mx-auto overflow-hidden">
-              <div className="text-center">
-                <h1 className="text-xl sm:text-5xl font-bold text-indigo-900">
-                  <FormattedMessage id="sms.wait" />
-                </h1>
-                <form className="mt-5 sm:mt-12" action="" method="POST">
-                  <OTPField 
-                  showOtp={showOtp}
-                  setshowOtp={setshowOtp}
-                  email={formValues.email}
-                  phone={formValues.phoneNumber}
-                  otp = {userAuth}
-               />
-                </form>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-      )
-    }
-                </div>
-              </div>
-          </div>
     </div>
   );
 };

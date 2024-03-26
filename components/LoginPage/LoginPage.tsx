@@ -14,7 +14,7 @@ const LoginPage = () => {
 
   return (
     <div className=" flex flex-col items-center justify-center fixed z-50 inset-0 bg-red-100">
-      <div className= "container w-11/12 h-120 lg:h-120 lg:w-4/6 max-w-5xl bg-white relative overflow-hidden rounded-lg">          
+      <div className= "container w-11/12 h-144 lg:h-144 lg:w-5/6 max-w-5xl bg-white relative overflow-hidden rounded-lg">          
           <div
             id="signin"
             className={`bg-white absolute left-0 h-[calc(100%)] w-1/2 flex justify-center items-center transition-all duration-700 ease-in-out z-20 ${
@@ -23,7 +23,6 @@ const LoginPage = () => {
           >
             <SigninForm />
           </div>
-
           <div
             id="signup"
             className={`bg-white absolute top-0 left-0 h-full w-1/2 flex justify-center items-center transition-all duration-500 ease-in-out ${
