@@ -402,7 +402,7 @@ const OrderForm = ({ toggleCollapse, setToggleCollapse }) => {
   const handleCreateOrder = async () => {
     const ordersOperation = new OrdersOperation();
     const orderInfo: CreatingOrderByUserInformation = {
-      name_sender: formValues.name,
+
       name_receiver: formValues2.name,
       phone_number_receiver: formValues2.phoneNum,
       mass: mass,

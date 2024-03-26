@@ -12,6 +12,7 @@ import * as JSZip from 'jszip';
 
 // socket.on("notifySuccessCreatedNewOrder", message => {
 //     // showing custome notification on UI
+
 // });
 
 // socket.on("notifyFailCreatedNewOrder", message => {
